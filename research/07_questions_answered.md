@@ -156,6 +156,8 @@ What gets them over the line: Plug-and-play positioning. "You can get so much of
 - **No direct competitor** in African telecom is doing Share's exact model (marketplace + no-commit + financial layer combined).
 - Digital presence context (not directly discussed): Safaricom's site is corporate, carrier-grade, not innovative. That's the gap Share fills visually and narratively.
 
+_Web research update (March 18):_ Safaricom (35.6% market share, 815,037 home internet subs) is launching **tokenized Wi-Fi** (blockchain-based prepaid internet) and **prepaid fibre** in 2026. This adopts some of the same "no commitment" positioning Share uses — a competitive signal worth discussing. Kenya's fixed broadband market has grown to **2.29 million** subscribers. Starlink has stalled at 0.8% share after banning new subs in Nairobi. See `research/06_web_research_verification.md` for full market data.
+
 ---
 
 **2. How do you want Share to feel compared to other African connectivity players?**
@@ -201,6 +203,8 @@ Luis said explicitly: "the homepage is where this creativeness we would like to 
 **2. Are the infrastructure numbers confirmed? (7 cables, 400+ km fiber, 8M+ people, 7 micro DCs)**
 
 ❓ Not confirmed. These numbers are from the brief PDF. The call didn't address them. The brief internally flags them as needing confirmation from Share. Hard must-ask before any copy is finalized.
+
+_Web research note (March 18):_ Kenya now has **8 submarine cables** landing (SEACOM, TEAMS, EASSy, LION2, DARE1, PEACE, Africa-1, 2Africa) plus Daraja coming in 2026. Share's "7 subsea cable interconnections" likely refers to their specific connections, not total cables in Kenya. The 400+ km fiber, 8M+ people, and 7 micro DCs have no independent sources — these are Share's own claims. Must ask.
 
 ---
 

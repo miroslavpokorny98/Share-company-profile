@@ -199,13 +199,15 @@ Key distinction: Share does not build infrastructure — it activates infrastruc
 
 ## Market Context
 
-_Previously compiled — needs verification_
+_Updated March 18, 2026 — verified via web research (see research/06_web_research_verification.md for sources)_
 
-**Kenya's ISP Landscape:**
-Kenya has a competitive and growing ISP market. Key players include Safaricom (dominant), Zuku, Faiba (Jamii Telecom), Airtel, Telkom Kenya, Poa Internet, Mawingu, and newer entrants like Vilcom. Starlink's entry in Kenya has also disrupted pricing. Approximately 1.5 million fixed data subscribers, market growing as providers expand fiber and wireless coverage.
+**Kenya's ISP Landscape (Q1 2025/26):**
+Kenya has **2.29 million** fixed data/internet subscriptions (up 6.9%), a competitive and growing market. Market shares: **Safaricom** 35.6% (815,037 subs, added 80K in quarter), **Faiba** (Jamii Telecom) 20.6%, **Zuku** 12.7%, **Poa Internet** 12.5%, **Ahadi Wireless** 7.5%, **Vilcom** 4.1%, **Mawingu** 3.6%, **Starlink** 0.8% (19,470 subs — banned new signups in Nairobi due to network saturation).
+
+**Competitive development to watch:** Safaricom is launching **tokenized Wi-Fi** (blockchain-based prepaid internet) and **prepaid fibre** products in 2026 — adopting some of the same "no commitment" positioning that Share uses. This is a direct competitive signal.
 
 **The Connectivity Gap:**
-Over 50% of Africa's population still has no internet access. Five of the 10 most expensive countries for mobile data are in sub-Saharan Africa. Small ISPs struggle with high upfront bandwidth costs, limited infrastructure access, and lack of management tools. Share's zero-commitment model directly addresses these barriers.
+Over 60% of Africa's population has no internet access (only 38% of adults in SSA used internet in prior 3 months per World Bank 2025). **6 out of 10** most expensive economies for mobile data are in Sub-Saharan Africa. Average cost of 1 GB in SSA: $3.31 (vs. $0.86 in North Africa). People in SSA spend 2.4% of monthly income on 1 GB — above the 2% ITU affordability benchmark. For the poorest 40%, it jumps to 5%. Entry-level smartphones cost up to 73% of a poor adult's monthly income. Small ISPs struggle with high upfront bandwidth costs, limited infrastructure access, and lack of management tools. Share's zero-commitment model directly addresses these barriers.
 
 **Infrastructure Reality:**
-Kenya has 5+ submarine cables landing (SEACOM, EASSy, LION2, DARE 1, and others), government fiber backbone projects (NOFBI), and growing data center investment. The infrastructure exists but is unevenly distributed and often underutilized — which is exactly what Share aggregates.
+Kenya now has **8 submarine cables** landing: SEACOM, TEAMS, EASSy, LION2, DARE1, PEACE, Africa-1, and 2Africa. The **2Africa** core system was completed in November 2025 (world's longest cable at 45,000 km, 33 countries, 180 Tbps capacity). Kenya segment already active. Additionally, the **Daraja** cable (Mombasa-Oman, $23M, Meta-funded, 24 fiber pairs, operated by Safaricom) is scheduled for service in 2026. Government fiber backbone (NOFBI) covers ~13,000 km across Phase I + II. Kenya's total international lit bandwidth: 22,311 Gbps. The infrastructure exists but is unevenly distributed and often underutilized — which is exactly what Share aggregates.

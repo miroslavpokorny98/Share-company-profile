@@ -1,6 +1,6 @@
 # Share × VKZ — Project Summary Brief
 
-_Last updated: March 18, 2026 | PROP-217 | Always update this file when new information arrives_
+_Last updated: March 18, 2026 (web research verification pass completed) | PROP-217 | Always update this file when new information arrives_
 
 ---
 
@@ -12,7 +12,7 @@ Share is building Africa's Hyperscale Internet Network — a bandwidth marketpla
 
 **What "hyperscale" means:** Share aggregates existing underutilized infrastructure (dark fiber, idle assets) rather than building from scratch. Coverage expands without Share laying cable.
 
-**Parent company:** Living Twice, Inc. **CEO:** Luis Munoz Aycart. **Stage:** Pre-Series A. **HQ:** Mombasa, Kenya. **Currently active in:** Kenya (Uganda license ~2 months away).
+**Parent company:** Living Twice, Inc. (also holds "SHARE" trademark at USPTO, TM #99307973). **CEO:** Luis Munoz Aycart (Baruch College, ex-Dior/UBS). **Co-Founder:** Jose Muñoz Aycart (MIT, also co-founded Wondermed). **Team:** Omar Pederzoli (role TBC). **Stage:** Pre-Series A (unverified — no public funding data found). **HQ:** Mombasa, Kenya. **Currently active in:** Kenya (Uganda license ~2 months away).
 
 ---
 
@@ -42,12 +42,13 @@ Share is building Africa's Hyperscale Internet Network — a bandwidth marketpla
 
 ## Infrastructure Numbers ⚠️ Unconfirmed — verify before publishing
 
-- 7 subsea cable interconnections
-- 400+ km fiber under management
-- 7 micro data centers across suburban areas
-- 8M+ people covered
+- 7 subsea cable interconnections _(Note: Kenya now has 8 cables landing — SEACOM, TEAMS, EASSy, LION2, DARE1, PEACE, Africa-1, 2Africa — plus Daraja coming 2026. Share's "7" likely refers to their specific interconnections, not total cables in Kenya. Clarify with Share.)_
+- 400+ km fiber under management _(no independent source found)_
+- 7 micro data centers across suburban areas _(no independent source found)_
+- 8M+ people covered _(no independent source found)_
 - 2 primary data centers: Mombasa + Nairobi
-- Connected to Meta's network; Google Cloud connection in progress
+- Connected to Meta's network _(plausible given Meta's heavy Kenya cable investment via 2Africa + Daraja, but not independently confirmed)_
+- Google Cloud connection in progress _(unverified)_
 
 ---
 
@@ -120,4 +121,18 @@ _Note: Page 6 is missing from the brief — likely a "For Users" or coverage map
 | VKZ develops full proposal | VKZ | Week of March 23 |
 | Slack set up | Both | Pending |
 
-**Communication:** Slack. Three Share contacts: Luis Munoz Aycart (CEO), Jose (co-founder), Omar.
+**Communication:** Slack. Three Share contacts: Luis Munoz Aycart (CEO), Jose Muñoz Aycart (Co-Founder), Omar Pederzoli.
+
+---
+
+## Recent Public Activity (from web research)
+
+- **Nov 2025:** Luis attended AfricaCom 2025 in Cape Town (Africa's largest tech event)
+- **Jul 2025:** Share co-organized DePIN Summit Africa 2025 in Mombasa (with EV3 and ThreeFold). Jose spoke at the event. Share described as "a next-generation internet network focused on coordinating the buildout of internet infrastructure."
+- **Background:** Share has connections to the DePIN (Decentralized Physical Infrastructure Network) space, which may explain the "blockchain/global collaboration" investor base mentioned on the call. This positioning is not prominent in their current site but is worth understanding for investor messaging.
+
+---
+
+## Verification Status
+
+Full verification log with sources: `research/06_web_research_verification.md`

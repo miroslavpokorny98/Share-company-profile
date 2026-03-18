@@ -17,6 +17,7 @@ This is a research and planning directory for **VKZ** (a web design/development 
 | `research/03_brand_and_website.md`                                | Brand guidelines (fonts, palette, visual direction) + scraped current site content (3 pages)                             |
 | `research/04_vkz_proposal.md`                                     | VKZ's internal proposal: 3D options (A: pre-rendered video, B: WebGL/Three.js), workflow, tech stack, budget             |
 | `research/05_company_and_team.md`                                 | Company facts, team names, infrastructure numbers, milestones, Notion project metadata                                   |
+| `research/06_web_research_verification.md`                        | Comprehensive verification log: every claim checked against public sources, with status and URLs                         |
 | `research/07_questions_answered.md`                               | Share's answers to the 36 questions (populated as responses arrive)                                                      |
 | `sources/vkz-share-website-deep-dive-call-transcript.txt`         | Raw call transcript                                                                                                      |
 | `deliverables/internet_infrastructure_explainer.html`             | Internet infrastructure explainer page deliverable                                                                       |
@@ -33,7 +34,7 @@ This is a research and planning directory for **VKZ** (a web design/development 
 
 **Key brand notes:** Typefaces are Aeonik Pro + HK Requisite. Dark cinematic aesthetic, deep blues and blacks, "ribbed glass" texture. Open to subtle refresh emphasizing physical infrastructure.
 
-**Numbers to verify before publishing:** 7 subsea cables, 400+ km fiber, 8M+ people covered, 7 micro data centers — all flagged as needing confirmation from Share.
+**Numbers to verify before publishing:** 7 subsea cables, 400+ km fiber, 8M+ people covered, 7 micro data centers — all flagged as needing confirmation from Share. _Web research (March 18) found no independent sources for these numbers. Kenya has 8 cables total, so Share's "7 interconnections" needs clarification. See `research/06_web_research_verification.md` for full audit._
 
 ## Project Status (as of March 18, 2026)
 
@@ -42,3 +43,4 @@ This is a research and planning directory for **VKZ** (a web design/development 
 - NDAs to be signed ASAP
 - VKZ to develop full proposal (structure, timeline, budget) week of March 23
 - Share to send brand assets, dashboard screenshots, and materials by end of week
+- Web research verification pass completed March 18 — see `research/06_web_research_verification.md`
