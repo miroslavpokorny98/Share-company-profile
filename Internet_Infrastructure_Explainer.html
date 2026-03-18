@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How the Internet Gets to Africa — Share Context Brief</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --blue-deep: #050d1a;
+    --blue-dark: #0a1628;
+    --blue-mid: #0d2240;
+    --blue-accent: #1a4a8a;
+    --blue-bright: #2e7fff;
+    --blue-glow: #5b9fff;
+    --blue-light: #a8c8ff;
+    --white: #f0f4ff;
+    --grey: #8899bb;
+    --grey-dim: #445566;
+    --share-cable: #ff6b35;
+    --share-green: #00d4a4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--blue-deep);
+    color: var(--white);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(5, 13, 26, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(46, 127, 255, 0.15);
+    padding: 14px 32px;
+  }
+  nav .nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  nav .logo {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--blue-glow); text-transform: uppercase;
+  }
+  nav .nav-links {
+    display: flex; gap: 24px; list-style: none;
+  }
+  nav .nav-links a {
+    color: var(--grey); text-decoration: none; font-size: 13px;
+    transition: color 0.2s;
+  }
+  nav .nav-links a:hover { color: var(--white); }
+
+  /* HERO */
+  .hero {
+    padding: 96px 32px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center top, rgba(46, 127, 255, 0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .hero .label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--blue-bright);
+    border: 1px solid rgba(46,127,255,0.3);
+    background: rgba(46,127,255,0.08);
+    padding: 5px 14px; border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700; line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--blue-bright); }
+  .hero .subtitle {
+    font-size: 18px; color: var(--grey);
+    max-width: 560px; margin: 0 auto 48px;
+  }
+  .hero .for-whom {
+    font-size: 12px; color: var(--grey-dim); letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* CHAIN OVERVIEW */
+  .chain-overview {
+    padding: 48px 0 64px;
+    background: var(--blue-dark);
+    border-top: 1px solid rgba(46,127,255,0.1);
+    border-bottom: 1px solid rgba(46,127,255,0.1);
+  }
+  .chain-label {
+    text-align: center;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--grey);
+    margin-bottom: 36px;
+  }
+
+  /* SECTION */
+  section { padding: 72px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  section:last-of-type { border-bottom: none; }
+
+  .section-number {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--blue-bright);
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 16px; line-height: 1.2;
+  }
+  .lead {
+    font-size: 18px; color: var(--grey);
+    margin-bottom: 32px; max-width: 680px;
+  }
+  p { color: #c0cce0; margin-bottom: 16px; max-width: 680px; }
+  p:last-child { margin-bottom: 0; }
+
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    margin: 32px 0;
+  }
+
+  /* FACT BOX */
+  .fact-box {
+    background: rgba(46,127,255,0.07);
+    border: 1px solid rgba(46,127,255,0.2);
+    border-radius: 12px; padding: 24px;
+  }
+  .fact-box .fact-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--blue-bright);
+    margin-bottom: 10px;
+  }
+  .fact-box p { font-size: 14px; color: var(--grey); margin: 0; max-width: none; }
+
+  /* ANALOGY BOX */
+  .analogy {
+    background: rgba(0, 212, 164, 0.06);
+    border: 1px solid rgba(0,212,164,0.2);
+    border-radius: 12px; padding: 24px 28px;
+    margin: 32px 0;
+  }
+  .analogy .analogy-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--share-green);
+    margin-bottom: 10px;
+  }
+  .analogy p { color: #a0d8cc; font-size: 15px; max-width: none; margin: 0; }
+
+  /* PROBLEM BOX */
+  .problem {
+    background: rgba(255,107,53,0.06);
+    border: 1px solid rgba(255,107,53,0.25);
+    border-radius: 12px; padding: 24px 28px;
+    margin: 24px 0;
+  }
+  .problem .problem-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--share-cable);
+    margin-bottom: 10px;
+  }
+  .problem p { color: #d4a090; font-size: 15px; max-width: none; margin: 0; }
+
+  /* SHARE BOX */
+  .share-box {
+    background: linear-gradient(135deg, rgba(46,127,255,0.1), rgba(0,212,164,0.05));
+    border: 1px solid rgba(46,127,255,0.3);
+    border-radius: 16px; padding: 32px;
+    margin: 32px 0;
+  }
+  .share-box .share-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--blue-bright);
+    margin-bottom: 12px;
+  }
+  .share-box h3 { font-size: 20px; margin-bottom: 12px; }
+  .share-box p { color: var(--blue-light); font-size: 15px; max-width: none; }
+
+  /* DIAGRAM WRAPPER */
+  .diagram {
+    margin: 40px 0;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 32px;
+    overflow-x: auto;
+  }
+  .diagram-caption {
+    text-align: center;
+    font-size: 12px; color: var(--grey-dim);
+    margin-top: 16px; letter-spacing: 0.04em;
+  }
+
+  /* METRIC ROW */
+  .metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin: 32px 0;
+  }
+  .metric {
+    text-align: center;
+    background: rgba(46,127,255,0.06);
+    border: 1px solid rgba(46,127,255,0.15);
+    border-radius: 12px; padding: 24px 16px;
+  }
+  .metric .num {
+    font-size: 28px; font-weight: 700; color: var(--blue-bright);
+    letter-spacing: -0.02em; display: block;
+  }
+  .metric .desc {
+    font-size: 13px; color: var(--grey); margin-top: 4px;
+  }
+
+  /* SHARE SECTION SPECIAL */
+  .share-section {
+    background: linear-gradient(180deg, var(--blue-dark) 0%, var(--blue-deep) 100%);
+    border-top: 1px solid rgba(46,127,255,0.2);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 48px 32px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: var(--grey-dim); font-size: 13px;
+  }
+
+  /* CHAIN FLOW SVG wrapper */
+  .chain-flow { display: flex; justify-content: center; }
+
+  /* STEP LIST */
+  .steps { list-style: none; margin: 24px 0; }
+  .steps li {
+    display: flex; gap: 16px; align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .steps li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .steps .step-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: rgba(46,127,255,0.15);
+    border: 1px solid rgba(46,127,255,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--blue-bright);
+    margin-top: 2px;
+  }
+  .steps .step-text strong { color: var(--white); }
+  .steps .step-text { color: var(--grey); font-size: 15px; }
+
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: 1fr 1fr; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="logo">Share — Context Brief</span>
+    <ul class="nav-links">
+      <li><a href="#cables">Subsea Cables</a></li>
+      <li><a href="#backbone">Backbone</a></li>
+      <li><a href="#datacenter">Data Centers</a></li>
+      <li><a href="#isp">ISPs</a></li>
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#share">Where Share Fits</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="label">Designer Context Brief — VKZ × Share</div>
+  <h1>How the Internet Gets<br><span>to Africa</span></h1>
+  <p class="subtitle">A non-technical guide to the infrastructure chain — from undersea cables to someone's phone — and where Share sits in it.</p>
+  <p class="for-whom">For designers on the Share website project</p>
+</div>
+
+<!-- CHAIN OVERVIEW -->
+<div class="chain-overview" id="overview">
+  <div class="container">
+    <p class="chain-label">The full chain — from ocean floor to end user</p>
+    <div class="chain-flow">
+      <svg viewBox="0 0 860 120" width="100%" style="max-width:860px; font-family: -apple-system, sans-serif;">
+
+        <!-- Connection lines -->
+        <line x1="104" y1="40" x2="175" y2="40" stroke="#1a4a8a" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="249" y1="40" x2="320" y2="40" stroke="#1a4a8a" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="394" y1="40" x2="465" y2="40" stroke="#1a4a8a" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="539" y1="40" x2="610" y2="40" stroke="#1a4a8a" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="684" y1="40" x2="755" y2="40" stroke="#1a4a8a" stroke-width="2" stroke-dasharray="4,3"/>
+
+        <!-- Node 1: Subsea Cable -->
+        <circle cx="52" cy="40" r="36" fill="#050d1a" stroke="#1a4a8a" stroke-width="1.5"/>
+        <text x="52" y="28" text-anchor="middle" font-size="18">🌊</text>
+        <text x="52" y="46" text-anchor="middle" fill="#8899bb" font-size="9" font-weight="700" letter-spacing="0.05em">SUBSEA</text>
+        <text x="52" y="57" text-anchor="middle" fill="#8899bb" font-size="9" font-weight="700" letter-spacing="0.05em">CABLE</text>
+
+        <!-- Arrow -->
+        <polygon points="175,37 185,40 175,43" fill="#1a4a8a"/>
+
+        <!-- Node 2: Landing Station -->
+        <circle cx="212" cy="40" r="36" fill="#050d1a" stroke="#1a4a8a" stroke-width="1.5"/>
+        <text x="212" y="28" text-anchor="middle" font-size="18">🏭</text>
+        <text x="212" y="46" text-anchor="middle" fill="#8899bb" font-size="9" font-weight="700" letter-spacing="0.05em">LANDING</text>
+        <text x="212" y="57" text-anchor="middle" fill="#8899bb" font-size="9" font-weight="700" letter-spacing="0.05em">STATION</text>
+
+        <!-- Arrow -->
+        <polygon points="320,37 330,40 320,43" fill="#1a4a8a"/>
+
+        <!-- Node 3: Backbone -->
+        <circle cx="357" cy="40" r="36" fill="#050d1a" stroke="#2e7fff" stroke-width="1.5"/>
+        <text x="357" y="28" text-anchor="middle" font-size="18">🔁</text>
+        <text x="357" y="46" text-anchor="middle" fill="#5b9fff" font-size="9" font-weight="700" letter-spacing="0.05em">BACKBONE</text>
+        <text x="357" y="57" text-anchor="middle" fill="#5b9fff" font-size="9" font-weight="700" letter-spacing="0.05em">FIBER</text>
+
+        <!-- Arrow -->
+        <polygon points="465,37 475,40 465,43" fill="#2e7fff"/>
+
+        <!-- Node 4: Data Center -->
+        <circle cx="502" cy="40" r="36" fill="#050d1a" stroke="#2e7fff" stroke-width="1.5"/>
+        <text x="502" y="28" text-anchor="middle" font-size="18">🏢</text>
+        <text x="502" y="46" text-anchor="middle" fill="#5b9fff" font-size="9" font-weight="700" letter-spacing="0.05em">DATA</text>
+        <text x="502" y="57" text-anchor="middle" fill="#5b9fff" font-size="9" font-weight="700" letter-spacing="0.05em">CENTER</text>
+
+        <!-- Arrow -->
+        <polygon points="610,37 620,40 610,43" fill="#2e7fff"/>
+
+        <!-- Node 5: ISP -->
+        <circle cx="647" cy="40" r="36" fill="#050d1a" stroke="#2e7fff" stroke-width="1.5"/>
+        <text x="647" y="28" text-anchor="middle" font-size="18">📡</text>
+        <text x="647" y="46" text-anchor="middle" fill="#5b9fff" font-size="9" font-weight="700" letter-spacing="0.05em">LOCAL</text>
+        <text x="647" y="57" text-anchor="middle" fill="#5b9fff" font-size="9" font-weight="700" letter-spacing="0.05em">ISP</text>
+
+        <!-- Arrow -->
+        <polygon points="755,37 765,40 755,43" fill="#2e7fff"/>
+
+        <!-- Node 6: End User -->
+        <circle cx="808" cy="40" r="36" fill="#050d1a" stroke="#00d4a4" stroke-width="1.5"/>
+        <text x="808" y="28" text-anchor="middle" font-size="18">📱</text>
+        <text x="808" y="46" text-anchor="middle" fill="#00d4a4" font-size="9" font-weight="700" letter-spacing="0.05em">END</text>
+        <text x="808" y="57" text-anchor="middle" fill="#00d4a4" font-size="9" font-weight="700" letter-spacing="0.05em">USER</text>
+
+        <!-- Cost labels -->
+        <text x="140" y="80" text-anchor="middle" fill="#445566" font-size="9">cable capacity</text>
+        <text x="286" y="80" text-anchor="middle" fill="#445566" font-size="9">rents bandwidth</text>
+        <text x="430" y="80" text-anchor="middle" fill="#445566" font-size="9">pays for transit</text>
+        <text x="574" y="80" text-anchor="middle" fill="#445566" font-size="9">monthly commit</text>
+        <text x="720" y="80" text-anchor="middle" fill="#445566" font-size="9">monthly bill</text>
+      </svg>
+    </div>
+    <p class="diagram-caption">Each arrow represents a commercial relationship — and a fee. Costs stack up as data moves inland.</p>
+  </div>
+</div>
+
+
+<!-- SECTION 1: SUBSEA CABLES -->
+<section id="cables">
+  <div class="container">
+    <div class="section-number">Layer 01</div>
+    <h2>Subsea Cables</h2>
+    <p class="lead">The internet is physical. At the bottom of every ocean, there are cables — about as thick as a garden hose — carrying almost all international internet traffic.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 700 280" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+
+        <!-- Ocean background -->
+        <rect width="700" height="280" fill="#020a18" rx="8"/>
+
+        <!-- Water waves at top -->
+        <path d="M0 60 Q175 40 350 60 Q525 80 700 60 L700 0 L0 0 Z" fill="#041228" opacity="0.8"/>
+        <text x="350" y="35" text-anchor="middle" fill="#1a4a8a" font-size="11" font-family="-apple-system,sans-serif" font-weight="600" letter-spacing="0.06em">OCEAN SURFACE</text>
+
+        <!-- Ocean floor -->
+        <path d="M0 230 Q100 220 200 228 Q350 240 500 225 Q600 218 700 230 L700 280 L0 280 Z" fill="#030d1e"/>
+        <text x="350" y="265" text-anchor="middle" fill="#1a3060" font-size="11" font-family="-apple-system,sans-serif" font-weight="600" letter-spacing="0.06em">OCEAN FLOOR</text>
+
+        <!-- Cable cross section detail (left side) -->
+        <circle cx="90" cy="155" r="42" fill="#0a1628" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="90" y="110" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">CROSS SECTION</text>
+        <!-- Cable layers -->
+        <circle cx="90" cy="155" r="34" fill="#0d1f3a" stroke="#1a4a8a" stroke-width="1"/>
+        <circle cx="90" cy="155" r="26" fill="#0a1628" stroke="#2e7fff" stroke-width="1"/>
+        <circle cx="90" cy="155" r="18" fill="#0d1f3a" stroke="#1a4a8a" stroke-width="0.5"/>
+        <circle cx="90" cy="155" r="10" fill="#050d1a" stroke="#5b9fff" stroke-width="0.5"/>
+        <!-- Fiber core dots -->
+        <circle cx="87" cy="152" r="2" fill="#5b9fff"/>
+        <circle cx="93" cy="152" r="2" fill="#5b9fff"/>
+        <circle cx="90" cy="158" r="2" fill="#5b9fff"/>
+        <circle cx="90" cy="146" r="2" fill="#5b9fff"/>
+        <!-- Labels -->
+        <text x="140" y="138" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Steel armor</text>
+        <text x="140" y="150" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Polyethylene</text>
+        <text x="140" y="162" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Copper conductor</text>
+        <text x="140" y="174" fill="#5b9fff" font-size="9" font-family="-apple-system,sans-serif">Fiber optic core ✦</text>
+        <line x1="136" y1="174" x2="100" y2="157" stroke="#2e7fff" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+        <!-- Main cable running across -->
+        <path d="M220 155 Q350 148 480 160 Q560 165 650 155" stroke="#2e7fff" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M220 155 Q350 148 480 160 Q560 165 650 155" stroke="#5b9fff" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5"/>
+
+        <!-- Shore on right -->
+        <path d="M630 60 L680 60 L680 230 L630 230 Q620 200 625 155 Q628 110 630 60 Z" fill="#0a1628"/>
+        <text x="655" y="150" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif" transform="rotate(-90, 655, 150)">COASTLINE →</text>
+
+        <!-- Fish/depth indicators -->
+        <text x="320" y="100" fill="#0d2240" font-size="10" font-family="-apple-system,sans-serif">~ 4,000 metres deep</text>
+
+        <!-- Key stat -->
+        <rect x="220" y="190" width="280" height="30" rx="6" fill="rgba(46,127,255,0.08)" stroke="rgba(46,127,255,0.2)" stroke-width="1"/>
+        <text x="360" y="210" text-anchor="middle" fill="#5b9fff" font-size="10" font-family="-apple-system,sans-serif">Carries ~99% of all international internet traffic</text>
+
+      </svg>
+      <p class="diagram-caption">A single cable contains multiple fiber pairs — each pair can carry terabits per second of data</p>
+    </div>
+
+    <p>A subsea cable is essentially a bundle of glass threads (fiber optics) wrapped in layers of steel, copper, and plastic — roughly the diameter of a garden hose, sitting on the ocean floor for thousands of kilometres. Light pulses travel through the glass at near light-speed, carrying internet data between continents.</p>
+
+    <p>They're built and co-owned by consortiums of telecoms companies. Capacity on the cable is sold in "pairs" or wavelengths — specific lanes of the highway that different companies purchase rights to use.</p>
+
+    <div class="two-col">
+      <div class="fact-box">
+        <div class="fact-label">East Africa's cables</div>
+        <p>SEACOM (2009), EASSy (2010), TEAMS (2009), LION2, and DARE1 (2023) all land in Mombasa, Kenya. More are coming — 2Africa (Meta-backed) will be the longest ever when complete. Each cable dramatically increases available capacity to the region.</p>
+      </div>
+      <div class="fact-box">
+        <div class="fact-label">Why it matters</div>
+        <p>Before these cables existed, East Africa relied on satellite — expensive, slow, and high-latency. Each new subsea cable landing drops the price of bandwidth significantly. There is now theoretically enough cable capacity in East Africa to connect everyone. The problem is getting it inland.</p>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-label">Simple analogy</div>
+      <p>Think of subsea cables as the transatlantic motorways. Enormous capacity, shared by many, laid once and used for decades. The problem isn't the motorway — it's the local roads that connect people to them.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION 2: LANDING STATIONS + BACKBONE -->
+<section id="backbone">
+  <div class="container">
+    <div class="section-number">Layer 02 – 03</div>
+    <h2>Landing Stations & Backbone Fiber</h2>
+    <p class="lead">Where the ocean cable meets land, and how data then travels hundreds of kilometres inland to reach cities.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 700 260" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+        <rect width="700" height="260" fill="#020a18" rx="8"/>
+
+        <!-- Map-like background -->
+        <text x="350" y="20" text-anchor="middle" fill="#0d2240" font-size="40" font-family="-apple-system,sans-serif" font-weight="900" opacity="0.4">KENYA</text>
+
+        <!-- Ocean (left) -->
+        <rect x="0" y="0" width="130" height="260" fill="#041228" rx="8 0 0 8"/>
+        <text x="65" y="135" text-anchor="middle" fill="#0d2240" font-size="11" font-family="-apple-system,sans-serif" font-weight="700" letter-spacing="0.08em">INDIAN</text>
+        <text x="65" y="150" text-anchor="middle" fill="#0d2240" font-size="11" font-family="-apple-system,sans-serif" font-weight="700" letter-spacing="0.08em">OCEAN</text>
+
+        <!-- Subsea cable coming in -->
+        <path d="M0 140 Q60 138 110 142" stroke="#2e7fff" stroke-width="4" fill="none" stroke-dasharray="6,3"/>
+        <path d="M0 140 Q60 138 110 142" stroke="#5b9fff" stroke-width="1.5" fill="none" stroke-dasharray="6,3" opacity="0.5"/>
+
+        <!-- Landing station (Mombasa) -->
+        <rect x="118" y="128" width="28" height="28" rx="4" fill="#0a1628" stroke="#2e7fff" stroke-width="1.5"/>
+        <text x="132" y="144" text-anchor="middle" font-size="14">🏭</text>
+        <text x="132" y="170" text-anchor="middle" fill="#8899bb" font-size="9" font-family="-apple-system,sans-serif">MOMBASA</text>
+        <text x="132" y="181" text-anchor="middle" fill="#5b9fff" font-size="9" font-family="-apple-system,sans-serif">Landing Stn.</text>
+
+        <!-- Fiber route Mombasa → Nairobi (main backbone) -->
+        <path d="M146 142 Q200 130 260 100 Q320 72 380 80 Q420 84 450 90" stroke="#2e7fff" stroke-width="3" fill="none"/>
+        <text x="310" y="72" text-anchor="middle" fill="#2e7fff" font-size="9" font-family="-apple-system,sans-serif" font-weight="700">BACKBONE FIBER</text>
+
+        <!-- Second fiber route (competing provider) -->
+        <path d="M146 148 Q210 148 270 148 Q340 148 410 130 Q440 122 450 108" stroke="#1a4a8a" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+        <text x="280" y="162" text-anchor="middle" fill="#1a4a8a" font-size="9" font-family="-apple-system,sans-serif">competing provider</text>
+
+        <!-- Third route -->
+        <path d="M146 152 Q200 165 270 168 Q340 170 400 155 Q435 145 450 118" stroke="#1a4a8a" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+        <text x="300" y="185" text-anchor="middle" fill="#1a4a8a" font-size="9" font-family="-apple-system,sans-serif">another provider</text>
+
+        <!-- Nairobi data center cluster -->
+        <rect x="450" y="78" width="36" height="52" rx="6" fill="#0a1628" stroke="#5b9fff" stroke-width="1.5"/>
+        <text x="468" y="96" text-anchor="middle" font-size="10">🏢</text>
+        <text x="468" y="109" text-anchor="middle" font-size="10">🏢</text>
+        <text x="468" y="122" text-anchor="middle" font-size="10">🏢</text>
+        <text x="468" y="143" text-anchor="middle" fill="#5b9fff" font-size="9" font-family="-apple-system,sans-serif">NAIROBI</text>
+        <text x="468" y="154" text-anchor="middle" fill="#8899bb" font-size="8" font-family="-apple-system,sans-serif">Data Centers</text>
+
+        <!-- Distribution from Nairobi -->
+        <line x1="486" y1="104" x2="560" y2="80" stroke="#1a4a8a" stroke-width="1.5"/>
+        <line x1="486" y1="104" x2="570" y2="110" stroke="#1a4a8a" stroke-width="1.5"/>
+        <line x1="486" y1="104" x2="555" y2="145" stroke="#1a4a8a" stroke-width="1.5"/>
+        <line x1="486" y1="104" x2="540" y2="175" stroke="#1a4a8a" stroke-width="1.5"/>
+
+        <!-- Regional ISP nodes -->
+        <circle cx="568" cy="72" r="12" fill="#050d1a" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="568" y="77" text-anchor="middle" font-size="10">📡</text>
+        <text x="568" y="58" text-anchor="middle" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">Nakuru ISP</text>
+
+        <circle cx="575" cy="110" r="12" fill="#050d1a" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="575" y="115" text-anchor="middle" font-size="10">📡</text>
+        <text x="590" y="107" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">Thika ISP</text>
+
+        <circle cx="555" cy="147" r="12" fill="#050d1a" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="555" y="152" text-anchor="middle" font-size="10">📡</text>
+        <text x="570" y="165" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">Machakos ISP</text>
+
+        <circle cx="542" cy="180" r="12" fill="#050d1a" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="542" y="185" text-anchor="middle" font-size="10">📡</text>
+        <text x="557" y="200" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">Kitale ISP</text>
+
+        <!-- Legend -->
+        <rect x="570" y="215" width="120" height="36" rx="6" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+        <line x1="578" y1="227" x2="598" y2="227" stroke="#2e7fff" stroke-width="2"/>
+        <text x="602" y="231" fill="#8899bb" font-size="9" font-family="-apple-system,sans-serif">Backbone (owned)</text>
+        <line x1="578" y1="243" x2="598" y2="243" stroke="#1a4a8a" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="602" y="247" fill="#8899bb" font-size="9" font-family="-apple-system,sans-serif">Competitor routes</text>
+
+      </svg>
+      <p class="diagram-caption">Multiple competing fiber operators build parallel routes between the same cities — duplicated infrastructure, not shared</p>
+    </div>
+
+    <p><strong style="color:var(--white)">Landing station:</strong> The physical building at the coast where the undersea cable comes ashore. Here the marine cable connects to terrestrial fiber. It's a heavily secured facility with massive power backup systems and specialist marine communications equipment. Mombasa is East Africa's primary landing point.</p>
+
+    <p><strong style="color:var(--white)">Backbone fiber:</strong> From the landing station, data travels inland along fiber-optic cables buried underground or strung on poles. These backbone routes connect coastal landing stations to major inland cities (Nairobi, Kampala, Dar es Salaam). Companies like Liquid Intelligent Technologies, Safaricom, and government-owned NOFBI own these inland fiber routes.</p>
+
+    <div class="problem">
+      <div class="problem-label">The fragmentation problem</div>
+      <p>The same routes (e.g., Mombasa → Nairobi) are served by 5+ competing fiber operators, each with their own cables in the ground. They don't share. ISPs must sign separate contracts with each one — meaning if you want redundancy, you need multiple 60-page agreements, each with its own pricing and SLA. The infrastructure is duplicated; the access is fragmented.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION 3: DATA CENTERS -->
+<section id="datacenter">
+  <div class="container">
+    <div class="section-number">Layer 04</div>
+    <h2>Data Centers & Internet Exchange Points</h2>
+    <p class="lead">Where all the fibers from different providers physically meet and interconnect — the internet's nervous system.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 700 220" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+        <rect width="700" height="220" fill="#020a18" rx="8"/>
+
+        <!-- Building outline -->
+        <rect x="200" y="30" width="300" height="160" rx="6" fill="#0a1628" stroke="#1a4a8a" stroke-width="1.5"/>
+        <text x="350" y="50" text-anchor="middle" fill="#5b9fff" font-size="11" font-family="-apple-system,sans-serif" font-weight="700" letter-spacing="0.08em">DATA CENTER</text>
+
+        <!-- Server racks -->
+        <rect x="220" y="62" width="28" height="100" rx="3" fill="#041228" stroke="#1a4a8a" stroke-width="1"/>
+        <rect x="258" y="62" width="28" height="100" rx="3" fill="#041228" stroke="#1a4a8a" stroke-width="1"/>
+        <rect x="296" y="62" width="28" height="100" rx="3" fill="#041228" stroke="#1a4a8a" stroke-width="1"/>
+        <rect x="334" y="62" width="28" height="100" rx="3" fill="#041228" stroke="#2e7fff" stroke-width="1.5"/>
+        <rect x="372" y="62" width="28" height="100" rx="3" fill="#041228" stroke="#2e7fff" stroke-width="1.5"/>
+        <rect x="410" y="62" width="28" height="100" rx="3" fill="#041228" stroke="#1a4a8a" stroke-width="1"/>
+        <rect x="448" y="62" width="28" height="100" rx="3" fill="#041228" stroke="#1a4a8a" stroke-width="1"/>
+
+        <!-- Blinking lights on racks -->
+        <circle cx="230" cy="72" r="2" fill="#2e7fff" opacity="0.8"/>
+        <circle cx="237" cy="72" r="2" fill="#00d4a4" opacity="0.6"/>
+        <circle cx="268" cy="72" r="2" fill="#2e7fff" opacity="0.9"/>
+        <circle cx="275" cy="72" r="2" fill="#ff6b35" opacity="0.7"/>
+        <circle cx="306" cy="72" r="2" fill="#2e7fff" opacity="0.8"/>
+        <circle cx="344" cy="72" r="2" fill="#00d4a4" opacity="0.9"/>
+        <circle cx="351" cy="72" r="2" fill="#00d4a4" opacity="0.9"/>
+        <circle cx="382" cy="72" r="2" fill="#2e7fff" opacity="0.8"/>
+        <circle cx="389" cy="72" r="2" fill="#2e7fff" opacity="0.8"/>
+        <circle cx="420" cy="72" r="2" fill="#2e7fff" opacity="0.7"/>
+        <circle cx="458" cy="72" r="2" fill="#00d4a4" opacity="0.6"/>
+
+        <!-- Share equipment highlighted -->
+        <rect x="330" y="58" width="76" height="110" rx="3" fill="rgba(46,127,255,0.06)" stroke="#2e7fff" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="368" y="180" text-anchor="middle" fill="#2e7fff" font-size="8" font-family="-apple-system,sans-serif">Share equipment</text>
+
+        <!-- Cables coming in from left -->
+        <path d="M0 80 Q80 80 200 90" stroke="#445566" stroke-width="2" fill="none"/>
+        <path d="M0 110 Q80 108 200 112" stroke="#445566" stroke-width="2" fill="none"/>
+        <path d="M0 140 Q80 138 200 134" stroke="#445566" stroke-width="2" fill="none"/>
+
+        <text x="90" y="75" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">Liquid Telecom</text>
+        <text x="90" y="105" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">Safaricom fiber</text>
+        <text x="90" y="140" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">NOFBI (gov.)</text>
+
+        <!-- Cables going out right -->
+        <path d="M500 90 Q600 88 700 85" stroke="#1a4a8a" stroke-width="2" fill="none"/>
+        <path d="M500 112 Q600 112 700 115" stroke="#1a4a8a" stroke-width="2" fill="none"/>
+        <path d="M500 135 Q600 138 700 140" stroke="#1a4a8a" stroke-width="2" fill="none"/>
+
+        <text x="560" y="83" fill="#8899bb" font-size="8" font-family="-apple-system,sans-serif">→ ISP A</text>
+        <text x="560" y="108" fill="#8899bb" font-size="8" font-family="-apple-system,sans-serif">→ ISP B</text>
+        <text x="560" y="134" fill="#8899bb" font-size="8" font-family="-apple-system,sans-serif">→ ISP C</text>
+
+      </svg>
+      <p class="diagram-caption">A data center is where multiple fiber networks physically terminate and interconnect. Whoever has equipment here can connect to everyone else.</p>
+    </div>
+
+    <p>A data center is a large, highly secure building full of server racks — cabinets packed with networking equipment (routers and switches) that direct internet traffic. They have industrial cooling systems, multiple power generators, and physical security because if the equipment fails, thousands of networks go offline.</p>
+
+    <p>The key function is <strong style="color:var(--white)">interconnection</strong>. Because all the major fiber providers, backbone operators, and ISPs plug their cables into the same building, data can be handed off between networks. Without data centers acting as meeting points, networks would be isolated islands.</p>
+
+    <div class="metrics">
+      <div class="metric">
+        <span class="num">2</span>
+        <span class="desc">Primary Share data centers (Mombasa + Nairobi)</span>
+      </div>
+      <div class="metric">
+        <span class="num">7</span>
+        <span class="desc">Share micro data centers in suburban areas</span>
+      </div>
+      <div class="metric">
+        <span class="num">7</span>
+        <span class="desc">Subsea cable interconnections in Share's network</span>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-label">Simple analogy</div>
+      <p>A data center is like an airport. Airlines (fiber networks) land their planes (data) there, passengers (data packets) transfer between flights, and they continue to their destination. Without airports as common meeting points, every airline would need its own dedicated runway to every city.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION 4: ISPs -->
+<section id="isp">
+  <div class="container">
+    <div class="section-number">Layer 05</div>
+    <h2>Local ISPs — The Last Mile</h2>
+    <p class="lead">The companies who actually connect homes and businesses to the internet. They buy access to the backbone and resell it to end users.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 700 200" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+        <rect width="700" height="200" fill="#020a18" rx="8"/>
+
+        <!-- ISP office / PoP -->
+        <rect x="60" y="70" width="100" height="70" rx="8" fill="#0a1628" stroke="#1a4a8a" stroke-width="1.5"/>
+        <text x="110" y="100" text-anchor="middle" font-size="20">🏢</text>
+        <text x="110" y="118" text-anchor="middle" fill="#5b9fff" font-size="9" font-family="-apple-system,sans-serif" font-weight="700">LOCAL ISP</text>
+        <text x="110" y="130" text-anchor="middle" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">500 subscribers</text>
+
+        <!-- Backhaul connection (left) - backbone -->
+        <line x1="0" y1="105" x2="60" y2="105" stroke="#2e7fff" stroke-width="3"/>
+        <text x="30" y="95" text-anchor="middle" fill="#2e7fff" font-size="9" font-family="-apple-system,sans-serif" font-weight="600">BACKHAUL</text>
+        <text x="30" y="125" text-anchor="middle" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">from backbone</text>
+
+        <!-- Cost label -->
+        <rect x="2" y="138" width="96" height="28" rx="4" fill="rgba(255,107,53,0.08)" stroke="rgba(255,107,53,0.2)" stroke-width="1"/>
+        <text x="50" y="154" text-anchor="middle" fill="#ff6b35" font-size="9" font-family="-apple-system,sans-serif">💸 Pays commit monthly</text>
+        <text x="50" y="163" text-anchor="middle" fill="#ff6b35" font-size="8" font-family="-apple-system,sans-serif">regardless of usage</text>
+
+        <!-- Distribution methods from ISP -->
+        <!-- Fiber to buildings -->
+        <line x1="160" y1="85" x2="250" y2="65" stroke="#1a4a8a" stroke-width="2"/>
+        <line x1="160" y1="105" x2="260" y2="105" stroke="#1a4a8a" stroke-width="2"/>
+        <line x1="160" y1="125" x2="250" y2="145" stroke="#1a4a8a" stroke-width="2"/>
+
+        <!-- Buildings -->
+        <rect x="250" y="48" width="24" height="28" rx="2" fill="#0a1628" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="262" y="67" text-anchor="middle" font-size="14">🏗️</text>
+        <text x="262" y="87" text-anchor="middle" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">Apartment block</text>
+
+        <rect x="260" y="90" width="24" height="28" rx="2" fill="#0a1628" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="272" y="109" text-anchor="middle" font-size="14">🏢</text>
+        <text x="272" y="128" text-anchor="middle" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">Office building</text>
+
+        <rect x="250" y="130" width="24" height="28" rx="2" fill="#0a1628" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="262" y="149" text-anchor="middle" font-size="14">🏠</text>
+        <text x="262" y="169" text-anchor="middle" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">Homes (fiber/wireless)</text>
+
+        <!-- Devices -->
+        <line x1="274" y1="62" x2="330" y2="55" stroke="#0d2240" stroke-width="1"/>
+        <text x="340" y="59" fill="#445566" font-size="12" font-family="-apple-system,sans-serif">💻📱📺</text>
+
+        <line x1="284" y1="104" x2="340" y2="100" stroke="#0d2240" stroke-width="1"/>
+        <text x="350" y="104" fill="#445566" font-size="12" font-family="-apple-system,sans-serif">💻📱</text>
+
+        <line x1="274" y1="144" x2="330" y2="148" stroke="#0d2240" stroke-width="1"/>
+        <text x="340" y="152" fill="#445566" font-size="12" font-family="-apple-system,sans-serif">📱📺💻</text>
+
+        <!-- Money flow label -->
+        <text x="420" y="80" fill="#00d4a4" font-size="9" font-family="-apple-system,sans-serif" font-weight="600">€ End users pay ISP</text>
+        <text x="420" y="94" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">monthly subscription</text>
+        <path d="M416 85 L380 95 L350 100" stroke="#00d4a4" stroke-width="1" fill="none" stroke-dasharray="3,2"/>
+
+        <!-- Economic squeeze -->
+        <rect x="420" y="110" width="240" height="70" rx="8" fill="rgba(255,107,53,0.05)" stroke="rgba(255,107,53,0.15)" stroke-width="1"/>
+        <text x="540" y="130" text-anchor="middle" fill="#ff6b35" font-size="10" font-family="-apple-system,sans-serif" font-weight="700">The ISP squeeze</text>
+        <text x="540" y="147" text-anchor="middle" fill="#cc8070" font-size="9" font-family="-apple-system,sans-serif">High fixed costs (backbone commits)</text>
+        <text x="540" y="160" text-anchor="middle" fill="#cc8070" font-size="9" font-family="-apple-system,sans-serif">Variable revenue (subscriber count)</text>
+        <text x="540" y="173" text-anchor="middle" fill="#cc8070" font-size="9" font-family="-apple-system,sans-serif">Can't grow without capital, need capital to grow</text>
+
+      </svg>
+      <p class="diagram-caption">An ISP buys capacity from the backbone, then resells it to end users. Their cost is fixed; their revenue depends on how many subscribers they can acquire.</p>
+    </div>
+
+    <p>A local ISP is the company that actually connects homes and businesses to the internet. They install the physical connection — whether that's a fiber cable run to your building, a wireless antenna on your roof, or a 4G/LTE router. They give you a router, an account, and a monthly bill.</p>
+
+    <p>To do this, they first need to buy internet access from the backbone operators. This is called <strong style="color:var(--white)">IP transit</strong> or <strong style="color:var(--white)">backhaul</strong>. They commit to renting a certain amount of capacity (e.g., 1 Gbps) per month — whether their subscribers use it all or not. In East Africa, this committed capacity is expensive: a small ISP might pay $5,000–$20,000/month to the backbone just to have internet to resell.</p>
+
+    <div class="two-col">
+      <div class="fact-box">
+        <div class="fact-label">What "backhaul" means</div>
+        <p>Backhaul is the connection between the ISP and the backbone. It's the "back" part of the chain — invisible to end users but the ISP's biggest cost and most critical dependency. If backhaul is expensive, slow, or unreliable, the ISP's service suffers.</p>
+      </div>
+      <div class="fact-box">
+        <div class="fact-label">What "commit" means</div>
+        <p>ISPs don't pay per gigabyte used — they pay for a committed pipe size (e.g., 500 Mbps). Like renting 2 lanes of motorway whether you use them or not. If a football match airs and traffic spikes, they need to have bought enough lanes in advance or users experience slow internet.</p>
+      </div>
+    </div>
+
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>ISP signs a capacity agreement</strong> with a backbone operator. Commits to paying for X Mbps per month for 1-3 years.</div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>ISP builds their local network</strong> — installs routers, runs fiber to buildings, sets up antennas. Requires capital outlay before a single subscriber is connected.</div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>ISP acquires subscribers</strong> — door to door, building by building. Each subscriber pays a monthly fee (e.g., 1,300–4,000 Ksh in Kenya).</div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>ISP collects payments, pays backbone, keeps margin.</strong> If they have 100 subscribers but committed for 500, they're paying for capacity they're not using — cash flow problem.</div>
+      </li>
+    </ul>
+
+    <div class="problem">
+      <div class="problem-label">Why ISPs stay small</div>
+      <p>Growth requires capital (to build network). Capital comes from subscribers. Subscribers only come once network is built. Meanwhile, the monthly backbone commit is a fixed overhead whether you're growing or not. This catch-22 keeps small ISPs small — they can't afford to take the financial risk of expanding to new areas.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION 5: THE PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="section-number">The Problem</div>
+    <h2>Why 600 Million People<br>Aren't Connected</h2>
+    <p class="lead">It's not because the infrastructure doesn't exist. It's because the infrastructure isn't coordinated.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 700 240" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+        <rect width="700" height="240" fill="#020a18" rx="8"/>
+
+        <!-- Title -->
+        <text x="175" y="28" text-anchor="middle" fill="#ff6b35" font-size="10" font-family="-apple-system,sans-serif" font-weight="700" letter-spacing="0.08em">BEFORE SHARE: FRAGMENTED</text>
+        <text x="525" y="28" text-anchor="middle" fill="#00d4a4" font-size="10" font-family="-apple-system,sans-serif" font-weight="700" letter-spacing="0.08em">WITH SHARE: COORDINATED</text>
+
+        <!-- Divider -->
+        <line x1="350" y1="0" x2="350" y2="240" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+        <!-- LEFT SIDE: Fragmented -->
+        <!-- Multiple backbone providers that don't talk to each other -->
+        <rect x="20" y="50" width="60" height="30" rx="4" fill="#0a1628" stroke="#445566" stroke-width="1"/>
+        <text x="50" y="70" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Backbone A</text>
+
+        <rect x="20" y="95" width="60" height="30" rx="4" fill="#0a1628" stroke="#445566" stroke-width="1"/>
+        <text x="50" y="115" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Backbone B</text>
+
+        <rect x="20" y="140" width="60" height="30" rx="4" fill="#0a1628" stroke="#445566" stroke-width="1"/>
+        <text x="50" y="160" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Backbone C</text>
+
+        <!-- ISP has to negotiate each one separately -->
+        <rect x="200" y="100" width="55" height="40" rx="4" fill="#0a1628" stroke="#ff6b35" stroke-width="1.5"/>
+        <text x="228" y="118" text-anchor="middle" font-size="14">📡</text>
+        <text x="228" y="132" text-anchor="middle" fill="#ff6b35" font-size="8" font-family="-apple-system,sans-serif">Small ISP</text>
+
+        <!-- 3 separate painful connections -->
+        <path d="M80 65 Q145 65 200 112" stroke="#ff6b35" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity="0.6"/>
+        <text x="130" y="78" fill="#ff6b35" font-size="7" font-family="-apple-system,sans-serif">60-pg contract</text>
+
+        <path d="M80 110 Q145 110 200 120" stroke="#ff6b35" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity="0.6"/>
+        <text x="110" y="107" fill="#ff6b35" font-size="7" font-family="-apple-system,sans-serif">another contract</text>
+
+        <path d="M80 155 Q145 148 200 130" stroke="#ff6b35" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity="0.6"/>
+        <text x="120" y="165" fill="#ff6b35" font-size="7" font-family="-apple-system,sans-serif">yet another contract</text>
+
+        <!-- Upfront cost warning -->
+        <rect x="165" y="155" width="120" height="28" rx="4" fill="rgba(255,107,53,0.08)" stroke="rgba(255,107,53,0.2)" stroke-width="1"/>
+        <text x="225" y="172" text-anchor="middle" fill="#ff6b35" font-size="9" font-family="-apple-system,sans-serif">💸 Upfront commit required</text>
+
+        <!-- RIGHT SIDE: Share model -->
+        <!-- Same backbones -->
+        <rect x="365" y="50" width="60" height="30" rx="4" fill="#0a1628" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="395" y="70" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Backbone A</text>
+
+        <rect x="365" y="95" width="60" height="30" rx="4" fill="#0a1628" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="395" y="115" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Backbone B</text>
+
+        <rect x="365" y="140" width="60" height="30" rx="4" fill="#0a1628" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="395" y="160" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Backbone C</text>
+
+        <!-- Share aggregation node -->
+        <rect x="465" y="88" width="60" height="54" rx="8" fill="#0d2240" stroke="#2e7fff" stroke-width="2"/>
+        <text x="495" y="112" text-anchor="middle" font-size="18">⚡</text>
+        <text x="495" y="130" text-anchor="middle" fill="#2e7fff" font-size="10" font-family="-apple-system,sans-serif" font-weight="700">SHARE</text>
+
+        <!-- Clean connections to Share -->
+        <line x1="425" y1="65" x2="465" y2="103" stroke="#2e7fff" stroke-width="1.5" opacity="0.7"/>
+        <line x1="425" y1="110" x2="465" y2="115" stroke="#2e7fff" stroke-width="1.5" opacity="0.7"/>
+        <line x1="425" y1="155" x2="465" y2="127" stroke="#2e7fff" stroke-width="1.5" opacity="0.7"/>
+
+        <!-- ISP connects to Share only -->
+        <rect x="560" y="100" width="55" height="40" rx="4" fill="#0a1628" stroke="#00d4a4" stroke-width="1.5"/>
+        <text x="588" y="118" text-anchor="middle" font-size="14">📡</text>
+        <text x="588" y="132" text-anchor="middle" fill="#00d4a4" font-size="8" font-family="-apple-system,sans-serif">Small ISP</text>
+
+        <!-- One clean connection -->
+        <line x1="525" y1="115" x2="560" y2="120" stroke="#00d4a4" stroke-width="2"/>
+        <text x="542" y="108" text-anchor="middle" fill="#00d4a4" font-size="7" font-family="-apple-system,sans-serif">1 agreement</text>
+
+        <!-- No upfront -->
+        <rect x="548" y="155" width="110" height="28" rx="4" fill="rgba(0,212,164,0.08)" stroke="rgba(0,212,164,0.2)" stroke-width="1"/>
+        <text x="603" y="172" text-anchor="middle" fill="#00d4a4" font-size="9" font-family="-apple-system,sans-serif">✓ No upfront commit</text>
+
+      </svg>
+      <p class="diagram-caption">Share does the hard work of contracting all the backbone providers — ISPs only need to deal with Share</p>
+    </div>
+
+    <p>The cables are there. The fiber is (mostly) there. The data centers exist. But the system is economically and contractually fragmented in ways that make it nearly impossible for small ISPs to grow — and therefore nearly impossible for millions of people to get online.</p>
+
+    <div class="two-col">
+      <div class="problem">
+        <div class="problem-label">Problem 1: Cost stacking</div>
+        <p>Every layer in the chain marks up the cost. Subsea cable capacity → backbone transit → ISP → user. Each layer adds fees. By the time internet reaches a user in rural Kenya, it's been marked up multiple times over what it cost at the cable.</p>
+      </div>
+      <div class="problem">
+        <div class="problem-label">Problem 2: Upfront capital</div>
+        <p>ISPs must commit to paying for bandwidth capacity months or years in advance, whether or not they have enough subscribers to justify it. This financial risk stops small ISPs from expanding to underserved areas where demand exists but isn't yet monetised.</p>
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-label">Problem 3: Duplicated infrastructure, zero coordination</div>
+      <p>Five fiber companies may have cables running down the same street in Nairobi — each one serving a handful of ISPs, none of them talking to each other. Meanwhile, 50km away there's no fiber at all. The issue isn't lack of infrastructure; it's that infrastructure is built competitively and not shared. Share describes this as "5 Tesla highways, 5 Ford highways, 5 Volkswagen highways — instead of one shared road."</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION 6: WHERE SHARE FITS -->
+<section id="share" class="share-section">
+  <div class="container">
+    <div class="section-number">Where Share Fits</div>
+    <h2>Share's Role in the Chain</h2>
+    <p class="lead">Share inserts itself between the backbone infrastructure and local ISPs — becoming the single coordination layer that no one else has built.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 700 200" width="100%" style="max-width:700px; display:block; margin:0 auto;">
+        <rect width="700" height="200" fill="#020a18" rx="8"/>
+
+        <!-- Full chain with Share highlighted -->
+        <!-- Subsea -->
+        <rect x="15" y="75" width="80" height="50" rx="6" fill="#041228" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="55" y="98" text-anchor="middle" font-size="16">🌊</text>
+        <text x="55" y="114" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">7 Subsea</text>
+        <text x="55" y="125" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Cables</text>
+
+        <line x1="95" y1="100" x2="125" y2="100" stroke="#1a4a8a" stroke-width="2"/>
+
+        <!-- Backbone -->
+        <rect x="125" y="75" width="80" height="50" rx="6" fill="#041228" stroke="#1a4a8a" stroke-width="1"/>
+        <text x="165" y="98" text-anchor="middle" font-size="16">🔁</text>
+        <text x="165" y="114" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Backbone</text>
+        <text x="165" y="125" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">Fiber</text>
+
+        <line x1="205" y1="100" x2="235" y2="100" stroke="#1a4a8a" stroke-width="2"/>
+
+        <!-- SHARE - highlighted -->
+        <rect x="235" y="55" width="130" height="90" rx="10" fill="rgba(46,127,255,0.08)" stroke="#2e7fff" stroke-width="2"/>
+        <text x="300" y="82" text-anchor="middle" font-size="20">⚡</text>
+        <text x="300" y="102" text-anchor="middle" fill="#5b9fff" font-size="12" font-family="-apple-system,sans-serif" font-weight="700">SHARE</text>
+        <text x="300" y="117" text-anchor="middle" fill="#8899bb" font-size="9" font-family="-apple-system,sans-serif">Aggregation +</text>
+        <text x="300" y="129" text-anchor="middle" fill="#8899bb" font-size="9" font-family="-apple-system,sans-serif">Financial Layer</text>
+
+        <line x1="365" y1="100" x2="395" y2="100" stroke="#2e7fff" stroke-width="2"/>
+
+        <!-- ISP -->
+        <rect x="395" y="75" width="80" height="50" rx="6" fill="#041228" stroke="#2e7fff" stroke-width="1.5"/>
+        <text x="435" y="98" text-anchor="middle" font-size="16">📡</text>
+        <text x="435" y="114" text-anchor="middle" fill="#5b9fff" font-size="9" font-family="-apple-system,sans-serif">Local</text>
+        <text x="435" y="125" text-anchor="middle" fill="#5b9fff" font-size="9" font-family="-apple-system,sans-serif">ISP Partner</text>
+
+        <line x1="475" y1="100" x2="505" y2="100" stroke="#2e7fff" stroke-width="2"/>
+
+        <!-- End user -->
+        <rect x="505" y="75" width="80" height="50" rx="6" fill="#041228" stroke="#00d4a4" stroke-width="1.5"/>
+        <text x="545" y="98" text-anchor="middle" font-size="16">📱</text>
+        <text x="545" y="114" text-anchor="middle" fill="#00d4a4" font-size="9" font-family="-apple-system,sans-serif">End</text>
+        <text x="545" y="125" text-anchor="middle" fill="#00d4a4" font-size="9" font-family="-apple-system,sans-serif">Consumer</text>
+
+        <!-- What Share brings - labels below -->
+        <text x="300" y="160" text-anchor="middle" fill="#2e7fff" font-size="9" font-family="-apple-system,sans-serif">• Aggregates all backbones</text>
+        <text x="300" y="172" text-anchor="middle" fill="#2e7fff" font-size="9" font-family="-apple-system,sans-serif">• No upfront commits for ISPs</text>
+        <text x="300" y="184" text-anchor="middle" fill="#2e7fff" font-size="9" font-family="-apple-system,sans-serif">• Financial platform + billing</text>
+
+        <!-- Money flow -->
+        <path d="M545 75 C545 45 435 45 435 75" stroke="#00d4a4" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+        <text x="490" y="40" text-anchor="middle" fill="#00d4a4" font-size="9" font-family="-apple-system,sans-serif">User pays ISP</text>
+
+        <path d="M435 75 C435 45 300 45 300 55" stroke="#2e7fff" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+        <text x="367" y="38" text-anchor="middle" fill="#2e7fff" font-size="9" font-family="-apple-system,sans-serif">Share takes %</text>
+        <text x="367" y="49" text-anchor="middle" fill="#2e7fff" font-size="8" font-family="-apple-system,sans-serif">ISP keeps rest</text>
+
+        <!-- Coverage number -->
+        <rect x="608" y="60" width="80" height="80" rx="8" fill="rgba(0,212,164,0.05)" stroke="rgba(0,212,164,0.15)" stroke-width="1"/>
+        <text x="648" y="90" text-anchor="middle" fill="#00d4a4" font-size="20" font-family="-apple-system,sans-serif" font-weight="700">8M+</text>
+        <text x="648" y="107" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">people</text>
+        <text x="648" y="119" text-anchor="middle" fill="#445566" font-size="9" font-family="-apple-system,sans-serif">covered</text>
+        <text x="648" y="131" text-anchor="middle" fill="#445566" font-size="8" font-family="-apple-system,sans-serif">400+ km fiber</text>
+
+      </svg>
+      <p class="diagram-caption">Share sits between the backbone infrastructure and local ISPs — doing all the aggregation work so ISPs don't have to</p>
+    </div>
+
+    <div class="share-box">
+      <div class="share-label">What Share actually does</div>
+      <h3>The coordination layer nobody else built</h3>
+      <p>Share has already signed agreements with all the major backbone providers and subsea cable operators. When a local ISP joins Share, they get access to all of that aggregated infrastructure through a single connection — no 60-page contracts, no upfront capacity commits, no capital risk.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="share-box">
+        <div class="share-label">Physical layer</div>
+        <h3>The Network</h3>
+        <p>Share places its own networking equipment in data centers and micro data centers across Kenya, interconnecting with existing fiber from multiple providers. ISPs plug into Share's PoP (Point of Presence) in their area and instantly gain access to all of Share's aggregated bandwidth — connected directly to 7 subsea cables and Tier 1 providers.</p>
+      </div>
+      <div class="share-box">
+        <div class="share-label">Financial layer</div>
+        <h3>The Platform</h3>
+        <p>Share flips the payment model. Instead of ISPs paying upfront, Share gives them unlimited bandwidth and takes a percentage of what they collect from end users — paid automatically through Share's billing portal. Share becomes the ISP's bank: showing their balance, managing payments, and offering financial products like lines of credit to fund network expansion.</p>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-label">The Stripe parallel</div>
+      <p>Stripe didn't ask e-commerce shops to build their own payment infrastructure or sign deals with Visa, Mastercard, and every bank separately. They said: add this module to your website, we handle everything else, we take a small percentage. Share is the same for ISPs with internet infrastructure. It's an add-on, not a replacement of what the ISP already does.</p>
+    </div>
+
+    <div class="metrics">
+      <div class="metric">
+        <span class="num">€0</span>
+        <span class="desc">Upfront capacity cost for ISP partners</span>
+      </div>
+      <div class="metric">
+        <span class="num">~80%</span>
+        <span class="desc">Revenue ISP keeps from end users (Share takes the rest)</span>
+      </div>
+      <div class="metric">
+        <span class="num">2,000</span>
+        <span class="desc">New users Share absorbs per ISP partner added</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>VKZ × Share — Internal Designer Context Brief — March 2026</p>
+  <p style="margin-top:8px; color:#334455;">Numbers marked as estimates are awaiting confirmation from Share.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,311 @@
+Let's see. Let's give him 30 seconds to join in and then we get started.
+
+Okay. How's the weather out in... Her pride is proud, right? Really nice. Really nice. It's for a light jacket and 9 degrees. 9 degrees is really nice.
+
+Okay, not a lot of luck. Yes. Hello. Hello. Hi.
+
+I cannot hear you.
+
+Can you hear you guys? Yes, I can hear you, Omar, but-OMAR HUSSEIN: Oh, wait. We have the-we just have this weird audio marriage with Google that-When he merges the audio, like--Omar, we keep on doing that.
+
+Let's not do this whole meeting again on this. Oh wait, but now I can hear you guys.
+
+Can you hear me?
+
+We can't hear you.
+
+So I'll come up. I'll come up.
+
+When it started like a great feature of Google Meets has ended up being a bug. Because he now automatically assumes that we're next to each other. I see, I see.
+
+We have two floors in our office with very thin walls. So if you lightly hear someone downstairs, it'll pick up that audio. But here it is now. To get us started, I know we have an hour today. First of all, to state the obvious, we're very excited, as we showed you earlier also, to... To be moving forward with you guys I think on from the side perspective, but also the confidence that the you guys showed us on a development standpoint of the ability to bring that design up to life Makes us very happy I think as maybe next step, the way that we're envisioning this and correct us if we're wrong.
+
+Today's session would be a little bit about diving into what it is that we're actually looking for more pragmatically in terms of pages and how we're envisioning things in order for for us to get into actual complete budgets and time. I know that how I sent over a brief and something around the line, so six to eight pages, et cetera. But as we sit down more and more and kind of understand what our needs are, we're maybe like slightly changing what those requirements could look like.
+
+And so I think this would be a great opportunity to kind of align both forces and from here say, well, this is what's going to look like here's what we need from you guys and kind of just get the ball rolling. I don't know if that works with you guys, whether you guys have some sort of agenda that you kind of like or maybe questions that you would like to feed out to us or if you want us to take it and we take it and whatever you prefer.
+
+Yes, so we have lots and lots of questions, about 36 of them. So I feel like we should go through the ones that are about the product, your business, then slowly move into the audience, priorities, brand, identity. And by the end of it, there are some practical, technical questions that are also very important. But I feel like These questions could be answered offline without us here and you guys can just go through it and talk to each other.
+
+But yeah, I would start with the product, with the business if that's fine with you.
+
+Yeah, completely. I have one question for you. I'm trying to understand what that is. Do you remember anything as to how it came to Unreal? I don't know if I did. I'll probably answer that. Then yeah, we can get started. Cool.
+
+Okay. So... Our first question: How do you pitch/share when you're talking to an investor, when you're talking to a partner, and when you're actually talking to someone on the street? We want to hear it in your words so we can build the messaging from how you naturally talk about it. So that's like the first question. Peace. Amen.
+
+Let's just start by saying that we speak about them differently.
+
+Obviously, not because we present different ideas, but because we. avoid or obfuscate some of the information for it not to be too much. When we speak to a user, they want to know that you're getting the fastest internet. When we're speaking to a partner, we want them to feel that they're just getting reliability and higher efficiency. to something that maybe they're already used to. So we kind of, with partners, we focus ourselves on very specific lingoes that they're familiar with.
+
+And when we speak to investors, we kind of speak of the same thing that we speak to those other two stakeholders, such as the end users and the partners, but we do so by presenting what we are, which is much more of something abstract for everybody else, because what we are in and of itself is a concept both our partners and our users could get to understand. but it's something new to them. And so when we're selling, we don't want that to be a caught up in the process.
+
+I'm saying this almost preempting already, maybe I'm a little bit biased as to how we are wanting to approach, maybe how we communicate. So the common limit, the threat, amongst all these three ways in which we get to speak about ourselves is the way that we speak to our investors, in which we transparently describe that we are an aggregation of technological innovation, of technology, team excellence and technology platform and systems that allows for or a utility asset, in this case bandwidth, to be able to reach the masses.
+
+And we do so differently or in a way much more efficiently by transforming the way in which the people that consume this bandwidth interact with it, and the people that deliver this bandwidth interact with it. So kind of to investors, we just tell them that we are a marketplace for bandwidth connectivity in which we're getting these abundance of bandwidth connectivity from the world, and we're introducing it into Africa.
+
+And what we're doing is we're helping these multi-group partners to coordinate between themselves through us to deliver that capacity to the end consumer. I think with this explanation that I just gave, you can see how the partner fits into this. The partner needs to feel that we're not competing, that we actually need them in order to get to the end consumer, and that what we are actually is enablers for them to do what they do best, which is connect the end consumer, through this idea of a marketplace, which is the new thing that we are.
+
+And then of course to the user, our goal is to attract even more people to our partners. And to those end users, we want to tell them that they deserve a lot faster speeds, that they can get it through our system, but we're not the ones to sell to them. So we want to communicate with them that if you want internet in Kenya, for example, in a city called Nakuru, You're not getting it from share. but you go to share to understand who can deliver it to you.
+
+And that's where the partners come into play. So it's kind of like... What we are as a thing, which we can maybe dive a little more into what that is, as a technological thing and all the physical infrastructure that allows for this to happen. The partners, which is the medium in which we deliver to millions, And then the millions, which is the end audience that consumes that product. Awesome.
+
+Maybe think of yourselves. I don't know how well versed you guys are within the internet space, but if you're fiber optic cable, faster speeds, cheaper package, that's likely all you need. And what you should know is that any partner working with us is in a prime position and in the future almost forced to provide these superior offerings because that's how much economic advantage we bring to these partners where so many infrastructureized and inter-stress providers are coming to us.
+
+So the user, that's really what moves the needle. On the investor, the other thing that I wanted to say is the concept of even the internet supply chain is also a good analogy we often make. In order to connect to the internet, you have to connect to the cables, the fiber optic cables underneath the ocean that connect continents. Imagine that you're a network 40 kilometers from the sea or 400 kilometers from the sea.
+
+You build your network. You go to Paul's home. I connect a device in your living room. I go to your neighbor.
+
+I do another one. Now as an internet owner, I need to think, how do I connect my network to the internet when I'm 400 kilometers away from the cables?
+
+So usually what happens is there are people that have fiber optic lines that you have to rent. And you're renting from a guy that's renting from another guy that's renting. another guy and the fee stacks up and you end up paying for that, the user. With Share, we streamline all that supply chain. We use unused capacity in all of these partners infrastructure and we say allocate part of your infrastructure into this coordination marketplace ecosystem where we're able to deliver the fastest speed at the best rate.
+
+So, also when you get that cross. I would like to add more information, but I think context is very important. I don't want to be conscious of the fact that maybe neither of you have been very in tune with either the African market in terms of connectivity or the telco space. So I think maybe in also very simple terms, it's helpful for you guys to start to get the context. There are 600 million people that are not connected in Africa.
+
+These are people that don't yet have the ability to reach fast internet connectivity. However, there's enough infrastructure laid out and enough subsea cables coming into Africa that the number should be much less than that, right? There is enough connectivity in East Africa, for example, and enough infrastructure to actually connect all the people that are here. However, when we came into here, into Africa, into the market, The dynamics are very different from maybe what happens in Europe or what happens in America.
+
+There's a lot of uncoordination. You see that from point A to point B, there may be five different internet companies building a line, which means that there's sometimes an oversupply of infrastructure that is not getting utilized. And I think that is where maybe you see us when we talk about this marketplace, where it's almost a bit abstract in the way that we're describing it, We really want to make sure that we coordinate all of this infrastructure that is in Africa existing so that we can actually deliver to the end user.
+
+Because every end user is raising their hand saying, I want faster internet. Every network is raising their hand saying, I want to reach more users. However, there's some economic dynamics that are not allowing them to do so. And that's where we kind of come in with maybe the product offerings that we can get into of how it is that we do that. But that's kind of where we insert ourselves in that coordination layer.
+
+That's why we call it a marketplace where the bandwidth that is here and that can get brought on to people, we help bring that bridge to make sure that the local networks are connecting those people and more.
+
+So the other thing that's important, because we were going to use this before, we used it a lot just now. I think it's important for us to get this notion. This idea of coordination, Luis just mentioned it like three times, right? We talk about coordinating. Coordinating, you know, a group of kids in a school is just telling them to get in a line, right? So to understand from your guys' end what it means to coordinate for us, it's really the crux of our product, which is to peg financial capital, aka the purchase of, and the bandwidth, which is the actual utility that moves through this infrastructure.
+
+I might have learned this already, but it's very important how we visualize when we talk about our network, that the internet is a combination of infrastructure like fiber that is dummy, it's not intelligent, that moves data, and it connects little brains. These are routers, switches, all over the world. Some of them are in data centers, some of them are outside. When we talk about coordinating, is that we have these little rings and we're putting them in different places.
+
+We're putting it in data centers, we're putting it in outside micro data centers, and these little rings are interconnecting with the done medias, which is the fibers from everybody that has already been deployed for decades. When we talk about coordination, is that in order for, imagine this big provider that has a fiber will allow you guys to use it. I send you a two 60 page fucking document with very big jargon, a massive amount of SLAs and rules and so on, and you need to agree with me.
+
+But now if you need someone else as a company to give you another portion of Fiverr, you need to do the same. So the coordination that we bring is that we're doing the big lift of partnering with all these big networks. And when they all partner with us, Our clients, the partners, they don't need to do that. They just talk to us as a single entity. That's why it's called unification of infrastructure that gets translated when we tell you guys about coordinating.
+
+It happens like that on a contractual basis.
+
+Feel free to throw questions at us for clarification or if all is good, maybe we can move on to the next point. But I'm sure that you guys have a lot of questions that might need a little bit-We can also evolve for very long, but we do think it's important for you guys to get the vision.
+
+The circle that you guys get in the notes and the transcript of the conversation, too, by the way.
+
+Yes. And we have some documentation already laid out that maybe-we are, what we do in the LST level. Perfect.
+
+I think with a single answer, we'll answer like five questions. Yes, that's really good. Just an idea, if you have any materials with the explanation of how our product works and if you have any visuals in them, for example how the devices are connected into each other when they talk or for example some dashboards that you control the product with, we would really appreciate some screenshots of the materials so we can be inspired about the visuals.
+
+What comes to mind on that front, and I feel like I know where your finger is going, which is the dashboard that we kind of have. No? Okay. I want to clarify a question that you said wrong.
+
+What I was gonna say, you answered that.
+
+What I was gonna say is we do have written documentation that we can share with you. I think the visual documentation that we do have would be good to showcase after once they understand the model to see the scale. So we have a little bit of both that could help you, but we want to make sure that with five steps, it's easier to absorb. So we'll be able to share both of those.
+
+What I was going to say was to guide you guys into how we've been thinking about the web. So I think we'll give you guys some pragmatic way of making process using common language. and you asked about the product. Now, I don't want to throw you guys out of everything we just said, but... none of the things we just said are the product. And I think this is important to note. What we just described to you guys is who we are, the identity and the idea that we want the main page to be.
+
+It's almost like what we achieve in this abstract notion of who we are. So that when a partner looks us up online, they don't have a fear of what's our ultimate goal, what we do ultimately and how we do it. The product is something else, which we can dive into now and talk to you guys about what that product is because you just asked how do people interact with it. What we just described to you, they don't even interact with.
+
+It's almost like the results of our work.
+
+A second H2B, which is this B2B SaaS product for the partners, the B2B networks. And that is maybe something that we can dive into now as to what that product is.
+
+You had a great question yesterday with Sam that was very simplistic as to maybe how that product works. When she asked you, how can you make it in the simplest of terms, in the latest of ways? I don't know if it was spotty, but I think that was the last two days of conversation we've been having.
+
+See, I mean, it's an iteration of what we just... is two things. I think it really comes up to two verticals. One of them is the network. The network is a physical asset. It's actually fiber, cables, and computers in data centers. To give you guys an idea, here we have hundreds of kilometers of fiber in our network as we speak to you right now.
+
+And that's how physically people connect to us.
+
+As I gave you an example in the center before, when you're an ISP, when we say ISP, we mean Internet Service Provider, you're somebody sending Internet to the consumer. And as an ISP, you need to find a way of getting your users' data to the internet. That's where we come in. With our fiber lines, what we do is we have computers that we interface directly with the subsea cables. And then we put fiber lines in kind of these loops where networks along the region can just connect directly to those fiber lines.
+
+The moment they connect to them, they almost look like a vertically integrated ISP. That's one part of the problem. That's actually how we give you internet. That's who we are. Now, the other part that Jose said, SaaS, it's actually the financial layer. Because now what we do is we actually flip the script and have a pretty revolutionary offering on this front, which is usually for networks to connect to the internet, they rent in their own capacity.
+
+Essentially, they go to a company like Share, and they say, "Share, you have five years to the subsidy cable. Let me get two lanes of highway to move my data." And every month, I commit to paying for my two lanes so I can move data freely. That's called a commit. The bigger the network, the more lanes they need. If you're moving a lot of data, you may need 100 lanes. Now, and it's a bit hard for the ISP side of the consumer to manage that.
+
+Because imagine if the World Cup game is on. Your traffic spikes and you need to make sure to have room for your users. If not, people are going to call you like, "Hey, my internet is not working." So that dynamic is like economically very inefficient for me as the internet service provider. At Sherry, what we do is we say, "Look, for us capacity is not a scarce resource." We give everyone 1,000 lane highways.
+
+We don't care how big you are. We give you 1,000 lanes. Instead of what we do is we take a fee of what you make from the consumer. And we have kind of, you call it a revenue share, we call it a fee. I think that's really how we like to frame it. And why we really like this model is because we're going very ahead in the financial service side of it. Because what we do is like, look, the user will pay through our financial rails that we give you.
+
+We automatically split you 80% of your money and we keep 20, whatever percentage it is actually. And we have an interface and a platform that is like your wallet. We kind of become like an internet service provider bank. You see your balance, you see your users that I pay you, you see everything. And what we're doing for the interface is we're rolling out financial products. Why are we doing this? And it's important you guys get the logic.
+
+The cost of data, like as a business, monetizing data in 2026 is not a good idea. Because it is getting so cheap.
+
+So the cost of the lanes keeps going down and down and down and down and if you make a model around that, you're gonna vanish.
+
+Instead, we're treating data like an abundant asset, which it is, and we're focusing on getting revenues from the end user and financial products that will develop on the platform. So the first region of the platform is the bank account.
+
+But in the bank account, what are we gonna roll out? Debt. You can ask for a lot of credit because you're not writing an interest rate for us, it's expensive. I need to buy kilometers of fiber optic cable, I need to buy computers. We will give you that as a line of credit and we'll charge your interest. But we can do a lot of things here, but I guess I just wanted to present the economy.
+
+Or a great example, which is the highways. What's happening right now is like Tesla builds the cars on the Tesla highway. On top of the highway, you have the forts and the Ford Highway. You have the Volkswagen's and the Volkswagen Highway, which is ridiculous. And so what we're deciding to do is let's just build a major highway and we allow all the cars to go through. And what we put is a place for them to pay to use the highway.
+
+So we're like that.
+
+Major aggregated highway and the financial rail toll.
+
+We're at the toll, the financial toll for all the cars to go through. And so we can bring this in economies of scale, like much wider highways.
+
+How, maybe for an example, and how it gets manifested on who I am in this and kind of where we are right now. Imagine that I am the owner of an internet service provider in Prague, and I have, I am connecting 500 buildings. And so I have 500 users in my network. Right now, I say Prague, but maybe Prague you don't have those issues, but if I were to be in Kenya, maybe having an inability for me to grow due to these financial inefficiencies of me having to pay a lot for data because these major telcos are charging me a lot and therefore I don't have enough capital to continue to grow or to spend into the next new user.
+
+What I do is, if I decide to join Share and I have a network, I no longer have to worry about paying for data. Share is giving me the ability for me to use as much data as I want because Share is promising me that they have the biggest and most redundant network because Share partners with a lot of infrastructure partners. And they're giving it to me and no upfront. And no upfront cost. Now I, that I don't have to spend on data upfront every single month, have more capital to say, okay, I'm going to invest in marketing.
+
+I'm going to invest in maybe a new router. I'm going to invest an increase in my network. All powered by share that is feeding me data. The only moment in which I interact with Share on a financial basis is that when users pay me for the monthly internet bill, they have to pay me through Share's portal, in which Share is taking a fee and then I'm keeping this. So Share is that financial layer that is feeding me all of this networking data that I'm able to now expand and have much less bottleneck in terms of growing.
+
+That's maybe a very simplistic way or find it, I'll work harder with them. Cool.
+
+Sounds good. It's very different than what we have here, for example, just as a comparison. Here in Czech Republic we have like a state company setting that builds all of the fiber, all of the networks and then we have the ISPs like Vodafone, O2, T-Mobile. to which we pay as customers and in your case if I understand correctly is as you are There is a bunch of settings, companies that build infrastructure and you connect them into one.
+
+company that could interface with ISPs and provide them the bandwidth and also on top of that with a more financial incentive you offer the internet service providers a way to manage their customers take payments from them and from that you get a cut. Exactly.
+
+We're creating this ecosystem of telecommunications. The word that we like to use, which is a feeling that we would like to get on maybe the main page of people.com is that we're enablers. We're enablers of local ISPs that are wanting to grow. We're enablers of large ISPs that maybe have excess infrastructure. And we're enablers of end users that are maybe not enjoying fast internet. We're really coming to the market with a very disruptive model, but at the same time we're a network for everyone.
+
+We're really trying to solve in Africa the issue of 600 million people still not getting connected. And we believe that the best way to do so is by actually partnering with all of the existing players as opposed to become the N plus one that is coming and competing with the neighbor. Okay.
+
+In Africa or in the world is there any competitor that does something similar? Either your competitor or For example, is there somebody in Australia that makes this kind of?
+
+Yes.
+
+Is it unique?
+
+As a model, yes, but in a very different industry. In our industry, no. For example, in Spain you have mass model. I don't know if you go to where you guys are in Europe, but it's a company that basically uses the big companies like Orange infrastructure, and they just, on top of that infrastructure, get to sell internet packages with a new branding and some new cool stuff. They get to kind of do a little bit of this, improve efficiency of infrastructure.
+
+Okay, great. That happens in telecommunications already all the time. In other industries, like in energy, it's very common, and now in Europe it's starting to be more common, that if I have a solar panel and I have excess energy, now there's companies that what they're doing is that that excess energy you can sell it back to the grid. So we're creating these kind of efficiencies of collaboration across a utility asset, which is energy.
+
+I'm just a company that do that. And then the way that the product works, not the way that the website looks at all, but the way that the product works, you have models like Stripe. Stripe ultimately is just a function, right? They're just moving capital. They're not MasterCard and they're not Visa.
+
+But at the same time, they're not the website. They're just a module, like a pigment of infrastructure that allows the e-commerce platforms to now use the big infrastructure payment providers.
+
+So as a tech product, we're wanting to be a lot like Stripe. As an industry, a lot like the energy sector, increase efficiencies of existing infrastructure to reduce waste or something utilitarian like bandwidth. Yeah. And then in the telco, yeah, you do see it, but it's so broken, so, so broken. So we're wanting to democratize that model.
+
+I would say business model is where maybe we're very much very unique. I don't think I've seen yet a network and a telecommunication company that has taken the risk of not asking for money up front and rather giving you the infrastructure for you to grow and then monetizing on the end user. I think that is where maybe we are very original and we are very disruptors because every network that has a lot of infrastructure, yes, I'll give you the infrastructure, We really want to make sure because capital is not in excess in this continent, we want to make sure that the people we partner with can grow because we're taking the bets and the market is there, that there are still millions of people to be connected.
+
+So if we enable for them to actually connect them and we monetize the end user, we believe that in the long run, we will end up winning.
+
+And who do you consider the closest competitors? competition, like competitors.
+
+Right now I would say the biggest competitors with us are the largest telecommunication companies that choose not to collaborate with us. If you think of maybe, I don't know who the biggest telecom provider is in Prague, but here for example, Saharicom. Someone who owns a lot of infrastructure gets to the end user and they're large enough to maybe think that they don't benefit from our services, I would say he's the largest competitor.
+
+I see a little bit that is important, but that's a very business like, Answer that I'm gonna give you, that I don't know how much is going to be useful for you guys, but it might be to maybe get some inspiration, but Google Cloud. AWS Azure. The big cloud providers do exactly what we're doing, but only for them. So Google Cloud, they put brains that we talked about in data centers across the world, and they interconnect Google services.
+
+Oracle does the same.
+
+AWS does the same.
+
+AWS now, like all the big ones, they've even built their own data centers. What we are wanting to do is that level of interconnectedness of the world, but to democratize it. We're talking about bandwidth, not only compute. We're talking about bandwidth that everybody can use. And I actually have here, guys, which is kind of cool for all of us to see. I will share now the link. But there is a link here.
+
+to a website that I don't know. I think I would be capable of describing it better. What we do in a way, and it happens to be Google Cloud infrastructure website, you can see it in our words, is exactly that, that we're doing inside Africa to the whole world. but for every company, not only Google. So to give you guys an idea, we're currently connected to Meta. So the meta example of Google Cloud is connected to us.
+
+Very soon, the Google Cloud that you guys can see on this link is going to be connected to our physical network. And so we want to just connect all networks to a central marketplace of computer bandwidth. Mm-hmm. So big.
+
+...a really cool map, and it has Google Pops in buildings, and you see the maps, a fantastic visual representation of Transmedian networks. So I think there's very cool things and cool communication shortcuts we can get by Maps in general. We're thinking about fiber, we're thinking about connecting people. It tends to work every time you see a map. It's maybe the best way of combing the complications of networks.
+
+We've been leveraging Mapbox as one in which we can kind of-like Google Maps is usually usefulness for when you're wanting to track directions. Yeah, we can show you that this is as good as it is. But Macbox allows us to get the whole globe rendering and layer on top of it our own colors, our own dynamics. We can pick up buildings, layer on top of it 3D buildings. We've actually been playing around a little bit with it.
+
+We know about Macbox, we used it a couple of times.
+
+There you go. So look actually,Yeah. Let me do that.
+
+Let me show you guys. This is just a visual representation.
+
+of what our network is. It's learning right now the data, but I think it speaks to the volume and how all the physical things that we're connecting to one single network. So all the lines that you see here around the continent of Africa, these are the subsea fiber networks. And we are connected here in Mombasa.
+
+I'm going to explain really quick what all these blue dots are. I'm going to take them out now.
+
+All of these are telecommunication towers that connect wireless antennas, 4G, 5G, and we have access to all of them. They are everywhere in the country, as you can see. But I'm going to take them out so you guys can see it easier. So when you go to a city, for example, Mombasa-we're literally calling you guys from here, from this point here-All of these...
+
+Yeah, we're speaking to you guys through this route here.
+
+Do you see that?
+
+We're speaking to you through the path that we put ourselves. So all of these are fibers from all of our partners, okay?
+
+And all of these partners do not speak with one another. Most of them are competing. They don't want their cables to be used. But each of these cables has like 96 sub-little cables underneath of them. And so we want to get one sub-cable of each of the cables and connect them all. This is why a map is such an efficient and common language in our industry, because everybody understands the distribution of a network.
+
+It's so physical. These blue dots White dots are the data centers themselves. We have one here and one here and they're interconnected. But then we go to Nairobi, and you guys I think are going to see the scale of what we're talking about. Nairobi has 11 or 8 million people, I think it is, in DC. Look at the amount of cables. All of these, as you can see over to them, they become active almost as if they're palpitating.
+
+All of these are the ones that we're interconnecting and activating. And we have a couple of ideas on how maps could work for us, whether it's for the users to say, "Hey, I'm here and I want demand," and kind of raise their hand, or for the partner to say, "Hey, I would love to connect here to your network." And we will all get that data integrated with our interface, which is this one. Yeah.
+
+So you could also basically say if you screenshot the center of it, just image without description, and show it to any to the ISP audience that you want on the website and they will exactly know what it is, what it means.
+
+I'm just trying.
+
+So that's more like a market. Like, hey, I did here in La Grata. I click and it tells me these three providers can connect you with these internet packages, which one you want.
+
+And that'd be the connection of users to partners.
+
+Yeah, the end users who aren't just a wifi logo.
+
+Exactly.
+
+One important, 'cause I know you guys have seen the visual and you're starting to maybeYeah. I can see where people's brains get filled with information and you'll need time to kind of comprehend and share as much info as possible. I think something that is important to us that is on the website is this notion of not only where we are right now, but where our vision is and showcasing where we will be and who can we become.
+
+I think when you see that map, for example, it gives, wow, these people are, they have a lot of questions in Kenya. And I think as, as maybe a conversion in a sub page for our specific clients, I think is very important. When we think of maybe the homepage, which is where this creativeness we would like to really come from you guys with the sign on how to make sure that we're creating this ecosystem and this feeling of enablement.
+
+We are, and when we pitch to investors, we are a hyperscale network in Africa, not just in Kenya. And I think this notion of us being able to be and grow towards the entirety of the continent is very important. I say this all to say that, Our network currently is fast across Kenya. Our clients currently are focused in Kenya. So there's moments in the website that we do want to... and target to them when we speak of share is not Kenya.
+
+When we speak of shares, this ecosystem across the entire of Africa, dare I say the global south. We're not going to get into right now Latin America or Southeast Asia or anything. But it's much more maybe grand views than that. Because if in six months I get a license in for Uganda, which we are currently in the process of getting, In a matter of two months, I'm already live there. And I wouldn't want this website to feel outdated just because it only caters to a Canadian market.
+
+This vision of the possibility of connecting Africa and banking Africa via these financial tools is very important to us for people to really see, specifically investors, to really see the scalability of it. Yeah.
+
+And talking about the website, I know we have three audience types and at some point we're going to talk to each one of them but if you focus on the home page which is like the main experience main wow effect is is Who is the most important? Who are we talking to mainly on this whole thing?
+
+I would say our number one Audience is infrastructure partners. That could be an ISP that becomes a partner to us because they need our services, they need our back-up connectivity, and they need to connect more people, or a big provider that wants to bring in infrastructure. When I think of maybe who our client is, is what we're calling in this call, B2B partner. These ISPs that need to leverage shared infrastructure in order for them to scale and to grow.
+
+Number one, when I think we talk about investors and investors ask the investors, the audience, it's not that we're going to want to have a page that is, hey, come and invest in me. I think maybe the investor nuance is much more of an abstract that by them seeing the entirety of the website, they're already like, hey, I want to participate in this or who are these people that are kind of leveraged in this.
+
+But I would say as number one, it would be that,Cow-tie and tail, and we can maybe go through major breakdowns that were how we're maybe envisioning and imagining what it's going to be for you guys to kind of understand the pockets and where they each fall into.
+
+I think we maybe have to prepare a little bit more just to give them the thinking that we have. Yeah, we could. We could.
+
+Is there anything else that we need from this? I feel like the guy is covered. A lot of these originsThis one. For the series A that you guys are heading to, what are the investors most skeptical about and what they get most excited about? This will help us know what to lead with, maybe, as well.
+
+you Good question. Just Maybe not a one-shot answer because there's a couple of things, but I would say investors get excited about growth, investors get excited about scalability, investors get excited about the ability for us, I want to repeat myself, but for us to grow fast and be everywhere. Investors get excited about the fact that we're delivering internet that is fastest than anyone is getting right now in Africa and about showcasing the potential of the existing demand and how we'reTo give you an idea, we have a goal that by the end of the year, we're gonna have 50,000 users.
+
+When we do accomplish that, and not if, we will be the fastest growing teleco ever. Because no one usually in the telecommunication space, you have to go building by building, connecting individuals. In the market, in the company that we're building, we connect to one network and we're automatically absorbing maybe 2,000 users. And so I think investors really love the idea of us being able to be lean and being able to scale very fast.
+
+That's maybe one.
+
+I know you guys probably have one. Maybe just to simplify, We have an investor base that primarily focuses on technologies like blockchain.
+
+which means that they believe in this idea of global collaboration. these notions of regardless of country, like pure technological innovation that people can adopt everywhere.
+
+So maybe some of the kind of fear elements that investors have is, oh, it's Africa, super high risk, or they don't see it as innovation.
+
+And then, therefore, they see the risk of adoption. Or they limit the market to only Kenya, because it's very difficult to scale across Africa. So the idea that we brought up, like, oh, no, share is everywhere already, and showcasing that through subsidy cables, multiple countries, and so on, would achieve that to our investors. And then there's this notion that we are in neighbors. And investors also will scare away if we have to build all the infrastructure, all the fibers, all the towers that would be possible.
+
+all the cables into everybody's home devices for every user it's impossible but if we just represent ourselves as the financial layer that coordinates all of this they're a lot happier because it means that so many people that build with you supposed to be building against them Okay.
+
+I don't know if it is on. And also for ISP partners, what's the biggest hesitation they have before joining your ecosystem or reason for not joining.
+
+Yeah, likeYeah, and right now, One of the biggest things slowing us down is actually brand awareness. So the reason we're having this website with you guys to be fully transparent, the offering we're presenting is quite compelling for a lot of ISPs and there's quite a lot of ISPs wanting to join. Then there is some technicalities I think of deeper in the product that I don't think we should be exposing.
+
+It may be worth And I'm alluding to only the product, not who we are, where we are, but as a product. These businesses are making a couple of millions of dollars at times. And if we go with such good ideas and like new ideas of who we are and on top of it we tell them, "Hey, everything that is stable to you today, you gotta change." They don't want it. It's almost like a stripe says, "Hey, you wanna use a stripe?
+
+You gotta create a new website entirely." People will be like, what the fuck? No, I don't want to do that.
+
+So what does Stripe tell them? Hey, you just need to add these technological components. So making them familiar to their product, it's an add-on, not a complete shift of what they have. is very important for our partners. Like this idea, like you can get so much of share, by doing very little, like a plug and play type of situation.
+
+Maybe we're not the question is, what we're putting our focus in, because we know it's a big factor, can be a big scary factor, is this simple, seamless integration. We want to shy away from the small cliche terms, but that's really what it is. Not making me feel like it's a massive load, because usually connecting to a new provider, it's quite a big lift. You've got to deploy fiber, you've got to connect the county, you've got to get the civil works with the fiber, that nightmare and a half.
+
+We streamline all of that. So making that easy. Mm-hmm. Okay. From this way, I don't think so.
+
+I think we covered the product, business, audience. competition. Yeah, this is fun. Bye. I think we have a few other blocks. before us and that is story content 3D immersive direction. I don't know if it's something we want to start now because that's a huge block. And then some technical questions that we don't have to go through here. So is there anything...
+
+Yeah, I would leave it to the later phase. Every question that you're given, we give you five answers. If we first sit down, we maybe give you two that are very tailored to what it is that we're looking for. And that just takes a conversation between the three of us sitting out. So all of those, if you want to share them over, we'll make sure to fill them in. We'll make sure to share them with you.
+
+Yeah, I think that's the best way forward because now we talked about who you are, the business and the competitors and you're in that every day but This second section is really about the story, the content, and that's something I would love to share with you after this call so that you can sit down and just go through it yourself. And if you guys can actually share all the docs and documentations, everything that you can actually share, we would love to take a look and dive deeper into the whole business of yours.
+
+Of course we need to sign NDAs and everything so that's all clear. But yeah, I feel like these should be the next steps in the upcoming week or so. And once we go over the second phase, I think we can settle on the timeline, the budget, the 3D experience and everything. So with that, I think that should be it. Perfect.
+
+Does that document that you will share have also questions around the general structure that we think of the website? Obviously, when it comes to design and everything, we want that to come from you in terms of suggestions, but maybe does it give an idea as to number of pages that we're looking for? Does it allow for us to get a better picture of everything?
+
+The questions are more about what's the narrative? What's the story that you want to give in? And we're not specifically asking what's... you know, pages doing that. Like we have the brief, so we know the structure you're aiming for. So based on that, those answers that you're going to give us, we're going to come up with the structure.
+
+Cool.
+
+Is there anything else that you would like to add or ask? Thanks.
+
+I think you've got a lot of conversation to start.
+
+It's amazing. Some admin questions I was gonna say.
+
+One, are you guys on Slack so that we can communicate back and forth easily? Two, once we send you back this brief, how long generally does it take you guys to distill it and come back with a structure and proper time list so that we can think of in terms of prioritization, do we wanna do it tomorrow or can we maybe have a weekend session, the three of us, where we can fully dive deep? If you tell me kind of just how you guys usually work.
+
+Yeah, so I think we're going to go through what we just had now put together the questions so tomorrow you should have it in email or in slack and then take let's say the rest of the week in the weekend how you said it and if we get those answers by the beginning of next week we can work on it next week the whole week and maybe by the end of it or the week after we can come back to you with next steps based on the answers.
+
+rather quickly and Slack would help a lot. Awesome.
+
+All right, guys. Beautiful.
+
+Okay. Perfect. Thank you so much.
+
+Sounds good. Bye-bye. Thank you. Sounds good. Bye-bye. Thank you. Bye.
