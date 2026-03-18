@@ -1,6 +1,6 @@
 # Share — Business Intelligence
 
-_From call insights (March 17, 2026) + market context_
+_From call insights (March 17, 2026) + Notion kickoff doc (March 18, 2026) + market context_
 
 ---
 
@@ -151,7 +151,16 @@ Peer-to-peer energy grid companies let households sell excess solar energy back 
 - Structural parallels: Google Cloud, AWS, Azure, Meta (interconnected networks — but only for themselves)
 - Share is currently connected to Meta; Google Cloud connection in progress
 - Closest business model analogs: Stripe (financial middleware), energy sector peer-to-peer grid companies, MVNOs like MasMovil in Spain
-- Jose cited Google Cloud infrastructure website (cloud.google.com/infrastructure) as a visual reference — "this is what they are doing exactly for Africa"
+- Jose cited Google Cloud infrastructure website as a visual reference — "this is what they are doing exactly for Africa"
+- Specific URL confirmed in Notion: https://www.awwwards.com/sites/google-cloud-infrastructure
+
+---
+
+## Hyperscale — Precise Definition
+
+From Notion kickoff doc: "The 'hyperscale' part of the model refers to how the network grows. Instead of building everything from scratch, Share aggregates existing underutilized infrastructure (dark fiber, idle assets) into one ecosystem. Existing infrastructure can plug into the Share network, which means coverage expands without Share having to lay every meter of cable."
+
+Key distinction: Share does not build infrastructure — it activates infrastructure that already exists but is underutilized.
 
 ---
 
