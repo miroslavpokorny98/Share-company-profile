@@ -8,16 +8,18 @@ This is a research and planning directory for **VKZ** (a web design/development 
 
 ## Document Map
 
-| File                                                    | Contents                                                                                                                 |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `Share_01_Brief.md`                                     | Official brief from Share's PDF — site structure, creative direction, timeline                                           |
-| `Share_02_Business_Intelligence.md`                     | Call insights: how Share pitches itself, product mechanics, revenue model, analogies, investor concerns, ISP hesitations |
-| `Share_03_Brand_and_Website.md`                         | Brand guidelines (fonts, palette, visual direction) + scraped current site content (3 pages)                             |
-| `Share_04_VKZ_Proposal.md`                              | VKZ's internal proposal: 3D options (A: pre-rendered video, B: WebGL/Three.js), workflow, tech stack, budget             |
-| `Share_05_Company_and_Team.md`                          | Company facts, team names, infrastructure numbers, milestones, Notion project metadata                                   |
-| `Share_06_Next_Steps.md`                                | Action items, open questions (36 total), pending deliverables                                                            |
-| `Questions_for_Share.md`                                | Clean version of the 36 questions to send to Share on March 18                                                           |
-| `VKZ x Share - Website Deep Dive - call transcript.txt` | Raw call transcript                                                                                                      |
+| File                                                              | Contents                                                                                                                 |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `SHARE_SUMMARY.md`                                                | Living project summary: what Share is, audiences, brand, status, open questions                                          |
+| `Questions_for_Share.md`                                          | Clean version of the 36 questions to send to Share on March 18                                                           |
+| `research/01_brief.md`                                            | Official brief from Share's PDF — site structure, creative direction, timeline                                           |
+| `research/02_business_intelligence.md`                            | Call insights: how Share pitches itself, product mechanics, revenue model, analogies, investor concerns, ISP hesitations |
+| `research/03_brand_and_website.md`                                | Brand guidelines (fonts, palette, visual direction) + scraped current site content (3 pages)                             |
+| `research/04_vkz_proposal.md`                                     | VKZ's internal proposal: 3D options (A: pre-rendered video, B: WebGL/Three.js), workflow, tech stack, budget             |
+| `research/05_company_and_team.md`                                 | Company facts, team names, infrastructure numbers, milestones, Notion project metadata                                   |
+| `research/07_questions_answered.md`                               | Share's answers to the 36 questions (populated as responses arrive)                                                      |
+| `sources/vkz-share-website-deep-dive-call-transcript.txt`         | Raw call transcript                                                                                                      |
+| `deliverables/internet_infrastructure_explainer.html`             | Internet infrastructure explainer page deliverable                                                                       |
 
 ## Key Context
 
@@ -33,7 +35,7 @@ This is a research and planning directory for **VKZ** (a web design/development 
 
 **Numbers to verify before publishing:** 7 subsea cables, 400+ km fiber, 8M+ people covered, 7 micro data centers — all flagged as needing confirmation from Share.
 
-## Project Status (as of March 17, 2026)
+## Project Status (as of March 18, 2026)
 
 - Call with Share completed March 17
 - Questions to be sent to Share by March 18
