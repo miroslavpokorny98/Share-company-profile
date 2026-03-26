@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction 1 — The Unification</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue-900: #0c1a3a;
+            --blue-700: #1d4ed8;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --blue-300: #93c5fd;
+            --green-500: #10b981;
+            --amber-500: #f59e0b;
+        }
+
+        html, body {
+            background: #04060c;
+            color: #e0e4ec;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ── Scroll spacer ── */
+        .scroll-spacer {
+            height: 500vh;
+            position: relative;
+        }
+
+        /* ── Fixed canvas ── */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .scene svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ── Text overlays ── */
+        .text-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 0 80px 80px;
+        }
+
+        .beat-text {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            max-width: 560px;
+            opacity: 0;
+        }
+
+        .beat-text .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--blue-400);
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .beat-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .beat-text p {
+            font-size: 17px;
+            line-height: 1.65;
+            color: rgba(224, 228, 236, 0.7);
+            max-width: 480px;
+        }
+
+        /* ── Stats overlay ── */
+        .stats-row {
+            position: absolute;
+            bottom: 80px;
+            right: 80px;
+            display: flex;
+            gap: 40px;
+            opacity: 0;
+        }
+
+        .stat {
+            text-align: right;
+        }
+
+        .stat .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--blue-400);
+            line-height: 1;
+        }
+
+        .stat .unit {
+            font-size: 13px;
+            color: rgba(224, 228, 236, 0.5);
+            margin-top: 6px;
+        }
+
+        /* ── Progress bar ── */
+        .progress-track {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: background 0.4s, transform 0.4s;
+        }
+
+        .progress-dot.active {
+            background: var(--blue-400);
+            transform: scale(1.4);
+        }
+
+        /* ── Gradient overlays ── */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center, transparent 40%, #04060c 100%),
+                linear-gradient(to top, #04060c 0%, transparent 30%);
+        }
+
+        /* ── Intro overlay ── */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #04060c;
+        }
+
+        .intro-overlay h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--blue-400);
+            font-weight: 500;
+        }
+
+        .intro-overlay .scroll-hint {
+            position: absolute;
+            bottom: 48px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(4px); }
+        }
+
+        /* ── CTA at end ── */
+        .cta-section {
+            position: relative;
+            z-index: 15;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .cta-button {
+            margin-top: 16px;
+            padding: 16px 40px;
+            border: 1px solid var(--blue-500);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--blue-400);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cta-button:hover {
+            background: var(--blue-500);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Intro -->
+<div class="intro-overlay" id="intro">
+    <h1>Direction 1 — The Unification</h1>
+    <div class="scroll-hint">Scroll to begin</div>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-track" id="progress">
+    <div class="progress-dot active" data-beat="0"></div>
+    <div class="progress-dot" data-beat="1"></div>
+    <div class="progress-dot" data-beat="2"></div>
+    <div class="progress-dot" data-beat="3"></div>
+    <div class="progress-dot" data-beat="4"></div>
+</div>
+
+<!-- Fixed scene -->
+<div class="scene" id="scene">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-white" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#93c5fd" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#93c5fd" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="blur-sm">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+            <filter id="blur-md">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+            </filter>
+            <filter id="blur-lg">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12"/>
+            </filter>
+        </defs>
+
+        <!-- ═══ Background subtle grid ═══ -->
+        <g id="bg-grid" opacity="0.03">
+            <line x1="0" y1="270" x2="1920" y2="270" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="0" y1="540" x2="1920" y2="540" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="0" y1="810" x2="1920" y2="810" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="480" y1="0" x2="480" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="960" y1="0" x2="960" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="1440" y1="0" x2="1440" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+        </g>
+
+        <!-- ═══ FRAGMENTED LINES (Beat 1) ═══ -->
+        <g id="fragments">
+            <!-- Group A — top left cluster -->
+            <line class="frag" x1="180" y1="220" x2="340" y2="300" stroke="#5b9bd5" stroke-width="2" opacity="0" data-target-x1="960" data-target-y1="480"/>
+            <line class="frag" x1="260" y1="180" x2="420" y2="250" stroke="#5b9bd5" stroke-width="1.5" opacity="0"/>
+            <line class="frag" x1="150" y1="350" x2="300" y2="400" stroke="#5b9bd5" stroke-width="1.8" opacity="0"/>
+
+            <!-- Group B — top right -->
+            <line class="frag" x1="1400" y1="200" x2="1580" y2="280" stroke="#5b9bd5" stroke-width="2" opacity="0"/>
+            <line class="frag" x1="1500" y1="170" x2="1650" y2="240" stroke="#5b9bd5" stroke-width="1.5" opacity="0"/>
+            <line class="frag" x1="1350" y1="310" x2="1520" y2="350" stroke="#5b9bd5" stroke-width="1.8" opacity="0"/>
+
+            <!-- Group C — center left -->
+            <line class="frag" x1="300" y1="500" x2="480" y2="560" stroke="#5b9bd5" stroke-width="2" opacity="0"/>
+            <line class="frag" x1="200" y1="600" x2="380" y2="640" stroke="#5b9bd5" stroke-width="1.5" opacity="0"/>
+
+            <!-- Group D — center right -->
+            <line class="frag" x1="1300" y1="520" x2="1500" y2="580" stroke="#5b9bd5" stroke-width="2" opacity="0"/>
+            <line class="frag" x1="1400" y1="600" x2="1600" y2="660" stroke="#5b9bd5" stroke-width="1.5" opacity="0"/>
+
+            <!-- Group E — bottom -->
+            <line class="frag" x1="500" y1="750" x2="680" y2="800" stroke="#5b9bd5" stroke-width="2" opacity="0"/>
+            <line class="frag" x1="700" y1="780" x2="860" y2="830" stroke="#5b9bd5" stroke-width="1.5" opacity="0"/>
+            <line class="frag" x1="1100" y1="760" x2="1280" y2="810" stroke="#5b9bd5" stroke-width="2" opacity="0"/>
+            <line class="frag" x1="1200" y1="800" x2="1380" y2="850" stroke="#5b9bd5" stroke-width="1.5" opacity="0"/>
+
+            <!-- Group F — scattered small -->
+            <line class="frag" x1="600" y1="300" x2="720" y2="350" stroke="#5b9bd5" stroke-width="1.2" opacity="0"/>
+            <line class="frag" x1="800" y1="250" x2="920" y2="310" stroke="#5b9bd5" stroke-width="1.2" opacity="0"/>
+            <line class="frag" x1="1050" y1="350" x2="1180" y2="400" stroke="#5b9bd5" stroke-width="1.2" opacity="0"/>
+            <line class="frag" x1="650" y1="600" x2="780" y2="650" stroke="#5b9bd5" stroke-width="1.2" opacity="0"/>
+            <line class="frag" x1="900" y1="650" x2="1050" y2="700" stroke="#5b9bd5" stroke-width="1.2" opacity="0"/>
+        </g>
+
+        <!-- ═══ FRAGMENT NODES (dots at line endpoints) ═══ -->
+        <g id="fragment-nodes">
+            <circle class="fnode" cx="340" cy="300" r="3" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="420" cy="250" r="2.5" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="300" cy="400" r="2.5" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="1580" cy="280" r="3" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="1650" cy="240" r="2.5" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="1520" cy="350" r="2.5" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="480" cy="560" r="3" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="380" cy="640" r="2.5" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="1500" cy="580" r="3" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="1600" cy="660" r="2.5" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="680" cy="800" r="3" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="860" cy="830" r="2.5" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="1280" cy="810" r="3" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="720" cy="350" r="2" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="920" cy="310" r="2" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="1180" cy="400" r="2" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="780" cy="650" r="2" fill="#7bb8ff" opacity="0"/>
+            <circle class="fnode" cx="1050" cy="700" r="2" fill="#7bb8ff" opacity="0"/>
+        </g>
+
+        <!-- ═══ REACHING LINES (Beat 2 — dashed, reaching toward center) ═══ -->
+        <g id="reaching-lines" opacity="0">
+            <line class="reach" x1="340" y1="300" x2="960" y2="500" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.7"/>
+            <line class="reach" x1="1580" y1="280" x2="960" y2="500" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.7"/>
+            <line class="reach" x1="480" y1="560" x2="960" y2="500" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.6"/>
+            <line class="reach" x1="1500" y1="580" x2="960" y2="500" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="8,6" opacity="0.6"/>
+            <line class="reach" x1="680" y1="800" x2="960" y2="500" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="8,6" opacity="0.5"/>
+            <line class="reach" x1="1280" y1="810" x2="960" y2="500" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="8,6" opacity="0.5"/>
+            <line class="reach" x1="720" y1="350" x2="960" y2="500" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,5" opacity="0.45"/>
+            <line class="reach" x1="920" y1="310" x2="960" y2="500" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,5" opacity="0.45"/>
+            <line class="reach" x1="1180" y1="400" x2="960" y2="500" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,5" opacity="0.45"/>
+            <!-- Central potential node -->
+            <circle cx="960" cy="500" r="12" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.6"/>
+            <circle cx="960" cy="500" r="28" fill="none" stroke="#60a5fa" stroke-width="0.8" opacity="0.35"/>
+        </g>
+
+        <!-- ═══ UNIFIED NETWORK (Beat 3) ═══ -->
+        <g id="unified-net" opacity="0">
+            <!-- Share central node glow -->
+            <circle cx="960" cy="500" r="60" fill="url(#glow-blue)" filter="url(#blur-md)" opacity="0.5"/>
+            <circle id="share-core" cx="960" cy="500" r="14" fill="#1d4ed8" opacity="0.9"/>
+            <circle cx="960" cy="500" r="24" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>
+
+            <!-- Solid connection lines to all nodes -->
+            <line class="uline" x1="960" y1="500" x2="340" y2="300" stroke="#3b82f6" stroke-width="2.5" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="1580" y2="280" stroke="#3b82f6" stroke-width="2.5" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="480" y2="560" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="1500" y2="580" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="680" y2="800" stroke="#3b82f6" stroke-width="1.8" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="1280" y2="810" stroke="#3b82f6" stroke-width="1.8" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="300" y2="400" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="1520" y2="350" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="380" y2="640" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="1600" y2="660" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="720" y2="350" stroke="#3b82f6" stroke-width="1.2" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="920" y2="310" stroke="#3b82f6" stroke-width="1.2" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="1180" y2="400" stroke="#3b82f6" stroke-width="1.2" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="780" y2="650" stroke="#3b82f6" stroke-width="1.2" opacity="0"/>
+            <line class="uline" x1="960" y1="500" x2="1050" y2="700" stroke="#3b82f6" stroke-width="1.2" opacity="0"/>
+
+            <!-- Bright nodes at endpoints -->
+            <circle class="unode" cx="340" cy="300" r="5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="1580" cy="280" r="5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="480" cy="560" r="5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="1500" cy="580" r="5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="680" cy="800" r="5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="1280" cy="810" r="5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="300" cy="400" r="4" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="1520" cy="350" r="4" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="720" cy="350" r="3.5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="920" cy="310" r="3.5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="1180" cy="400" r="3.5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="780" cy="650" r="3.5" fill="#60a5fa" opacity="0"/>
+            <circle class="unode" cx="1050" cy="700" r="3.5" fill="#60a5fa" opacity="0"/>
+        </g>
+
+        <!-- ═══ DATA PULSES (Beat 3-4 — dots traveling along lines) ═══ -->
+        <g id="pulses" opacity="0">
+            <circle class="pulse" cx="650" cy="400" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="pulse" cx="1270" cy="390" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="pulse" cx="720" cy="650" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="pulse" cx="1200" cy="650" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="pulse" cx="940" cy="400" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="pulse" cx="820" cy="600" r="2" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="pulse" cx="1100" cy="550" r="2" fill="#93c5fd" filter="url(#blur-sm)"/>
+        </g>
+
+        <!-- ═══ SUBSEA CABLES (Beat 5 — extending to edges) ═══ -->
+        <g id="subsea" opacity="0">
+            <!-- Cables reaching off-screen representing global connectivity -->
+            <line x1="960" y1="500" x2="0" y2="900" stroke="#1d4ed8" stroke-width="3" opacity="0.5"/>
+            <line x1="960" y1="500" x2="0" y2="600" stroke="#1d4ed8" stroke-width="2.5" opacity="0.4"/>
+            <line x1="960" y1="500" x2="1920" y2="850" stroke="#1d4ed8" stroke-width="3" opacity="0.5"/>
+            <line x1="960" y1="500" x2="1920" y2="300" stroke="#1d4ed8" stroke-width="2.5" opacity="0.4"/>
+            <line x1="960" y1="500" x2="200" y2="1080" stroke="#1d4ed8" stroke-width="2" opacity="0.35"/>
+            <line x1="960" y1="500" x2="1700" y2="1080" stroke="#1d4ed8" stroke-width="2" opacity="0.35"/>
+            <line x1="960" y1="500" x2="960" y2="0" stroke="#1d4ed8" stroke-width="2" opacity="0.3"/>
+
+            <!-- Global endpoint glows -->
+            <circle cx="0" cy="900" r="8" fill="#3b82f6" filter="url(#blur-md)" opacity="0.5"/>
+            <circle cx="1920" cy="850" r="8" fill="#3b82f6" filter="url(#blur-md)" opacity="0.5"/>
+            <circle cx="0" cy="600" r="6" fill="#3b82f6" filter="url(#blur-md)" opacity="0.4"/>
+            <circle cx="1920" cy="300" r="6" fill="#3b82f6" filter="url(#blur-md)" opacity="0.4"/>
+        </g>
+
+        <!-- ═══ OUTER RING (Beat 5 — Africa / continent scale) ═══ -->
+        <g id="continent-ring" opacity="0">
+            <circle cx="960" cy="500" r="320" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.3"/>
+            <circle cx="960" cy="500" r="420" fill="none" stroke="#3b82f6" stroke-width="0.8" opacity="0.2"/>
+            <!-- "Africa" label -->
+            <text x="960" y="140" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="4" opacity="0.7">AFRICA</text>
+            <text x="960" y="880" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="3" opacity="0.5">GLOBAL CONNECTIVITY</text>
+        </g>
+    </svg>
+</div>
+
+<!-- Vignette -->
+<div class="vignette"></div>
+
+<!-- Text overlays -->
+<div class="text-layer">
+    <div class="beat-text" id="text-0">
+        <div class="label">The Problem</div>
+        <h2>The infrastructure exists. None of it speaks to each other.</h2>
+        <p>7 subsea cables. 500+ km of fiber. 10 data centers. Scattered across Africa — built by different companies, running in parallel, never coordinated.</p>
+    </div>
+    <div class="beat-text" id="text-1">
+        <div class="label">The Tension</div>
+        <h2>600 million people unconnected. Not because the pipes aren't there.</h2>
+        <p>Because there's no layer that makes them work as one. Abundance without coherence. Capacity without coordination. The network wants to exist — it just can't.</p>
+    </div>
+    <div class="beat-text" id="text-2">
+        <div class="label">The Solution</div>
+        <h2>Share is the coordination layer.</h2>
+        <p>Not a new network built on top of what exists — the connective tissue that turns fragmented, siloed infrastructure into a single functioning ecosystem.</p>
+    </div>
+    <div class="beat-text" id="text-3">
+        <div class="label">The Proof</div>
+        <h2>Already live. Already connecting networks.</h2>
+        <p>12 telco infrastructure providers. One contract. Unlimited backhaul. No upfront commits. The ecosystem is growing every day.</p>
+    </div>
+    <div class="beat-text" id="text-4">
+        <div class="label">The Vision</div>
+        <h2>Africa's shared backbone. Connected to the world.</h2>
+        <p>From subsea cables to living rooms — Share enables any participant in the internet supply chain to deliver bandwidth more efficiently. This is just the beginning.</p>
+    </div>
+</div>
+
+<!-- Stats (Beat 4) -->
+<div class="text-layer">
+    <div class="stats-row" id="stats">
+        <div class="stat">
+            <div class="number">7</div>
+            <div class="unit">subsea cables</div>
+        </div>
+        <div class="stat">
+            <div class="number">500+</div>
+            <div class="unit">km fiber</div>
+        </div>
+        <div class="stat">
+            <div class="number">10</div>
+            <div class="unit">data centers</div>
+        </div>
+        <div class="stat">
+            <div class="number">8M+</div>
+            <div class="unit">people covered</div>
+        </div>
+        <div class="stat">
+            <div class="number">12</div>
+            <div class="unit">infrastructure providers</div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll spacer -->
+<div class="scroll-spacer" id="scroll-spacer"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <h2>Join the ecosystem.</h2>
+    <p>The more networks that join, the stronger everyone gets. There's a spot for you.</p>
+    <button class="cta-button">Get Started</button>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const beats = 5;
+const spacer = document.getElementById('scroll-spacer');
+const dots = document.querySelectorAll('.progress-dot');
+
+// ── Intro fade out ──
+gsap.to('#intro', {
+    opacity: 0,
+    pointerEvents: 'none',
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: '+=300',
+        scrub: 0.5,
+    }
+});
+
+// ── Helper: progress through 0–1 across scroll ──
+const totalScroll = spacer.offsetHeight - window.innerHeight;
+
+function getProgress() {
+    return Math.min(1, Math.max(0, window.scrollY / totalScroll));
+}
+
+// ── Pulse animation (continuous) ──
+const pulses = document.querySelectorAll('.pulse');
+pulses.forEach((p, i) => {
+    const baseX = parseFloat(p.getAttribute('cx'));
+    const baseY = parseFloat(p.getAttribute('cy'));
+    gsap.to(p, {
+        attr: {
+            cx: baseX + (Math.random() - 0.5) * 300,
+            cy: baseY + (Math.random() - 0.5) * 200,
+        },
+        duration: 3 + Math.random() * 4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.4,
+    });
+});
+
+// ── Main scroll timeline ──
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        onUpdate: (self) => {
+            const p = self.progress;
+            const beat = Math.min(4, Math.floor(p * beats));
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === beat);
+            });
+        }
+    }
+});
+
+// ═══════════════════════════════
+// BEAT 1 — Fragments appear
+// ═══════════════════════════════
+tl.to('#text-0', { opacity: 1, duration: 0.5 }, 0);
+tl.to('.frag', {
+    opacity: 0.75,
+    stagger: 0.02,
+    duration: 1,
+}, 0);
+tl.to('.fnode', {
+    opacity: 0.65,
+    stagger: 0.02,
+    duration: 1,
+}, 0.3);
+
+// Fragments pulse/shimmer
+tl.to('.frag', {
+    opacity: 0.9,
+    duration: 0.5,
+    stagger: 0.03,
+    yoyo: true,
+    repeat: 1,
+}, 1.2);
+
+// Fade out beat 1 text
+tl.to('#text-0', { opacity: 0, duration: 0.4 }, 1.8);
+
+// ═══════════════════════════════
+// BEAT 2 — Reaching toward center
+// ═══════════════════════════════
+tl.to('#text-1', { opacity: 1, duration: 0.5 }, 2);
+tl.to('#reaching-lines', { opacity: 1, duration: 1 }, 2);
+
+// Dashed lines animate their dash offset
+tl.fromTo('.reach', {
+    strokeDashoffset: 200,
+}, {
+    strokeDashoffset: 0,
+    duration: 1.5,
+    stagger: 0.08,
+}, 2);
+
+// Fragments dim slightly but stay visible
+tl.to('.frag', { opacity: 0.5, duration: 1 }, 2);
+tl.to('.fnode', { opacity: 0.4, duration: 1 }, 2);
+
+tl.to('#text-1', { opacity: 0, duration: 0.4 }, 3.8);
+
+// ═══════════════════════════════
+// BEAT 3 — Unification
+// ═══════════════════════════════
+tl.to('#text-2', { opacity: 1, duration: 0.5 }, 4);
+
+// Hide reaching lines
+tl.to('#reaching-lines', { opacity: 0, duration: 0.5 }, 4);
+
+// Show unified network
+tl.to('#unified-net', { opacity: 1, duration: 0.3 }, 4.2);
+
+// Lines snap in one by one
+tl.to('.uline', {
+    opacity: 0.7,
+    duration: 0.8,
+    stagger: 0.04,
+}, 4.3);
+
+// Nodes light up
+tl.to('.unode', {
+    opacity: 0.8,
+    duration: 0.5,
+    stagger: 0.03,
+}, 4.5);
+
+// Data pulses appear
+tl.to('#pulses', { opacity: 1, duration: 0.5 }, 4.8);
+
+// Fragment originals fade out completely
+tl.to('.frag', { opacity: 0, duration: 0.8 }, 4.2);
+tl.to('.fnode', { opacity: 0, duration: 0.8 }, 4.2);
+
+// Central node pulse
+tl.fromTo('#share-core', { attr: { r: 14 } }, {
+    attr: { r: 18 },
+    duration: 0.4,
+    yoyo: true,
+    repeat: 1,
+}, 4.6);
+
+tl.to('#text-2', { opacity: 0, duration: 0.4 }, 5.8);
+
+// ═══════════════════════════════
+// BEAT 4 — Stats / Proof
+// ═══════════════════════════════
+tl.to('#text-3', { opacity: 1, duration: 0.5 }, 6);
+tl.to('#stats', { opacity: 1, duration: 0.8 }, 6.2);
+
+// Lines glow brighter
+tl.to('.uline', { opacity: 0.9, stroke: '#60a5fa', duration: 1 }, 6);
+tl.to('.unode', { opacity: 1, duration: 1 }, 6);
+
+// Pulses get more active (opacity up)
+tl.to('#pulses', { opacity: 1, duration: 0.5 }, 6);
+
+tl.to('#text-3', { opacity: 0, duration: 0.4 }, 7.6);
+tl.to('#stats', { opacity: 0, duration: 0.4 }, 7.6);
+
+// ═══════════════════════════════
+// BEAT 5 — Vision / Pan-African
+// ═══════════════════════════════
+tl.to('#text-4', { opacity: 1, duration: 0.5 }, 8);
+
+// Subsea cables extend
+tl.to('#subsea', { opacity: 1, duration: 1.5 }, 8);
+
+// Continent ring appears
+tl.to('#continent-ring', { opacity: 1, duration: 1.5 }, 8.2);
+
+// Existing network dims slightly to let global vision show
+tl.to('.uline', { opacity: 0.4, duration: 1 }, 8);
+tl.to('.unode', { opacity: 0.5, duration: 1 }, 8);
+
+// Fade out everything at end
+tl.to('#text-4', { opacity: 0, duration: 0.5 }, 9.5);
+tl.to('#scene', { opacity: 0, duration: 0.8 }, 9.5);
+tl.to('#progress', { opacity: 0, duration: 0.5 }, 9.5);
+</script>
+
+</body>
+</html>

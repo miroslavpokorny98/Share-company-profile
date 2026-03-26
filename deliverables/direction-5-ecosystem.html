@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction 5 — The Ecosystem Machine</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --red-500: #ef4444;
+            --red-400: #f87171;
+            --red-300: #fca5a5;
+            --amber-500: #f59e0b;
+            --amber-400: #fbbf24;
+            --green-500: #10b981;
+            --green-400: #34d399;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+        }
+
+        html, body {
+            background: #04060c;
+            color: #e0e4ec;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ── Scroll spacer ── */
+        .scroll-spacer {
+            height: 500vh;
+            position: relative;
+        }
+
+        /* ── Fixed canvas ── */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .scene svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ── Text overlays ── */
+        .text-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 0 80px 80px;
+        }
+
+        .beat-text {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            max-width: 560px;
+            opacity: 0;
+        }
+
+        .beat-text .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--red-400);
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+
+        .beat-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .beat-text p {
+            font-size: 17px;
+            line-height: 1.65;
+            color: rgba(224, 228, 236, 0.7);
+            max-width: 480px;
+        }
+
+        /* ── Stats overlay ── */
+        .stats-row {
+            position: absolute;
+            bottom: 80px;
+            right: 80px;
+            display: flex;
+            gap: 40px;
+            opacity: 0;
+        }
+
+        .stat {
+            text-align: right;
+        }
+
+        .stat .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--amber-400);
+            line-height: 1;
+        }
+
+        .stat .unit {
+            font-size: 13px;
+            color: rgba(224, 228, 236, 0.5);
+            margin-top: 6px;
+        }
+
+        /* ── Progress bar ── */
+        .progress-track {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: background 0.4s, transform 0.4s;
+        }
+
+        .progress-dot.active {
+            background: var(--red-400);
+            transform: scale(1.4);
+        }
+
+        /* ── Gradient overlays ── */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center, transparent 40%, #04060c 100%),
+                linear-gradient(to top, #04060c 0%, transparent 30%);
+        }
+
+        /* ── Intro overlay ── */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #04060c;
+        }
+
+        .intro-overlay h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--red-400);
+            font-weight: 500;
+        }
+
+        .intro-overlay .subtitle {
+            font-size: 13px;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.3);
+            margin-top: 12px;
+            font-style: italic;
+        }
+
+        .intro-overlay .scroll-hint {
+            position: absolute;
+            bottom: 48px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(4px); }
+        }
+
+        /* ── Dashed your-spot pulse (continuous, independent of scroll) ── */
+        @keyframes spotPulse {
+            0%, 100% {
+                opacity: 0.5;
+                r: 32;
+            }
+            50% {
+                opacity: 1;
+                r: 38;
+            }
+        }
+
+        /* ── CTA at end ── */
+        .cta-section {
+            position: relative;
+            z-index: 15;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .cta-button {
+            margin-top: 16px;
+            padding: 16px 40px;
+            border: 1px solid var(--amber-500);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--amber-400);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cta-button:hover {
+            background: var(--amber-500);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Intro -->
+<div class="intro-overlay" id="intro">
+    <h1>Direction 5 — The Ecosystem Machine</h1>
+    <div class="subtitle">A living system where every connection makes the whole network stronger.</div>
+    <div class="scroll-hint">Scroll to begin</div>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-track" id="progress">
+    <div class="progress-dot active" data-beat="0"></div>
+    <div class="progress-dot" data-beat="1"></div>
+    <div class="progress-dot" data-beat="2"></div>
+    <div class="progress-dot" data-beat="3"></div>
+    <div class="progress-dot" data-beat="4"></div>
+</div>
+
+<!-- Fixed scene -->
+<div class="scene" id="scene">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <!-- Glow gradients -->
+            <radialGradient id="glow-red" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ef4444" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-amber" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-green" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#34d399" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+            </radialGradient>
+
+            <!-- Filters -->
+            <filter id="blur-sm">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+            <filter id="blur-md">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+            </filter>
+            <filter id="blur-lg">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="14"/>
+            </filter>
+            <filter id="blur-xl">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="24"/>
+            </filter>
+
+            <!-- Ripple filter for Beat 3 -->
+            <filter id="ripple-glow">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
+            </filter>
+        </defs>
+
+        <!-- ═══ Background subtle grid — organic/circuit feel ═══ -->
+        <g id="bg-grid" opacity="0.025">
+            <line x1="0" y1="270" x2="1920" y2="270" stroke="#f87171" stroke-width="0.5"/>
+            <line x1="0" y1="540" x2="1920" y2="540" stroke="#f87171" stroke-width="0.5"/>
+            <line x1="0" y1="810" x2="1920" y2="810" stroke="#f87171" stroke-width="0.5"/>
+            <line x1="480" y1="0" x2="480" y2="1080" stroke="#f87171" stroke-width="0.5"/>
+            <line x1="960" y1="0" x2="960" y2="1080" stroke="#f87171" stroke-width="0.5"/>
+            <line x1="1440" y1="0" x2="1440" y2="1080" stroke="#f87171" stroke-width="0.5"/>
+        </g>
+
+        <!-- ═══════════════════════════════════════════
+             BEAT 1 — THE SEED
+             Single glowing red point, pulsing rings
+             ═══════════════════════════════════════════ -->
+        <g id="seed-group" opacity="0">
+            <!-- Outermost pulse ring -->
+            <circle id="seed-ring-3" cx="960" cy="500" r="80" fill="none" stroke="#ef4444" stroke-width="0.5" opacity="0"/>
+            <!-- Middle pulse ring -->
+            <circle id="seed-ring-2" cx="960" cy="500" r="50" fill="none" stroke="#f87171" stroke-width="0.8" opacity="0"/>
+            <!-- Inner pulse ring -->
+            <circle id="seed-ring-1" cx="960" cy="500" r="24" fill="none" stroke="#fca5a5" stroke-width="1" opacity="0"/>
+            <!-- Outer glow -->
+            <circle cx="960" cy="500" r="60" fill="url(#glow-red)" filter="url(#blur-lg)" opacity="0.6"/>
+            <!-- Core seed dot -->
+            <circle id="seed-core" cx="960" cy="500" r="8" fill="#ef4444" opacity="1"/>
+            <circle cx="960" cy="500" r="4" fill="#fca5a5" opacity="0.9"/>
+            <!-- Location label -->
+            <text id="seed-label" x="960" y="560" text-anchor="middle" fill="#f87171" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="3" opacity="0">MOMBASA, 2024</text>
+        </g>
+
+        <!-- ═══════════════════════════════════════════
+             BEAT 2 — THE GROWTH
+             Organic fiber tendrils growing from seed
+             ═══════════════════════════════════════════ -->
+        <g id="growth-group" opacity="0">
+            <!-- Fiber tendrils (organic SVG paths curving outward) -->
+            <!-- Tendril 1 — up-left to data center -->
+            <path id="tendril-1" d="M960,500 C920,460 850,400 780,340" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" opacity="0" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <!-- Tendril 2 — up to data center -->
+            <path id="tendril-2" d="M960,500 C950,440 960,380 1000,280" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" opacity="0" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <!-- Tendril 3 — right to data center -->
+            <path id="tendril-3" d="M960,500 C1020,490 1100,470 1220,430" fill="none" stroke="#f87171" stroke-width="1.8" stroke-linecap="round" opacity="0" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <!-- Tendril 4 — down-right -->
+            <path id="tendril-4" d="M960,500 C1000,550 1060,620 1140,700" fill="none" stroke="#f87171" stroke-width="1.8" stroke-linecap="round" opacity="0" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <!-- Tendril 5 — down-left -->
+            <path id="tendril-5" d="M960,500 C920,560 860,640 760,720" fill="none" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" opacity="0" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <!-- Tendril 6 — left to data center -->
+            <path id="tendril-6" d="M960,500 C900,510 820,520 700,500" fill="none" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" opacity="0" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <!-- Tendril 7 — subsea cable down -->
+            <path id="tendril-7" d="M960,500 C960,560 940,650 920,780" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" opacity="0" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+
+            <!-- Data center nodes at tendril endpoints -->
+            <circle class="dc-node" cx="780" cy="340" r="6" fill="#ef4444" opacity="0"/>
+            <circle class="dc-node" cx="1000" cy="280" r="6" fill="#ef4444" opacity="0"/>
+            <circle class="dc-node" cx="1220" cy="430" r="5" fill="#ef4444" opacity="0"/>
+            <circle class="dc-node" cx="1140" cy="700" r="5" fill="#ef4444" opacity="0"/>
+            <circle class="dc-node" cx="760" cy="720" r="5" fill="#ef4444" opacity="0"/>
+            <circle class="dc-node" cx="700" cy="500" r="5" fill="#ef4444" opacity="0"/>
+            <!-- Subsea cable endpoint (blue) -->
+            <circle class="dc-node" cx="920" cy="780" r="7" fill="#3b82f6" opacity="0"/>
+
+            <!-- Tiny node glows -->
+            <circle cx="780" cy="340" r="20" fill="url(#glow-red)" filter="url(#blur-md)" opacity="0.3" class="dc-glow"/>
+            <circle cx="1000" cy="280" r="20" fill="url(#glow-red)" filter="url(#blur-md)" opacity="0.3" class="dc-glow"/>
+            <circle cx="1220" cy="430" r="18" fill="url(#glow-red)" filter="url(#blur-md)" opacity="0.3" class="dc-glow"/>
+            <circle cx="1140" cy="700" r="18" fill="url(#glow-red)" filter="url(#blur-md)" opacity="0.3" class="dc-glow"/>
+            <circle cx="760" cy="720" r="18" fill="url(#glow-red)" filter="url(#blur-md)" opacity="0.3" class="dc-glow"/>
+            <circle cx="700" cy="500" r="18" fill="url(#glow-red)" filter="url(#blur-md)" opacity="0.3" class="dc-glow"/>
+
+            <!-- Node labels -->
+            <text x="780" y="322" text-anchor="middle" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1" opacity="0" class="dc-label">DC-01</text>
+            <text x="1000" y="262" text-anchor="middle" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1" opacity="0" class="dc-label">DC-02</text>
+            <text x="1220" y="412" text-anchor="middle" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1" opacity="0" class="dc-label">DC-03</text>
+            <text x="1140" y="682" text-anchor="middle" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1" opacity="0" class="dc-label">DC-04</text>
+            <text x="760" y="702" text-anchor="middle" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1" opacity="0" class="dc-label">DC-05</text>
+            <text x="700" y="482" text-anchor="middle" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1" opacity="0" class="dc-label">DC-06</text>
+            <text x="920" y="806" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1" opacity="0" class="dc-label">SUBSEA</text>
+
+            <!-- Provider label -->
+            <text id="providers-label" x="960" y="560" text-anchor="middle" fill="rgba(252,165,165,0.4)" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0">12 PROVIDERS AGGREGATED</text>
+        </g>
+
+        <!-- ═══════════════════════════════════════════
+             BEAT 3 — THE NETWORK EFFECT
+             ISP joins, ripple propagates
+             ═══════════════════════════════════════════ -->
+        <g id="network-effect-group" opacity="0">
+            <!-- ISP Node (amber, larger) — starts off to the right -->
+            <circle id="isp-node" cx="1500" cy="400" r="10" fill="#fbbf24" opacity="0"/>
+            <circle id="isp-glow" cx="1500" cy="400" r="40" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0"/>
+            <text id="isp-label" x="1500" y="370" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0">ISP PARTNER</text>
+
+            <!-- Dashed connection line from ISP to nearest DC -->
+            <line id="isp-connect-line" x1="1500" y1="400" x2="1220" y2="430" stroke="#fbbf24" stroke-width="2" stroke-dasharray="8,6" opacity="0"/>
+
+            <!-- ISP coverage circle (shows coverage expanding) -->
+            <circle id="isp-coverage" cx="1500" cy="400" r="0" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0"/>
+
+            <!-- Ripple rings (propagate from connection point outward through network) -->
+            <circle class="ripple-ring" cx="1220" cy="430" r="0" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0"/>
+            <circle class="ripple-ring" cx="1220" cy="430" r="0" fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0"/>
+            <circle class="ripple-ring" cx="1220" cy="430" r="0" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0"/>
+        </g>
+
+        <!-- ═══════════════════════════════════════════
+             BEAT 4 — CRITICAL MASS
+             Dense network, data pulses, green financial layer
+             ═══════════════════════════════════════════ -->
+        <g id="critical-mass-group" opacity="0">
+            <!-- Additional ISP nodes (amber) joining the network -->
+            <circle class="extra-isp" cx="500" cy="360" r="8" fill="#fbbf24" opacity="0"/>
+            <circle class="extra-isp" cx="620" cy="620" r="7" fill="#fbbf24" opacity="0"/>
+            <circle class="extra-isp" cx="1340" cy="640" r="8" fill="#fbbf24" opacity="0"/>
+            <circle class="extra-isp" cx="840" cy="240" r="7" fill="#fbbf24" opacity="0"/>
+            <circle class="extra-isp" cx="1100" cy="760" r="7" fill="#fbbf24" opacity="0"/>
+
+            <!-- Extra ISP glows -->
+            <circle cx="500" cy="360" r="30" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.2" class="extra-isp-glow"/>
+            <circle cx="620" cy="620" r="25" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.2" class="extra-isp-glow"/>
+            <circle cx="1340" cy="640" r="30" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.2" class="extra-isp-glow"/>
+            <circle cx="840" cy="240" r="25" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.2" class="extra-isp-glow"/>
+            <circle cx="1100" cy="760" r="25" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.2" class="extra-isp-glow"/>
+
+            <!-- Connection lines from extra ISPs to nearest infrastructure -->
+            <line class="extra-conn" x1="500" y1="360" x2="700" y2="500" stroke="#fbbf24" stroke-width="1.5" opacity="0"/>
+            <line class="extra-conn" x1="620" y1="620" x2="760" y2="720" stroke="#fbbf24" stroke-width="1.5" opacity="0"/>
+            <line class="extra-conn" x1="1340" y1="640" x2="1140" y2="700" stroke="#fbbf24" stroke-width="1.5" opacity="0"/>
+            <line class="extra-conn" x1="840" y1="240" x2="1000" y2="280" stroke="#fbbf24" stroke-width="1.2" opacity="0"/>
+            <line class="extra-conn" x1="1100" y1="760" x2="1140" y2="700" stroke="#fbbf24" stroke-width="1.2" opacity="0"/>
+
+            <!-- Data pulse dots traveling along connections -->
+            <circle class="data-pulse" cx="860" cy="470" r="3" fill="#fca5a5" filter="url(#blur-sm)" opacity="0"/>
+            <circle class="data-pulse" cx="1080" cy="360" r="2.5" fill="#fca5a5" filter="url(#blur-sm)" opacity="0"/>
+            <circle class="data-pulse" cx="700" cy="600" r="2.5" fill="#fca5a5" filter="url(#blur-sm)" opacity="0"/>
+            <circle class="data-pulse" cx="1300" cy="550" r="3" fill="#fbbf24" filter="url(#blur-sm)" opacity="0"/>
+            <circle class="data-pulse" cx="950" cy="650" r="2" fill="#fca5a5" filter="url(#blur-sm)" opacity="0"/>
+            <circle class="data-pulse" cx="1050" cy="370" r="2" fill="#fbbf24" filter="url(#blur-sm)" opacity="0"/>
+
+            <!-- Green financial layer — concentric rings -->
+            <circle id="fin-ring-1" cx="960" cy="520" r="120" fill="none" stroke="#10b981" stroke-width="1" opacity="0"/>
+            <circle id="fin-ring-2" cx="960" cy="520" r="200" fill="none" stroke="#10b981" stroke-width="0.8" opacity="0"/>
+            <circle id="fin-ring-3" cx="960" cy="520" r="300" fill="none" stroke="#10b981" stroke-width="0.5" opacity="0"/>
+            <circle cx="960" cy="520" r="160" fill="url(#glow-green)" filter="url(#blur-xl)" opacity="0" id="fin-glow"/>
+
+            <!-- Financial layer label -->
+            <text id="fin-label-1" x="960" y="390" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0">BACKBONE LAYER</text>
+            <text id="fin-label-2" x="960" y="665" text-anchor="middle" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0">PAYMENT GATEWAY</text>
+        </g>
+
+        <!-- ═══════════════════════════════════════════
+             BEAT 5 — THE INVITATION
+             Continental scale, the "your spot" gap
+             ═══════════════════════════════════════════ -->
+        <g id="invitation-group" opacity="0">
+            <!-- Africa continent outline -->
+            <path id="africa-outline" d="
+                M 920,140
+                C 940,135 970,130 990,135
+                C 1010,140 1030,148 1050,145
+                C 1070,142 1090,140 1105,150
+                C 1120,160 1130,175 1140,190
+                C 1148,200 1155,215 1160,230
+                C 1168,250 1175,270 1178,290
+                C 1182,310 1185,330 1190,350
+                C 1195,370 1198,385 1195,400
+                C 1190,420 1180,440 1175,460
+                C 1168,480 1162,500 1160,520
+                C 1158,540 1155,560 1148,580
+                C 1140,600 1128,620 1115,640
+                C 1100,660 1085,675 1070,690
+                C 1055,705 1040,718 1025,730
+                C 1010,742 998,755 990,770
+                C 982,785 978,800 975,815
+                C 972,830 968,842 960,850
+                C 952,842 945,830 938,815
+                C 930,798 920,780 908,765
+                C 895,750 880,738 865,725
+                C 850,710 838,695 828,678
+                C 818,660 810,640 805,620
+                C 800,600 795,580 792,560
+                C 788,540 785,520 783,500
+                C 780,480 778,460 778,440
+                C 778,420 780,400 785,380
+                C 790,360 795,340 798,320
+                C 802,300 808,280 815,260
+                C 822,240 830,222 840,205
+                C 850,190 862,178 875,168
+                C 888,158 900,148 920,140
+                Z
+            " fill="none" stroke="#f87171" stroke-width="1.2" opacity="0.2"/>
+            <!-- Africa fill glow -->
+            <path d="
+                M 920,140
+                C 940,135 970,130 990,135
+                C 1010,140 1030,148 1050,145
+                C 1070,142 1090,140 1105,150
+                C 1120,160 1130,175 1140,190
+                C 1148,200 1155,215 1160,230
+                C 1168,250 1175,270 1178,290
+                C 1182,310 1185,330 1190,350
+                C 1195,370 1198,385 1195,400
+                C 1190,420 1180,440 1175,460
+                C 1168,480 1162,500 1160,520
+                C 1158,540 1155,560 1148,580
+                C 1140,600 1128,620 1115,640
+                C 1100,660 1085,675 1070,690
+                C 1055,705 1040,718 1025,730
+                C 1010,742 998,755 990,770
+                C 982,785 978,800 975,815
+                C 972,830 968,842 960,850
+                C 952,842 945,830 938,815
+                C 930,798 920,780 908,765
+                C 895,750 880,738 865,725
+                C 850,710 838,695 828,678
+                C 818,660 810,640 805,620
+                C 800,600 795,580 792,560
+                C 788,540 785,520 783,500
+                C 780,480 778,460 778,440
+                C 778,420 780,400 785,380
+                C 790,360 795,340 798,320
+                C 802,300 808,280 815,260
+                C 822,240 830,222 840,205
+                C 850,190 862,178 875,168
+                C 888,158 900,148 920,140
+                Z
+            " fill="#ef4444" opacity="0.03" filter="url(#blur-md)"/>
+
+            <!-- Scale label -->
+            <text x="960" y="100" text-anchor="middle" fill="#f87171" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="4" opacity="0.4">AFRICA'S ECOSYSTEM</text>
+
+            <!-- Additional far-flung nodes for density -->
+            <circle class="far-node" cx="400" cy="200" r="4" fill="#ef4444" opacity="0"/>
+            <circle class="far-node" cx="300" cy="500" r="4" fill="#ef4444" opacity="0"/>
+            <circle class="far-node" cx="450" cy="800" r="4" fill="#ef4444" opacity="0"/>
+            <circle class="far-node" cx="1600" cy="250" r="4" fill="#ef4444" opacity="0"/>
+            <circle class="far-node" cx="1650" cy="600" r="4" fill="#ef4444" opacity="0"/>
+            <circle class="far-node" cx="1500" cy="820" r="4" fill="#ef4444" opacity="0"/>
+
+            <!-- Lines from far nodes to network -->
+            <line class="far-line" x1="400" y1="200" x2="780" y2="340" stroke="#f87171" stroke-width="1" opacity="0"/>
+            <line class="far-line" x1="300" y1="500" x2="700" y2="500" stroke="#f87171" stroke-width="1" opacity="0"/>
+            <line class="far-line" x1="450" y1="800" x2="760" y2="720" stroke="#f87171" stroke-width="1" opacity="0"/>
+            <line class="far-line" x1="1600" y1="250" x2="1220" y2="430" stroke="#f87171" stroke-width="1" opacity="0"/>
+            <line class="far-line" x1="1650" y1="600" x2="1340" y2="640" stroke="#f87171" stroke-width="1" opacity="0"/>
+            <line class="far-line" x1="1500" y1="820" x2="1140" y2="700" stroke="#f87171" stroke-width="1" opacity="0"/>
+
+            <!-- Far ISP nodes -->
+            <circle class="far-isp" cx="350" cy="350" r="5" fill="#fbbf24" opacity="0"/>
+            <circle class="far-isp" cx="1700" cy="430" r="5" fill="#fbbf24" opacity="0"/>
+            <line class="far-line" x1="350" y1="350" x2="500" y2="360" stroke="#fbbf24" stroke-width="1" opacity="0"/>
+            <line class="far-line" x1="1700" y1="430" x2="1500" y2="400" stroke="#fbbf24" stroke-width="1" opacity="0"/>
+
+            <!-- ★ THE DASHED "YOUR SPOT" CIRCLE ★ -->
+            <circle id="your-spot-outer" cx="1750" cy="160" r="36" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="6,4" opacity="0"/>
+            <circle id="your-spot-inner" cx="1750" cy="160" r="20" fill="none" stroke="#fbbf24" stroke-width="0.5" stroke-dasharray="4,3" opacity="0"/>
+            <text id="your-spot-label" x="1750" y="165" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="1" opacity="0">you?</text>
+            <!-- Dashed line from "your spot" toward network -->
+            <line id="your-spot-line" x1="1750" y1="195" x2="1600" y2="250" stroke="#fbbf24" stroke-width="1" stroke-dasharray="6,4" opacity="0"/>
+        </g>
+    </svg>
+</div>
+
+<!-- Vignette -->
+<div class="vignette"></div>
+
+<!-- Text overlays -->
+<div class="text-layer">
+    <div class="beat-text" id="text-0">
+        <div class="label">The Seed</div>
+        <h2>It started with a single connection in Mombasa.</h2>
+        <p>One data center. One idea: what if Africa's infrastructure worked as one?</p>
+    </div>
+    <div class="beat-text" id="text-1">
+        <div class="label">The Growth</div>
+        <h2>Share doesn't build new infrastructure. It connects what already exists.</h2>
+        <p>Aggregating from 12 providers into one shared backbone. Organic growth, technological precision.</p>
+    </div>
+    <div class="beat-text" id="text-2">
+        <div class="label">The Network Effect</div>
+        <h2>Every partner that joins makes the entire network stronger.</h2>
+        <p>More coverage. More redundancy. More value for everyone.</p>
+    </div>
+    <div class="beat-text" id="text-3">
+        <div class="label">Critical Mass</div>
+        <h2>Backbone + payment gateway. Two layers. One ecosystem.</h2>
+        <p>Growing every day. Infrastructure and finance flowing as one system.</p>
+    </div>
+    <div class="beat-text" id="text-4">
+        <div class="label">The Invitation</div>
+        <h2>The ecosystem is live. There's a spot for you.</h2>
+        <p>Growing every day. The network gets stronger with every partner that joins.</p>
+    </div>
+</div>
+
+<!-- Stats (Beat 5) -->
+<div class="text-layer">
+    <div class="stats-row" id="stats">
+        <div class="stat">
+            <div class="number">1M+</div>
+            <div class="unit">users</div>
+        </div>
+        <div class="stat">
+            <div class="number">100K+</div>
+            <div class="unit">km fiber</div>
+        </div>
+        <div class="stat">
+            <div class="number">30+</div>
+            <div class="unit">data centers</div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll spacer -->
+<div class="scroll-spacer" id="scroll-spacer"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <h2>Join the ecosystem.</h2>
+    <p>The more networks that join, the stronger everyone gets. There's a spot for you.</p>
+    <button class="cta-button">Get Started</button>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const beats = 5;
+const spacer = document.getElementById('scroll-spacer');
+const dots = document.querySelectorAll('.progress-dot');
+
+// ── Intro fade out ──
+gsap.to('#intro', {
+    opacity: 0,
+    pointerEvents: 'none',
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: '+=300',
+        scrub: 0.5,
+    }
+});
+
+// ── Continuous seed pulse (independent of scroll) ──
+function seedPulse() {
+    gsap.to('#seed-ring-1', {
+        attr: { r: 30 }, opacity: 0, duration: 2, ease: 'power1.out',
+        onComplete: () => { gsap.set('#seed-ring-1', { attr: { r: 24 }, opacity: 0.5 }); }
+    });
+    gsap.to('#seed-ring-2', {
+        attr: { r: 60 }, opacity: 0, duration: 2.5, ease: 'power1.out', delay: 0.3,
+        onComplete: () => { gsap.set('#seed-ring-2', { attr: { r: 50 }, opacity: 0.4 }); }
+    });
+    gsap.to('#seed-ring-3', {
+        attr: { r: 100 }, opacity: 0, duration: 3, ease: 'power1.out', delay: 0.6,
+        onComplete: () => { gsap.set('#seed-ring-3', { attr: { r: 80 }, opacity: 0.3 }); }
+    });
+}
+
+// Start seed pulse loop
+gsap.delayedCall(0.5, function pulseLoop() {
+    seedPulse();
+    gsap.delayedCall(2.5, pulseLoop);
+});
+
+// ── Continuous "your spot" pulse animation (Beat 5, independent of scroll) ──
+gsap.to('#your-spot-outer', {
+    attr: { r: 40 },
+    opacity: 1,
+    duration: 1.5,
+    ease: 'sine.inOut',
+    yoyo: true,
+    repeat: -1,
+});
+gsap.to('#your-spot-inner', {
+    attr: { r: 24 },
+    opacity: 0.8,
+    duration: 1.2,
+    ease: 'sine.inOut',
+    yoyo: true,
+    repeat: -1,
+    delay: 0.3,
+});
+gsap.to('#your-spot-label', {
+    opacity: 0.5,
+    duration: 1.5,
+    ease: 'sine.inOut',
+    yoyo: true,
+    repeat: -1,
+});
+
+// ── Continuous data pulse animations (Beat 4) ──
+document.querySelectorAll('.data-pulse').forEach((p, i) => {
+    const baseX = parseFloat(p.getAttribute('cx'));
+    const baseY = parseFloat(p.getAttribute('cy'));
+    gsap.to(p, {
+        attr: {
+            cx: baseX + (Math.random() - 0.5) * 250,
+            cy: baseY + (Math.random() - 0.5) * 180,
+        },
+        duration: 3 + Math.random() * 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.5,
+    });
+});
+
+// ── Main scroll timeline ──
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        onUpdate: (self) => {
+            const p = self.progress;
+            const beat = Math.min(4, Math.floor(p * beats));
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === beat);
+            });
+        }
+    }
+});
+
+// ═══════════════════════════════════
+// BEAT 1 — THE SEED
+// ═══════════════════════════════════
+
+// Seed appears
+tl.to('#seed-group', { opacity: 1, duration: 0.5 }, 0);
+tl.to('#text-0', { opacity: 1, duration: 0.5 }, 0);
+
+// Pulse rings fade in
+tl.to('#seed-ring-1', { opacity: 0.5, duration: 0.8 }, 0.3);
+tl.to('#seed-ring-2', { opacity: 0.4, duration: 0.8 }, 0.5);
+tl.to('#seed-ring-3', { opacity: 0.3, duration: 0.8 }, 0.7);
+
+// Location label appears
+tl.to('#seed-label', { opacity: 0.6, duration: 0.5 }, 0.5);
+
+// Seed core gentle size pulse
+tl.to('#seed-core', {
+    attr: { r: 10 },
+    duration: 0.5,
+    yoyo: true,
+    repeat: 1,
+}, 1.0);
+
+// Fade out beat 1 text
+tl.to('#text-0', { opacity: 0, duration: 0.4 }, 1.8);
+
+// ═══════════════════════════════════
+// BEAT 2 — THE GROWTH
+// ═══════════════════════════════════
+
+tl.to('#text-1', { opacity: 1, duration: 0.5 }, 2);
+
+// Seed rings fade out gently
+tl.to('#seed-ring-1', { opacity: 0, duration: 0.5 }, 2);
+tl.to('#seed-ring-2', { opacity: 0, duration: 0.5 }, 2);
+tl.to('#seed-ring-3', { opacity: 0, duration: 0.5 }, 2);
+tl.to('#seed-label', { opacity: 0, duration: 0.3 }, 2);
+
+// Growth group appears
+tl.to('#growth-group', { opacity: 1, duration: 0.3 }, 2);
+
+// Tendrils grow outward organically (stroke-dashoffset animates from 1 to 0)
+const tendrils = ['#tendril-1', '#tendril-2', '#tendril-3', '#tendril-4', '#tendril-5', '#tendril-6', '#tendril-7'];
+tendrils.forEach((t, i) => {
+    tl.to(t, { opacity: 0.8, duration: 0.1 }, 2.1 + i * 0.1);
+    tl.to(t, {
+        strokeDashoffset: 0,
+        duration: 1.0,
+        ease: 'power2.out',
+    }, 2.1 + i * 0.1);
+});
+
+// Data center nodes pop in at tendril endpoints
+tl.to('.dc-node', {
+    opacity: 0.9,
+    duration: 0.4,
+    stagger: 0.1,
+}, 2.8);
+
+// Node glows
+tl.to('.dc-glow', {
+    opacity: 0.3,
+    duration: 0.5,
+    stagger: 0.1,
+}, 2.9);
+
+// DC labels appear
+tl.to('.dc-label', {
+    opacity: 0.5,
+    duration: 0.4,
+    stagger: 0.08,
+}, 3.0);
+
+// Providers label
+tl.to('#providers-label', { opacity: 0.4, duration: 0.5 }, 3.2);
+
+// Fade out beat 2 text
+tl.to('#text-1', { opacity: 0, duration: 0.4 }, 3.8);
+
+// ═══════════════════════════════════
+// BEAT 3 — THE NETWORK EFFECT
+// ═══════════════════════════════════
+
+tl.to('#text-2', { opacity: 1, duration: 0.5 }, 4);
+
+// Network effect group appears
+tl.to('#network-effect-group', { opacity: 1, duration: 0.3 }, 4);
+
+// ISP node fades in
+tl.to('#isp-node', { opacity: 1, duration: 0.3 }, 4.1);
+tl.to('#isp-glow', { opacity: 0.5, duration: 0.4 }, 4.1);
+tl.to('#isp-label', { opacity: 0.7, duration: 0.3 }, 4.2);
+
+// Dashed connection line appears and animates to solid
+tl.to('#isp-connect-line', { opacity: 0.8, duration: 0.3 }, 4.3);
+tl.to('#isp-connect-line', {
+    strokeDasharray: '100,0',
+    duration: 0.5,
+    ease: 'power2.in',
+}, 4.6);
+
+// ★ THE RIPPLE MOMENT ★
+// When connection becomes solid, ripples propagate outward from connection point
+tl.to('.ripple-ring', {
+    opacity: 0.8,
+    duration: 0.1,
+    stagger: 0.15,
+}, 5.0);
+
+// Ripple rings expand dramatically
+tl.to('.ripple-ring:nth-child(1)', {
+    attr: { r: 200 },
+    opacity: 0,
+    duration: 0.8,
+    ease: 'power1.out',
+}, 5.0);
+tl.to('.ripple-ring:nth-child(2)', {
+    attr: { r: 350 },
+    opacity: 0,
+    duration: 1.0,
+    ease: 'power1.out',
+}, 5.15);
+tl.to('.ripple-ring:nth-child(3)', {
+    attr: { r: 500 },
+    opacity: 0,
+    duration: 1.2,
+    ease: 'power1.out',
+}, 5.3);
+
+// ALL existing nodes get brighter when ripple passes
+tl.to('.dc-node', {
+    fill: '#fca5a5',
+    attr: { r: '+=2' },
+    duration: 0.5,
+    ease: 'power2.out',
+}, 5.2);
+
+tl.to('.dc-glow', {
+    opacity: 0.5,
+    duration: 0.5,
+}, 5.2);
+
+// All tendrils get brighter
+tendrils.forEach((t) => {
+    tl.to(t, {
+        stroke: '#fca5a5',
+        strokeWidth: '+=0.5',
+        opacity: 1,
+        duration: 0.5,
+    }, 5.2);
+});
+
+// Seed core brightens
+tl.to('#seed-core', {
+    fill: '#fca5a5',
+    attr: { r: 12 },
+    duration: 0.5,
+}, 5.2);
+
+// ISP coverage circle expands
+tl.to('#isp-coverage', {
+    opacity: 0.3,
+    attr: { r: 80 },
+    duration: 0.8,
+    ease: 'power2.out',
+}, 5.1);
+
+// Fade out beat 3 text
+tl.to('#text-2', { opacity: 0, duration: 0.4 }, 5.8);
+
+// ═══════════════════════════════════
+// BEAT 4 — CRITICAL MASS
+// ═══════════════════════════════════
+
+tl.to('#text-3', { opacity: 1, duration: 0.5 }, 6);
+
+// Critical mass group appears
+tl.to('#critical-mass-group', { opacity: 1, duration: 0.3 }, 6);
+
+// Extra ISP nodes appear with stagger
+tl.to('.extra-isp', {
+    opacity: 0.9,
+    duration: 0.4,
+    stagger: 0.12,
+}, 6.1);
+
+tl.to('.extra-isp-glow', {
+    opacity: 0.3,
+    duration: 0.5,
+    stagger: 0.12,
+}, 6.1);
+
+// Connection lines from ISPs to infrastructure
+tl.to('.extra-conn', {
+    opacity: 0.6,
+    duration: 0.5,
+    stagger: 0.1,
+}, 6.3);
+
+// Data pulses appear and start flowing
+tl.to('.data-pulse', {
+    opacity: 0.8,
+    duration: 0.4,
+    stagger: 0.08,
+}, 6.5);
+
+// Green financial layer fades in
+tl.to('#fin-ring-1', { opacity: 0.3, duration: 0.8 }, 6.8);
+tl.to('#fin-ring-2', { opacity: 0.2, duration: 0.8 }, 6.9);
+tl.to('#fin-ring-3', { opacity: 0.12, duration: 0.8 }, 7.0);
+tl.to('#fin-glow', { opacity: 0.2, duration: 1 }, 6.8);
+
+// Financial labels
+tl.to('#fin-label-1', { opacity: 0.5, duration: 0.5 }, 7.0);
+tl.to('#fin-label-2', { opacity: 0.4, duration: 0.5 }, 7.1);
+
+// Providers label fades out
+tl.to('#providers-label', { opacity: 0, duration: 0.3 }, 6);
+
+// Fade out beat 4 text
+tl.to('#text-3', { opacity: 0, duration: 0.4 }, 7.6);
+
+// ═══════════════════════════════════
+// BEAT 5 — THE INVITATION
+// ═══════════════════════════════════
+
+tl.to('#text-4', { opacity: 1, duration: 0.5 }, 8);
+
+// Invitation group appears
+tl.to('#invitation-group', { opacity: 1, duration: 0.3 }, 8);
+
+// Far nodes and lines appear for continental scale
+tl.to('.far-node', {
+    opacity: 0.7,
+    duration: 0.5,
+    stagger: 0.08,
+}, 8.1);
+
+tl.to('.far-line', {
+    opacity: 0.4,
+    duration: 0.5,
+    stagger: 0.06,
+}, 8.2);
+
+tl.to('.far-isp', {
+    opacity: 0.7,
+    duration: 0.5,
+    stagger: 0.1,
+}, 8.3);
+
+// Existing network dims slightly for continental perspective
+tl.to('.dc-node', { opacity: 0.6, duration: 0.8 }, 8);
+tendrils.forEach((t) => {
+    tl.to(t, { opacity: 0.5, duration: 0.8 }, 8);
+});
+
+// The "your spot" elements appear
+tl.to('#your-spot-outer', { opacity: 0.7, duration: 0.8 }, 8.4);
+tl.to('#your-spot-inner', { opacity: 0.5, duration: 0.8 }, 8.5);
+tl.to('#your-spot-label', { opacity: 0.9, duration: 0.8 }, 8.6);
+tl.to('#your-spot-line', { opacity: 0.5, duration: 0.6 }, 8.5);
+
+// Stats appear
+tl.to('#stats', { opacity: 1, duration: 0.8 }, 8.5);
+
+// Green financial layer stays subtly visible
+tl.to('#fin-ring-1', { opacity: 0.15, duration: 0.5 }, 8);
+tl.to('#fin-ring-2', { opacity: 0.1, duration: 0.5 }, 8);
+tl.to('#fin-ring-3', { opacity: 0.06, duration: 0.5 }, 8);
+tl.to('#fin-glow', { opacity: 0.1, duration: 0.5 }, 8);
+tl.to('#fin-label-1', { opacity: 0, duration: 0.3 }, 8);
+tl.to('#fin-label-2', { opacity: 0, duration: 0.3 }, 8);
+
+// Fade out everything at end
+tl.to('#text-4', { opacity: 0, duration: 0.5 }, 9.5);
+tl.to('#stats', { opacity: 0, duration: 0.5 }, 9.5);
+tl.to('#scene', { opacity: 0, duration: 0.8 }, 9.5);
+tl.to('#progress', { opacity: 0, duration: 0.5 }, 9.5);
+</script>
+
+</body>
+</html>

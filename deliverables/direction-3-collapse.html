@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction 3 — The Collapse</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue-900: #0c1a3a;
+            --blue-700: #1d4ed8;
+            --blue-500: #4b8df5;
+            --blue-400: #60a5fa;
+            --blue-300: #93c5fd;
+            --green-500: #10b981;
+            --green-400: #34d399;
+            --red-500: #ef4444;
+            --red-400: #f87171;
+            --amber-500: #f59e0b;
+            --amber-400: #fbbf24;
+        }
+
+        html, body {
+            background: #04060c;
+            color: #e0e4ec;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* -- Scroll spacer -- */
+        .scroll-spacer {
+            height: 500vh;
+            position: relative;
+        }
+
+        /* -- Fixed canvas -- */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .scene svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* -- Text overlays -- */
+        .text-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 0 80px 80px;
+        }
+
+        .beat-text {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            max-width: 560px;
+            opacity: 0;
+        }
+
+        .beat-text .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--blue-400);
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .beat-text .label.red { color: var(--red-400); }
+        .beat-text .label.green { color: var(--green-400); }
+        .beat-text .label.amber { color: var(--amber-400); }
+
+        .beat-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .beat-text p {
+            font-size: 17px;
+            line-height: 1.65;
+            color: rgba(224, 228, 236, 0.7);
+            max-width: 480px;
+        }
+
+        /* -- Stats overlay -- */
+        .stats-row {
+            position: absolute;
+            bottom: 80px;
+            right: 80px;
+            display: flex;
+            gap: 40px;
+            opacity: 0;
+        }
+
+        .stat {
+            text-align: right;
+        }
+
+        .stat .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--green-400);
+            line-height: 1;
+        }
+
+        .stat .unit {
+            font-size: 13px;
+            color: rgba(224, 228, 236, 0.5);
+            margin-top: 6px;
+        }
+
+        /* -- Progress bar -- */
+        .progress-track {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: background 0.4s, transform 0.4s;
+        }
+
+        .progress-dot.active {
+            background: var(--blue-400);
+            transform: scale(1.4);
+        }
+
+        /* -- Gradient overlays -- */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center, transparent 40%, #04060c 100%),
+                linear-gradient(to top, #04060c 0%, transparent 30%);
+        }
+
+        /* -- Intro overlay -- */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #04060c;
+        }
+
+        .intro-overlay h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--blue-400);
+            font-weight: 500;
+        }
+
+        .intro-overlay .subtitle {
+            margin-top: 16px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.35);
+            max-width: 400px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .intro-overlay .scroll-hint {
+            position: absolute;
+            bottom: 48px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(4px); }
+        }
+
+        /* -- CTA at end -- */
+        .cta-section {
+            position: relative;
+            z-index: 15;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .cta-button {
+            margin-top: 16px;
+            padding: 16px 40px;
+            border: 1px solid var(--green-500);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--green-400);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cta-button:hover {
+            background: var(--green-500);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Intro -->
+<div class="intro-overlay" id="intro">
+    <h1>Direction 3 — The Collapse</h1>
+    <div class="subtitle">Watch unnecessary complexity dissolve into elegant simplicity.</div>
+    <div class="scroll-hint">Scroll to begin</div>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-track" id="progress">
+    <div class="progress-dot active" data-beat="0"></div>
+    <div class="progress-dot" data-beat="1"></div>
+    <div class="progress-dot" data-beat="2"></div>
+    <div class="progress-dot" data-beat="3"></div>
+    <div class="progress-dot" data-beat="4"></div>
+</div>
+
+<!-- Fixed scene -->
+<div class="scene" id="scene">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <radialGradient id="glow-green" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#4b8df5" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#4b8df5" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-red" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ef4444" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="blur-sm">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+            <filter id="blur-md">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+            </filter>
+            <filter id="blur-lg">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12"/>
+            </filter>
+        </defs>
+
+        <!-- Background subtle grid -->
+        <g id="bg-grid" opacity="0.03">
+            <line x1="0" y1="270" x2="1920" y2="270" stroke="#4b8df5" stroke-width="0.5"/>
+            <line x1="0" y1="540" x2="1920" y2="540" stroke="#4b8df5" stroke-width="0.5"/>
+            <line x1="0" y1="810" x2="1920" y2="810" stroke="#4b8df5" stroke-width="0.5"/>
+            <line x1="480" y1="0" x2="480" y2="1080" stroke="#4b8df5" stroke-width="0.5"/>
+            <line x1="960" y1="0" x2="960" y2="1080" stroke="#4b8df5" stroke-width="0.5"/>
+            <line x1="1440" y1="0" x2="1440" y2="1080" stroke="#4b8df5" stroke-width="0.5"/>
+        </g>
+
+        <!-- ============================================= -->
+        <!-- BEAT 1: THE COMPLEXITY - Exploded supply chain -->
+        <!-- ============================================= -->
+        <g id="supply-chain">
+
+            <!-- Subsea Cable at bottom -->
+            <g id="layer-subsea" opacity="0">
+                <line x1="700" y1="880" x2="1220" y2="880" stroke="#3565a8" stroke-width="6" stroke-linecap="round"/>
+                <circle cx="700" cy="880" r="5" fill="#4b8df5"/>
+                <circle cx="1220" cy="880" r="5" fill="#4b8df5"/>
+                <text x="960" y="910" text-anchor="middle" fill="#4b8df5" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="2" opacity="0.8">SUBSEA CABLE</text>
+            </g>
+
+            <!-- Carrier A layer -->
+            <g id="layer-carrier" opacity="0">
+                <rect x="770" y="710" width="380" height="60" rx="6" fill="none" stroke="#3565a8" stroke-width="2"/>
+                <rect x="770" y="710" width="380" height="60" rx="6" fill="#3565a8" fill-opacity="0.1"/>
+                <text x="960" y="746" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="1.5">CARRIER A</text>
+            </g>
+
+            <!-- Reseller layer -->
+            <g id="layer-reseller" opacity="0">
+                <rect x="770" y="560" width="380" height="60" rx="6" fill="none" stroke="#3565a8" stroke-width="2"/>
+                <rect x="770" y="560" width="380" height="60" rx="6" fill="#3565a8" fill-opacity="0.1"/>
+                <text x="960" y="596" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="1.5">RESELLER</text>
+            </g>
+
+            <!-- Regional provider layer -->
+            <g id="layer-regional" opacity="0">
+                <rect x="770" y="410" width="380" height="60" rx="6" fill="none" stroke="#3565a8" stroke-width="2"/>
+                <rect x="770" y="410" width="380" height="60" rx="6" fill="#3565a8" fill-opacity="0.1"/>
+                <text x="960" y="446" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="1.5">REGIONAL PROVIDER</text>
+            </g>
+
+            <!-- Local ISP layer at top -->
+            <g id="layer-isp" opacity="0">
+                <rect x="770" y="260" width="380" height="60" rx="6" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                <rect x="770" y="260" width="380" height="60" rx="6" fill="#f59e0b" fill-opacity="0.08"/>
+                <text x="960" y="296" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="1.5">LOCAL ISP</text>
+            </g>
+
+            <!-- Tangled connecting lines between layers -->
+            <g id="tangle-lines" opacity="0">
+                <!-- Subsea to Carrier -->
+                <path d="M 850 880 C 820 830, 900 790, 870 770" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.6"/>
+                <path d="M 960 880 C 990 840, 930 800, 960 770" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.5"/>
+                <path d="M 1070 880 C 1100 830, 1020 790, 1050 770" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.6"/>
+
+                <!-- Carrier to Reseller -->
+                <path d="M 860 710 C 830 680, 920 650, 880 620" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.5"/>
+                <path d="M 960 710 C 980 680, 940 650, 960 620" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.6"/>
+                <path d="M 1060 710 C 1090 680, 1010 650, 1040 620" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.5"/>
+                <path d="M 900 710 C 870 670, 1000 640, 950 620" stroke="#3565a8" stroke-width="1.2" fill="none" opacity="0.35"/>
+
+                <!-- Reseller to Regional -->
+                <path d="M 870 560 C 840 530, 910 500, 880 470" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.5"/>
+                <path d="M 960 560 C 990 530, 930 500, 960 470" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.6"/>
+                <path d="M 1050 560 C 1080 530, 1010 500, 1040 470" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.5"/>
+                <path d="M 1000 560 C 1030 540, 900 490, 920 470" stroke="#3565a8" stroke-width="1.2" fill="none" opacity="0.35"/>
+
+                <!-- Regional to ISP -->
+                <path d="M 870 410 C 840 380, 920 350, 880 320" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.5"/>
+                <path d="M 960 410 C 990 380, 930 350, 960 320" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.6"/>
+                <path d="M 1050 410 C 1080 380, 1010 350, 1040 320" stroke="#3565a8" stroke-width="1.5" fill="none" opacity="0.5"/>
+            </g>
+
+            <!-- Contract documents (floating tilted rectangles) -->
+            <g id="contracts" opacity="0">
+                <g class="contract" transform="translate(580, 340) rotate(-12)">
+                    <rect width="70" height="50" rx="3" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.7"/>
+                    <line x1="12" y1="15" x2="58" y2="15" stroke="#f87171" stroke-width="1" opacity="0.4"/>
+                    <line x1="12" y1="24" x2="50" y2="24" stroke="#f87171" stroke-width="1" opacity="0.3"/>
+                    <line x1="12" y1="33" x2="42" y2="33" stroke="#f87171" stroke-width="1" opacity="0.3"/>
+                </g>
+                <g class="contract" transform="translate(1280, 300) rotate(8)">
+                    <rect width="70" height="50" rx="3" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.7"/>
+                    <line x1="12" y1="15" x2="58" y2="15" stroke="#f87171" stroke-width="1" opacity="0.4"/>
+                    <line x1="12" y1="24" x2="50" y2="24" stroke="#f87171" stroke-width="1" opacity="0.3"/>
+                    <line x1="12" y1="33" x2="42" y2="33" stroke="#f87171" stroke-width="1" opacity="0.3"/>
+                </g>
+                <g class="contract" transform="translate(560, 600) rotate(-6)">
+                    <rect width="65" height="45" rx="3" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="10" y1="14" x2="55" y2="14" stroke="#f87171" stroke-width="1" opacity="0.4"/>
+                    <line x1="10" y1="22" x2="48" y2="22" stroke="#f87171" stroke-width="1" opacity="0.3"/>
+                    <line x1="10" y1="30" x2="40" y2="30" stroke="#f87171" stroke-width="1" opacity="0.3"/>
+                </g>
+                <g class="contract" transform="translate(1300, 520) rotate(10)">
+                    <rect width="65" height="45" rx="3" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="10" y1="14" x2="55" y2="14" stroke="#f87171" stroke-width="1" opacity="0.4"/>
+                    <line x1="10" y1="22" x2="48" y2="22" stroke="#f87171" stroke-width="1" opacity="0.3"/>
+                    <line x1="10" y1="30" x2="40" y2="30" stroke="#f87171" stroke-width="1" opacity="0.3"/>
+                </g>
+                <g class="contract" transform="translate(570, 780) rotate(-15)">
+                    <rect width="60" height="42" rx="3" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"/>
+                    <line x1="10" y1="13" x2="50" y2="13" stroke="#f87171" stroke-width="1" opacity="0.35"/>
+                    <line x1="10" y1="21" x2="44" y2="21" stroke="#f87171" stroke-width="1" opacity="0.25"/>
+                    <line x1="10" y1="29" x2="38" y2="29" stroke="#f87171" stroke-width="1" opacity="0.25"/>
+                </g>
+            </g>
+        </g>
+
+        <!-- ============================================= -->
+        <!-- BEAT 2: THE COST - Cost labels stacking up    -->
+        <!-- ============================================= -->
+        <g id="cost-labels" opacity="0">
+            <g class="cost-label" opacity="0">
+                <rect x="1240" y="718" width="220" height="40" rx="4" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+                <rect x="1240" y="718" width="220" height="40" rx="4" fill="#ef4444" fill-opacity="0.06"/>
+                <text x="1350" y="743" text-anchor="middle" fill="#f87171" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1">BACKHAUL COMMIT: $$$</text>
+            </g>
+            <g class="cost-label" opacity="0">
+                <rect x="1240" y="568" width="220" height="40" rx="4" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+                <rect x="1240" y="568" width="220" height="40" rx="4" fill="#ef4444" fill-opacity="0.06"/>
+                <text x="1350" y="593" text-anchor="middle" fill="#f87171" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1">CARRIER CONTRACT: $$$</text>
+            </g>
+            <g class="cost-label" opacity="0">
+                <rect x="1240" y="418" width="220" height="40" rx="4" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+                <rect x="1240" y="418" width="220" height="40" rx="4" fill="#ef4444" fill-opacity="0.06"/>
+                <text x="1350" y="443" text-anchor="middle" fill="#f87171" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1">RESELLER MARGIN: $$$</text>
+            </g>
+            <g class="cost-label" opacity="0">
+                <rect x="1240" y="268" width="220" height="40" rx="4" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+                <rect x="1240" y="268" width="220" height="40" rx="4" fill="#ef4444" fill-opacity="0.06"/>
+                <text x="1350" y="293" text-anchor="middle" fill="#f87171" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1">IDLE CAPACITY: $$$</text>
+            </g>
+
+            <!-- Compounding cost arrow on the right -->
+            <g id="cost-arrow" opacity="0">
+                <line x1="1500" y1="760" x2="1500" y2="260" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4"/>
+                <polygon points="1500,250 1492,270 1508,270" fill="#ef4444" opacity="0.8"/>
+                <text x="1520" y="510" fill="#f87171" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="1" opacity="0.6" transform="rotate(-90, 1520, 510)">COSTS COMPOUND</text>
+            </g>
+        </g>
+
+        <!-- Red intensification overlay on layers -->
+        <g id="red-overlay" opacity="0">
+            <rect x="770" y="710" width="380" height="60" rx="6" fill="#ef4444" fill-opacity="0.05"/>
+            <rect x="770" y="560" width="380" height="60" rx="6" fill="#ef4444" fill-opacity="0.05"/>
+            <rect x="770" y="410" width="380" height="60" rx="6" fill="#ef4444" fill-opacity="0.05"/>
+            <rect x="770" y="260" width="380" height="60" rx="6" fill="#ef4444" fill-opacity="0.05"/>
+        </g>
+
+        <!-- ============================================= -->
+        <!-- BEAT 3: THE COLLAPSE - Layers compress        -->
+        <!-- ============================================= -->
+
+        <!-- Share merged bar (appears after collapse) -->
+        <g id="share-bar" opacity="0">
+            <rect id="share-rect" x="700" y="510" width="520" height="60" rx="8" fill="none" stroke="#10b981" stroke-width="2.5"/>
+            <rect x="700" y="510" width="520" height="60" rx="8" fill="#10b981" fill-opacity="0.1"/>
+            <circle cx="960" cy="540" r="40" fill="url(#glow-green)" filter="url(#blur-md)" opacity="0.4"/>
+            <text x="960" y="546" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="bold" letter-spacing="3">SHARE</text>
+        </g>
+
+        <!-- ============================================= -->
+        <!-- BEAT 4: THE NEW ARCHITECTURE - Clean 3-layer  -->
+        <!-- ============================================= -->
+        <g id="new-arch" opacity="0">
+
+            <!-- ISP at top -->
+            <g id="new-isp">
+                <rect x="830" y="280" width="260" height="56" rx="6" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                <rect x="830" y="280" width="260" height="56" rx="6" fill="#f59e0b" fill-opacity="0.08"/>
+                <text x="960" y="314" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="1.5">YOUR ISP</text>
+            </g>
+
+            <!-- Clean connection ISP to Share -->
+            <line id="conn-isp-share" x1="960" y1="336" x2="960" y2="510" stroke="#34d399" stroke-width="2.5" opacity="0.8"/>
+
+            <!-- Share bar in middle (reuse position from beat 3) -->
+            <g id="new-share">
+                <rect x="700" y="510" width="520" height="60" rx="8" fill="none" stroke="#10b981" stroke-width="2.5"/>
+                <rect x="700" y="510" width="520" height="60" rx="8" fill="#10b981" fill-opacity="0.1"/>
+                <text x="960" y="546" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="bold" letter-spacing="3">SHARE</text>
+            </g>
+
+            <!-- Fan-out connection from Share to providers -->
+            <g id="fan-lines">
+                <line class="fan-line" x1="780" y1="570" x2="480" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="820" y1="570" x2="580" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="860" y1="570" x2="680" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="900" y1="570" x2="780" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="930" y1="570" x2="870" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="960" y1="570" x2="960" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="990" y1="570" x2="1050" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="1020" y1="570" x2="1140" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="1060" y1="570" x2="1230" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="1100" y1="570" x2="1320" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="1140" y1="570" x2="1400" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+                <line class="fan-line" x1="1180" y1="570" x2="1480" y2="760" stroke="#4b8df5" stroke-width="1.5" opacity="0.6"/>
+            </g>
+
+            <!-- 12 provider dots at bottom -->
+            <g id="provider-dots">
+                <circle class="prov-dot" cx="480" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="580" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="680" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="780" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="870" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="960" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="1050" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="1140" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="1230" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="1320" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="1400" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <circle class="prov-dot" cx="1480" cy="770" r="8" fill="#4b8df5" opacity="0.8"/>
+                <!-- Glow behind each dot -->
+                <circle cx="480" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="580" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="680" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="780" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="870" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="960" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="1050" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="1140" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="1230" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="1320" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="1400" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+                <circle cx="1480" cy="770" r="16" fill="url(#glow-blue)" filter="url(#blur-sm)" opacity="0.3"/>
+            </g>
+
+            <!-- Provider label -->
+            <text id="provider-label" x="960" y="830" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="2" opacity="0">12 INFRASTRUCTURE PROVIDERS</text>
+        </g>
+
+        <!-- ============================================= -->
+        <!-- BEAT 5: THE SCALE - Wide view, multiple ISPs  -->
+        <!-- ============================================= -->
+        <g id="scale-view" opacity="0">
+
+            <!-- Wide Share bar spanning screen -->
+            <g id="scale-share">
+                <rect x="180" y="510" width="1560" height="60" rx="8" fill="none" stroke="#10b981" stroke-width="2.5"/>
+                <rect x="180" y="510" width="1560" height="60" rx="8" fill="#10b981" fill-opacity="0.08"/>
+                <circle cx="960" cy="540" r="60" fill="url(#glow-green)" filter="url(#blur-lg)" opacity="0.3"/>
+                <text x="960" y="546" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="bold" letter-spacing="3">SHARE</text>
+            </g>
+
+            <!-- Multiple ISPs on top -->
+            <g id="scale-isps">
+                <!-- ISP 1 -->
+                <g class="scale-isp">
+                    <rect x="240" y="310" width="190" height="50" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+                    <rect x="240" y="310" width="190" height="50" rx="6" fill="#f59e0b" fill-opacity="0.06"/>
+                    <text x="335" y="341" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="1">ISP ALPHA</text>
+                    <line x1="335" y1="360" x2="335" y2="510" stroke="#34d399" stroke-width="1.5" opacity="0.6"/>
+                    <!-- User count -->
+                    <text x="335" y="296" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" opacity="0.6">45K USERS</text>
+                </g>
+                <!-- ISP 2 -->
+                <g class="scale-isp">
+                    <rect x="500" y="310" width="190" height="50" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+                    <rect x="500" y="310" width="190" height="50" rx="6" fill="#f59e0b" fill-opacity="0.06"/>
+                    <text x="595" y="341" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="1">ISP BETA</text>
+                    <line x1="595" y1="360" x2="595" y2="510" stroke="#34d399" stroke-width="1.5" opacity="0.6"/>
+                    <text x="595" y="296" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" opacity="0.6">120K USERS</text>
+                </g>
+                <!-- ISP 3 -->
+                <g class="scale-isp">
+                    <rect x="760" y="310" width="190" height="50" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+                    <rect x="760" y="310" width="190" height="50" rx="6" fill="#f59e0b" fill-opacity="0.06"/>
+                    <text x="855" y="341" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="1">ISP GAMMA</text>
+                    <line x1="855" y1="360" x2="855" y2="510" stroke="#34d399" stroke-width="1.5" opacity="0.6"/>
+                    <text x="855" y="296" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" opacity="0.6">80K USERS</text>
+                </g>
+                <!-- ISP 4 -->
+                <g class="scale-isp">
+                    <rect x="1020" y="310" width="190" height="50" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+                    <rect x="1020" y="310" width="190" height="50" rx="6" fill="#f59e0b" fill-opacity="0.06"/>
+                    <text x="1115" y="341" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="1">ISP DELTA</text>
+                    <line x1="1115" y1="360" x2="1115" y2="510" stroke="#34d399" stroke-width="1.5" opacity="0.6"/>
+                    <text x="1115" y="296" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" opacity="0.6">200K USERS</text>
+                </g>
+                <!-- ISP 5 -->
+                <g class="scale-isp">
+                    <rect x="1280" y="310" width="190" height="50" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+                    <rect x="1280" y="310" width="190" height="50" rx="6" fill="#f59e0b" fill-opacity="0.06"/>
+                    <text x="1375" y="341" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="1">ISP EPSILON</text>
+                    <line x1="1375" y1="360" x2="1375" y2="510" stroke="#34d399" stroke-width="1.5" opacity="0.6"/>
+                    <text x="1375" y="296" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" opacity="0.6">150K USERS</text>
+                </g>
+            </g>
+
+            <!-- Provider dots below (wider spread) -->
+            <g id="scale-providers">
+                <circle class="sprov" cx="240" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="360" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="480" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="600" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="720" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="840" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="960" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="1080" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="1200" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="1320" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="1440" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+                <circle class="sprov" cx="1560" cy="720" r="6" fill="#4b8df5" opacity="0.7"/>
+
+                <!-- Lines from Share to providers -->
+                <line class="sprov-line" x1="280" y1="570" x2="240" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="380" y1="570" x2="360" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="500" y1="570" x2="480" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="620" y1="570" x2="600" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="740" y1="570" x2="720" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="860" y1="570" x2="840" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="980" y1="570" x2="960" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="1100" y1="570" x2="1080" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="1220" y1="570" x2="1200" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="1340" y1="570" x2="1320" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="1460" y1="570" x2="1440" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+                <line class="sprov-line" x1="1580" y1="570" x2="1560" y2="714" stroke="#4b8df5" stroke-width="1" opacity="0.35"/>
+            </g>
+
+            <!-- Scale stats text -->
+            <g id="scale-numbers" opacity="0">
+                <text x="960" y="810" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="2" opacity="0.7">7 SUBSEA CABLES  ·  500+ KM FIBER  ·  10 DATA CENTERS</text>
+            </g>
+        </g>
+    </svg>
+</div>
+
+<!-- Vignette -->
+<div class="vignette"></div>
+
+<!-- Text overlays -->
+<div class="text-layer">
+    <div class="beat-text" id="text-0">
+        <div class="label">The Complexity</div>
+        <h2>You're 400km from the sea. Between you and bandwidth: 4 middlemen.</h2>
+        <p>5 contracts, and a mountain of upfront capital. The current internet supply chain is a tower of unnecessary layers.</p>
+    </div>
+    <div class="beat-text" id="text-1">
+        <div class="label red">The Cost</div>
+        <h2>Every layer takes a cut. Every contract locks capital.</h2>
+        <p>Every provider operates in isolation. The costs compound as you climb the stack, and you pay for capacity whether you use it or not.</p>
+    </div>
+    <div class="beat-text" id="text-2">
+        <div class="label green">The Collapse</div>
+        <h2>Share sits between the infrastructure and you.</h2>
+        <p>One contract. Every provider. No commits. Watch the unnecessary complexity dissolve into elegant simplicity.</p>
+    </div>
+    <div class="beat-text" id="text-3">
+        <div class="label green">The New Architecture</div>
+        <h2>Unlimited backhaul. 12 providers. One integration.</h2>
+        <p>No upfront fees. We only earn when you earn. A breathtakingly simple architecture replaces the tangled stack.</p>
+    </div>
+    <div class="beat-text" id="text-4">
+        <div class="label">The Scale</div>
+        <h2>Africa's shared backbone. The more networks join, the stronger everyone gets.</h2>
+        <p>From subsea cables to living rooms, Share enables any participant in the internet supply chain to deliver bandwidth more efficiently.</p>
+    </div>
+</div>
+
+<!-- Stats (Beat 5) -->
+<div class="text-layer">
+    <div class="stats-row" id="stats">
+        <div class="stat">
+            <div class="number">7</div>
+            <div class="unit">subsea cables</div>
+        </div>
+        <div class="stat">
+            <div class="number">500+</div>
+            <div class="unit">km fiber</div>
+        </div>
+        <div class="stat">
+            <div class="number">10</div>
+            <div class="unit">data centers</div>
+        </div>
+        <div class="stat">
+            <div class="number">8M+</div>
+            <div class="unit">people covered</div>
+        </div>
+        <div class="stat">
+            <div class="number">12</div>
+            <div class="unit">infrastructure providers</div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll spacer -->
+<div class="scroll-spacer" id="scroll-spacer"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <h2>One contract. One network.<br>One financial layer.</h2>
+    <p>The complexity is gone. What remains is a single integration that connects you to all of Africa's bandwidth.</p>
+    <button class="cta-button">Get Started</button>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const beats = 5;
+const spacer = document.getElementById('scroll-spacer');
+const dots = document.querySelectorAll('.progress-dot');
+
+// -- Intro fade out --
+gsap.to('#intro', {
+    opacity: 0,
+    pointerEvents: 'none',
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: '+=300',
+        scrub: 0.5,
+    }
+});
+
+// -- Main scroll timeline --
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        onUpdate: (self) => {
+            const p = self.progress;
+            const beat = Math.min(4, Math.floor(p * beats));
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === beat);
+            });
+        }
+    }
+});
+
+// ======================================
+// BEAT 1 — The Complexity (0 - 2)
+// Supply chain layers appear from bottom to top
+// ======================================
+
+tl.to('#text-0', { opacity: 1, duration: 0.4 }, 0);
+
+// Subsea cable fades in first
+tl.to('#layer-subsea', { opacity: 1, duration: 0.5 }, 0.1);
+
+// Layers appear one by one, bottom to top
+tl.to('#layer-carrier', { opacity: 1, duration: 0.4 }, 0.3);
+tl.to('#layer-reseller', { opacity: 1, duration: 0.4 }, 0.5);
+tl.to('#layer-regional', { opacity: 1, duration: 0.4 }, 0.7);
+tl.to('#layer-isp', { opacity: 1, duration: 0.4 }, 0.9);
+
+// Tangled lines appear
+tl.to('#tangle-lines', { opacity: 1, duration: 0.6 }, 0.6);
+
+// Contract documents float in
+tl.to('#contracts', { opacity: 1, duration: 0.5 }, 0.8);
+tl.fromTo('.contract', { scale: 0.7 }, {
+    scale: 1,
+    duration: 0.4,
+    stagger: 0.08,
+}, 0.8);
+
+// Fade out beat 1 text
+tl.to('#text-0', { opacity: 0, duration: 0.3 }, 1.8);
+
+
+// ======================================
+// BEAT 2 — The Cost (2 - 4)
+// Cost labels stack up, red intensifies
+// ======================================
+
+tl.to('#text-1', { opacity: 1, duration: 0.4 }, 2);
+
+// Cost labels appear one by one (bottom to top)
+tl.to('.cost-label', {
+    opacity: 1,
+    duration: 0.4,
+    stagger: 0.15,
+}, 2.1);
+
+// Cost labels container
+tl.to('#cost-labels', { opacity: 1, duration: 0.3 }, 2);
+
+// Arrow appears
+tl.to('#cost-arrow', { opacity: 1, duration: 0.6 }, 2.6);
+
+// Red overlay intensifies
+tl.to('#red-overlay', { opacity: 1, duration: 0.8 }, 2.3);
+tl.to('#red-overlay rect', {
+    attr: { 'fill-opacity': 0.12 },
+    duration: 0.8,
+}, 2.8);
+
+// Contracts pulse red
+tl.to('.contract rect', {
+    stroke: '#f87171',
+    strokeWidth: 2,
+    duration: 0.5,
+}, 2.5);
+
+// Layer borders shift slightly red
+tl.to('#layer-carrier rect:first-child', { stroke: '#7f4444', duration: 0.6 }, 2.5);
+tl.to('#layer-reseller rect:first-child', { stroke: '#7f4444', duration: 0.6 }, 2.5);
+tl.to('#layer-regional rect:first-child', { stroke: '#7f4444', duration: 0.6 }, 2.5);
+
+tl.to('#text-1', { opacity: 0, duration: 0.3 }, 3.8);
+
+
+// ======================================
+// BEAT 3 — The Collapse (4 - 6)
+// HERO MOMENT: Layers compress into Share
+// ======================================
+
+tl.to('#text-2', { opacity: 1, duration: 0.4 }, 4);
+
+// Contracts dissolve
+tl.to('.contract', {
+    opacity: 0,
+    scale: 0.3,
+    duration: 0.6,
+    stagger: 0.05,
+}, 4.1);
+tl.to('#contracts', { opacity: 0, duration: 0.5 }, 4.3);
+
+// Cost labels fade
+tl.to('#cost-labels', { opacity: 0, duration: 0.5 }, 4.1);
+tl.to('#cost-arrow', { opacity: 0, duration: 0.3 }, 4.1);
+tl.to('#red-overlay', { opacity: 0, duration: 0.5 }, 4.1);
+
+// THE COLLAPSE: layers compress toward center y=540
+// Subsea cable (from y=880) moves up
+tl.to('#layer-subsea', {
+    y: -340,
+    duration: 1.2,
+    ease: 'power2.inOut',
+}, 4.3);
+
+// Carrier (from y=710) moves up
+tl.to('#layer-carrier', {
+    y: -170,
+    duration: 1.2,
+    ease: 'power2.inOut',
+}, 4.35);
+
+// Reseller (from y=560) moves slightly down
+tl.to('#layer-reseller', {
+    y: -20,
+    duration: 1.2,
+    ease: 'power2.inOut',
+}, 4.4);
+
+// Regional (from y=410) moves down
+tl.to('#layer-regional', {
+    y: 130,
+    duration: 1.2,
+    ease: 'power2.inOut',
+}, 4.45);
+
+// ISP (from y=260) moves down
+tl.to('#layer-isp', {
+    y: 280,
+    duration: 1.2,
+    ease: 'power2.inOut',
+}, 4.5);
+
+// Tangle lines compress and fade
+tl.to('#tangle-lines', {
+    opacity: 0,
+    scaleY: 0.1,
+    transformOrigin: 'center center',
+    duration: 1,
+    ease: 'power2.inOut',
+}, 4.3);
+
+// As layers reach center, they fade out and Share bar appears
+tl.to('#layer-subsea', { opacity: 0, duration: 0.4 }, 5.2);
+tl.to('#layer-carrier', { opacity: 0, duration: 0.4 }, 5.2);
+tl.to('#layer-reseller', { opacity: 0, duration: 0.4 }, 5.2);
+tl.to('#layer-regional', { opacity: 0, duration: 0.4 }, 5.2);
+tl.to('#layer-isp', { opacity: 0, duration: 0.4 }, 5.2);
+
+// Share bar appears with a satisfying pop
+tl.fromTo('#share-bar', {
+    opacity: 0,
+    scaleX: 0.3,
+    scaleY: 0.5,
+    transformOrigin: 'center center',
+}, {
+    opacity: 1,
+    scaleX: 1,
+    scaleY: 1,
+    duration: 0.6,
+    ease: 'back.out(1.7)',
+}, 5.3);
+
+tl.to('#text-2', { opacity: 0, duration: 0.3 }, 5.8);
+
+
+// ======================================
+// BEAT 4 — The New Architecture (6 - 8)
+// Clean 3-layer diagram
+// ======================================
+
+tl.to('#text-3', { opacity: 1, duration: 0.4 }, 6);
+
+// Hide the standalone Share bar (new-arch has its own)
+tl.to('#share-bar', { opacity: 0, duration: 0.3 }, 6);
+
+// Show new architecture
+tl.to('#new-arch', { opacity: 1, duration: 0.3 }, 6.1);
+
+// ISP rect fades in
+tl.fromTo('#new-isp', { opacity: 0, y: -30 }, {
+    opacity: 1,
+    y: 0,
+    duration: 0.5,
+    ease: 'power2.out',
+}, 6.2);
+
+// Connection line draws
+tl.fromTo('#conn-isp-share', {
+    attr: { y2: 336 },
+}, {
+    attr: { y2: 510 },
+    duration: 0.5,
+    ease: 'power2.out',
+}, 6.4);
+
+// Fan lines appear with stagger
+tl.fromTo('.fan-line', {
+    opacity: 0,
+    attr: { y2: 570 },
+}, {
+    opacity: 0.6,
+    attr: { y2: 760 },
+    duration: 0.5,
+    stagger: 0.04,
+    ease: 'power2.out',
+}, 6.5);
+
+// Provider dots pop in
+tl.fromTo('.prov-dot', {
+    attr: { r: 0 },
+}, {
+    attr: { r: 8 },
+    duration: 0.4,
+    stagger: 0.03,
+    ease: 'back.out(2)',
+}, 6.7);
+
+// Provider label
+tl.to('#provider-label', { opacity: 0.7, duration: 0.4 }, 7.0);
+
+tl.to('#text-3', { opacity: 0, duration: 0.3 }, 7.8);
+
+
+// ======================================
+// BEAT 5 — The Scale (8 - 10)
+// Zoom out: multiple ISPs, wider Share bar
+// ======================================
+
+tl.to('#text-4', { opacity: 1, duration: 0.4 }, 8);
+tl.to('#stats', { opacity: 1, duration: 0.6 }, 8.2);
+
+// Hide beat 4 architecture
+tl.to('#new-arch', { opacity: 0, duration: 0.5 }, 8);
+
+// Show scale view
+tl.to('#scale-view', { opacity: 1, duration: 0.3 }, 8.2);
+
+// Share bar extends wide
+tl.fromTo('#scale-share', {
+    opacity: 0,
+    scaleX: 0.4,
+    transformOrigin: 'center center',
+}, {
+    opacity: 1,
+    scaleX: 1,
+    duration: 0.8,
+    ease: 'power2.out',
+}, 8.2);
+
+// ISPs appear with stagger
+tl.fromTo('.scale-isp', {
+    opacity: 0,
+    y: -20,
+}, {
+    opacity: 1,
+    y: 0,
+    duration: 0.5,
+    stagger: 0.1,
+    ease: 'power2.out',
+}, 8.4);
+
+// Provider dots below
+tl.fromTo('.sprov', {
+    attr: { r: 0 },
+}, {
+    attr: { r: 6 },
+    duration: 0.3,
+    stagger: 0.03,
+    ease: 'back.out(2)',
+}, 8.6);
+
+// Provider connection lines
+tl.fromTo('.sprov-line', {
+    opacity: 0,
+}, {
+    opacity: 0.35,
+    duration: 0.4,
+    stagger: 0.02,
+}, 8.7);
+
+// Scale numbers
+tl.to('#scale-numbers', { opacity: 1, duration: 0.5 }, 8.8);
+
+// Fade out everything at end
+tl.to('#text-4', { opacity: 0, duration: 0.5 }, 9.5);
+tl.to('#stats', { opacity: 0, duration: 0.4 }, 9.5);
+tl.to('#scene', { opacity: 0, duration: 0.8 }, 9.5);
+tl.to('#progress', { opacity: 0, duration: 0.5 }, 9.5);
+</script>
+
+</body>
+</html>

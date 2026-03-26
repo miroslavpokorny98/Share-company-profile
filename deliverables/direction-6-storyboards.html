@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction 6 — Three Versions Storyboard</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --card: #111118;
+            --card-border: #1e1e2a;
+            --text: #e0e0e8;
+            --text-muted: #7a7a8e;
+            --accent-a: #38bdf8;
+            --accent-b: #3b82f6;
+            --accent-c: #a78bfa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 0 24px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        header {
+            padding: 80px 0 48px;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 60px;
+        }
+        header h1 { font-size: 32px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+        header p { color: var(--text-muted); font-size: 15px; max-width: 720px; }
+
+        .narrative-box {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin-top: 32px;
+        }
+        .narrative-box h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        .narrative-box ol {
+            padding-left: 20px;
+            color: var(--text);
+            font-size: 14px;
+        }
+        .narrative-box ol li { margin-bottom: 10px; }
+        .narrative-box ol li strong { color: #fff; }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .audience-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+        .audience-item .role {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .audience-item p { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+        /* Direction Card */
+        .direction {
+            margin-bottom: 80px;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--card);
+        }
+        .direction-header {
+            padding: 36px 40px 28px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .direction-number {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 18px; flex-shrink: 0; color: #fff;
+        }
+        .direction-header-text h2 { font-size: 24px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+        .direction-header-text .subtitle { color: var(--text-muted); font-size: 14px; }
+
+        .direction-meta {
+            padding: 0 40px 28px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .meta-item { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 14px 16px; }
+        .meta-item label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; }
+        .meta-item p { font-size: 13px; font-weight: 500; }
+
+        .storyboard { padding: 0 40px 36px; }
+        .storyboard-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); margin-bottom: 16px; }
+        .storyboard-panels { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+        .panel { border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); }
+        .panel-visual {
+            height: 360px; display: flex; align-items: flex-end; justify-content: flex-start;
+            padding: 16px; position: relative; overflow: hidden;
+        }
+        .panel-visual .visual-label {
+            font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
+            color: rgba(255,255,255,0.7); text-align: left; z-index: 2;
+            text-shadow: 0 1px 8px rgba(0,0,0,0.8); padding-bottom: 4px;
+        }
+        .panel-visual svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.5; }
+
+        .panel-info { padding: 14px 16px; background: rgba(255,255,255,0.02); }
+        .panel-info .beat { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; }
+        .panel-info .description { font-size: 12px; color: var(--text); line-height: 1.5; }
+        .panel-info .copy-hint { font-size: 11px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+
+        .direction-analysis {
+            padding: 0 40px 36px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .analysis-box { border-radius: 10px; padding: 20px 24px; }
+        .analysis-box.strengths { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.15); }
+        .analysis-box.risks { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.15); }
+        .analysis-box h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .analysis-box.strengths h4 { color: #10b981; }
+        .analysis-box.risks h4 { color: #ef4444; }
+        .analysis-box ul { list-style: none; padding: 0; }
+        .analysis-box li { font-size: 13px; padding: 4px 0; padding-left: 16px; position: relative; color: var(--text); }
+        .analysis-box li::before { content: ''; position: absolute; left: 0; top: 11px; width: 6px; height: 6px; border-radius: 50%; }
+        .analysis-box.strengths li::before { background: #10b981; }
+        .analysis-box.risks li::before { background: #ef4444; }
+
+        .v-cyan { background: radial-gradient(ellipse at center, #081a28 0%, #0a0a0f 100%); }
+        .v-blue { background: radial-gradient(ellipse at center, #0a1428 0%, #0a0a0f 100%); }
+        .v-purple { background: radial-gradient(ellipse at center, #120a20 0%, #0a0a0f 100%); }
+        .v-warm { background: radial-gradient(ellipse at center, #1a1208 0%, #0a0a0f 100%); }
+        .v-glow { background: radial-gradient(ellipse at center, #0f1a3d 0%, #0a0a0f 100%); }
+        .v-dark { background: radial-gradient(ellipse at center, #0d1526 0%, #0a0a0f 100%); }
+
+        .comparison {
+            margin: 40px 0 100px;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--card);
+        }
+        .comparison h2 { padding: 32px 40px 24px; font-size: 22px; font-weight: 700; }
+        .comparison table { width: 100%; border-collapse: collapse; }
+        .comparison th, .comparison td { padding: 14px 20px; text-align: left; font-size: 13px; border-top: 1px solid var(--card-border); }
+        .comparison th { color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; background: rgba(255,255,255,0.02); }
+        .comparison td:first-child { font-weight: 600; white-space: nowrap; }
+
+        footer { padding: 40px 0 80px; border-top: 1px solid var(--card-border); color: var(--text-muted); font-size: 13px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>Direction 6 — Three Versions</h1>
+    <p>Same narrative arc, three different entry points. All follow: Problem &rarr; Share as Solution &rarr; ISP Growth &rarr; Ecosystem &rarr; Africa Vision. The difference is where and how we start.</p>
+
+    <div class="narrative-box">
+        <h3>Shared Narrative Arc</h3>
+        <ol>
+            <li><strong>The Problem:</strong> An ocean of data on one side, scarcity on the other. Existing infrastructure not connected, not coordinated. Cables exist but don't talk to each other. Missing potential.</li>
+            <li><strong>Share Connects:</strong> Share enters as the coordination layer. Bundles get connected. Data floods through. Speed becomes palpable.</li>
+            <li><strong>The ISP Grows:</strong> Zoom out — that was one ISP plugging in. Their coverage expands, users multiply, revenue grows.</li>
+            <li><strong>The Ecosystem:</strong> More ISPs join. Each connection strengthens everyone. The network is dense, active, alive.</li>
+            <li><strong>Africa Connected:</strong> Full zoom out. Share has connected the continent. Subsea cables to the world. The vision.</li>
+        </ol>
+    </div>
+
+    <div class="narrative-box">
+        <h3>What each audience takes away from the homepage</h3>
+        <div class="audience-grid">
+            <div class="audience-item">
+                <div class="role">ISP Provider</div>
+                <p>"This solves my problem. I want to plug in, simplify my life, and grow through them."</p>
+            </div>
+            <div class="audience-item">
+                <div class="role">Infrastructure Provider</div>
+                <p>"They utilize underused infrastructure that I also have. I want to be in their ecosystem."</p>
+            </div>
+            <div class="audience-item">
+                <div class="role">Investor</div>
+                <p>"They don't build their own infrastructure — it won't cost billions. Smart business model."</p>
+            </div>
+            <div class="audience-item">
+                <div class="role">End User</div>
+                <p>"I want blazing fast internet. This network is amazing — how can I use it?"</p>
+            </div>
+            <div class="audience-item">
+                <div class="role">Government</div>
+                <p>"They help local businesses grow. They're good for Africa."</p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- VERSION A: Ocean of Data -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="direction">
+    <div class="direction-header">
+        <div class="direction-number" style="background: var(--accent-a);">A</div>
+        <div class="direction-header-text">
+            <h2>Ocean of Data</h2>
+            <div class="subtitle">Starts with the raw contrast — abundance vs. scarcity, one thin cable between them</div>
+        </div>
+    </div>
+
+    <div class="direction-meta">
+        <div class="meta-item">
+            <label>Opening Hook</label>
+            <p>The imbalance: a sea of data on one side, near-darkness on the other</p>
+        </div>
+        <div class="meta-item">
+            <label>Visual Style</label>
+            <p>Particle cloud + fiber bundles. Data as blinking light dots/dashes.</p>
+        </div>
+        <div class="meta-item">
+            <label>Emotional Arc</label>
+            <p>Frustration &rarr; breakthrough &rarr; expansion &rarr; ecosystem &rarr; vision</p>
+        </div>
+        <div class="meta-item">
+            <label>Key Moment</label>
+            <p>Beat 2: Share connects the bundles and data FLOODS through. Speed is palpable.</p>
+        </div>
+    </div>
+
+    <div class="storyboard">
+        <div class="storyboard-label">Scroll Storyboard — 5 Beats</div>
+        <div class="storyboard-panels">
+            <div class="panel">
+                <div class="panel-visual v-cyan">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Left: dense data cloud -->
+                        <circle cx="25" cy="40" r="1.5" fill="#38bdf8" opacity="0.8"/>
+                        <circle cx="35" cy="55" r="1" fill="#93c5fd" opacity="0.7"/>
+                        <circle cx="18" cy="70" r="1.5" fill="#38bdf8" opacity="0.6"/>
+                        <circle cx="45" cy="35" r="1" fill="#60a5fa" opacity="0.8"/>
+                        <circle cx="30" cy="85" r="1.5" fill="#38bdf8" opacity="0.7"/>
+                        <circle cx="50" cy="65" r="1" fill="#93c5fd" opacity="0.6"/>
+                        <circle cx="15" cy="95" r="1" fill="#60a5fa" opacity="0.7"/>
+                        <circle cx="40" cy="100" r="1.5" fill="#38bdf8" opacity="0.5"/>
+                        <circle cx="55" cy="50" r="1" fill="#38bdf8" opacity="0.8"/>
+                        <circle cx="20" cy="110" r="1" fill="#93c5fd" opacity="0.6"/>
+                        <circle cx="48" cy="80" r="1.5" fill="#60a5fa" opacity="0.7"/>
+                        <circle cx="28" cy="120" r="1" fill="#38bdf8" opacity="0.5"/>
+                        <!-- Converging fiber bundle -->
+                        <line x1="55" y1="50" x2="80" y2="78" stroke="#38bdf8" stroke-width="1.5" opacity="0.4"/>
+                        <line x1="50" y1="65" x2="80" y2="80" stroke="#60a5fa" stroke-width="1.5" opacity="0.35"/>
+                        <line x1="45" y1="85" x2="80" y2="82" stroke="#38bdf8" stroke-width="1.5" opacity="0.3"/>
+                        <!-- Thin single cable to right -->
+                        <line x1="80" y1="80" x2="120" y2="80" stroke="#3b82f6" stroke-width="0.8" opacity="0.3" stroke-dasharray="3,3"/>
+                        <!-- Right: sparse, dim -->
+                        <line x1="120" y1="80" x2="145" y2="60" stroke="#1e3a5f" stroke-width="1" opacity="0.2"/>
+                        <line x1="120" y1="80" x2="150" y2="80" stroke="#1e3a5f" stroke-width="1" opacity="0.2"/>
+                        <line x1="120" y1="80" x2="140" y2="100" stroke="#1e3a5f" stroke-width="1" opacity="0.2"/>
+                        <circle cx="155" cy="65" r="0.8" fill="#3565a8" opacity="0.3"/>
+                        <circle cx="160" cy="85" r="0.8" fill="#3565a8" opacity="0.2"/>
+                        <!-- Labels -->
+                        <text x="30" y="135" fill="#38bdf8" font-size="5" font-family="monospace" opacity="0.5" text-anchor="middle">GLOBAL BANDWIDTH</text>
+                        <text x="155" y="120" fill="#3565a8" font-size="5" font-family="monospace" opacity="0.4" text-anchor="middle">AFRICA</text>
+                        <text x="100" y="72" fill="#60a5fa" font-size="4" font-family="monospace" opacity="0.3" text-anchor="middle">1 fragmented link</text>
+                    </svg>
+                    <div class="visual-label">Abundance vs. scarcity<br>one thin cable between</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 1 — The Imbalance</div>
+                    <div class="description">LEFT: Dense cloud of bright data particles (blinking dots, dashes) — the world's bandwidth abundance — converging into a thick fiber bundle. RIGHT: Sparse, dim cables with barely any data. A single thin dashed cable connects them. The contrast is stark — a sea of potential on one side, near-darkness on the other.</div>
+                    <div class="copy-hint">"The bandwidth exists. 7 subsea cables have landed. But Africa's infrastructure runs in parallel, not together. 600 million people remain unconnected."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-glow">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Share connector in center -->
+                        <circle cx="100" cy="80" r="8" fill="#1d4ed8" opacity="0.7"/>
+                        <circle cx="100" cy="80" r="14" fill="none" stroke="#3b82f6" stroke-width="0.8" opacity="0.4"/>
+                        <!-- Multiple thick cables now connecting through Share -->
+                        <line x1="20" y1="60" x2="100" y2="80" stroke="#60a5fa" stroke-width="2" opacity="0.5"/>
+                        <line x1="15" y1="80" x2="100" y2="80" stroke="#38bdf8" stroke-width="2" opacity="0.45"/>
+                        <line x1="25" y1="100" x2="100" y2="80" stroke="#60a5fa" stroke-width="1.8" opacity="0.4"/>
+                        <!-- Unexpected new bundles -->
+                        <line x1="60" y1="25" x2="100" y2="80" stroke="#3b82f6" stroke-width="1.5" opacity="0.35"/>
+                        <line x1="50" y1="135" x2="100" y2="80" stroke="#3b82f6" stroke-width="1.5" opacity="0.35"/>
+                        <!-- Thick cables out to right -->
+                        <line x1="100" y1="80" x2="170" y2="55" stroke="#60a5fa" stroke-width="2" opacity="0.5"/>
+                        <line x1="100" y1="80" x2="175" y2="80" stroke="#38bdf8" stroke-width="2" opacity="0.45"/>
+                        <line x1="100" y1="80" x2="165" y2="105" stroke="#60a5fa" stroke-width="1.8" opacity="0.4"/>
+                        <!-- Data racing through -->
+                        <circle cx="60" cy="70" r="1.5" fill="#93c5fd" opacity="0.8"/>
+                        <circle cx="75" cy="78" r="1.5" fill="#38bdf8" opacity="0.7"/>
+                        <circle cx="125" cy="75" r="1.5" fill="#93c5fd" opacity="0.8"/>
+                        <circle cx="145" cy="68" r="1.5" fill="#38bdf8" opacity="0.7"/>
+                        <circle cx="140" cy="85" r="1.5" fill="#93c5fd" opacity="0.6"/>
+                        <circle cx="155" cy="95" r="1.5" fill="#38bdf8" opacity="0.7"/>
+                    </svg>
+                    <div class="visual-label">Share connects —<br>data floods through</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 2 — Share Connects</div>
+                    <div class="description">Share appears as a hub in the middle. The thin cable transforms — Share bridges the two bundles. Additional cable bundles appear from unexpected directions (hidden/underutilized infrastructure). All connect through Share. Data floods from left to right — the trickle becomes a torrent. Light races through the cables. The speed is palpable.</div>
+                    <div class="copy-hint">"Share is the coordination layer. Not a new network — the connective tissue that turns fragmented infrastructure into one. Unlimited backhaul. No upfront commits."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-warm">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Backbone line -->
+                        <line x1="20" y1="100" x2="100" y2="100" stroke="#3b82f6" stroke-width="2" opacity="0.3"/>
+                        <!-- Share node -->
+                        <circle cx="40" cy="100" r="5" fill="#1d4ed8" opacity="0.5"/>
+                        <!-- ISP node -->
+                        <circle cx="120" cy="80" r="10" fill="#f59e0b" opacity="0.2"/>
+                        <circle cx="120" cy="80" r="6" fill="#f59e0b" opacity="0.8"/>
+                        <text x="120" y="83" text-anchor="middle" fill="#04060c" font-size="5" font-weight="bold">ISP</text>
+                        <!-- Connection to backbone -->
+                        <line x1="100" y1="100" x2="120" y2="86" stroke="#3b82f6" stroke-width="1.5" opacity="0.3"/>
+                        <!-- Expanded coverage circle -->
+                        <circle cx="120" cy="80" r="45" fill="none" stroke="#f59e0b" stroke-width="0.5" opacity="0.15"/>
+                        <!-- User dots multiplying -->
+                        <circle cx="140" cy="55" r="1.5" fill="#fbbf24" opacity="0.6"/>
+                        <circle cx="155" cy="70" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                        <circle cx="160" cy="90" r="1.5" fill="#fbbf24" opacity="0.6"/>
+                        <circle cx="150" cy="105" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                        <circle cx="135" cy="120" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                        <circle cx="105" cy="115" r="1.5" fill="#fbbf24" opacity="0.6"/>
+                        <circle cx="90" cy="65" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                        <circle cx="100" cy="50" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                        <circle cx="85" cy="85" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                        <circle cx="145" cy="45" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="165" cy="80" r="1" fill="#fbbf24" opacity="0.3"/>
+                    </svg>
+                    <div class="visual-label">Zoom out — one ISP<br>coverage explodes</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 3 — The ISP Grows</div>
+                    <div class="description">Zoom out. We discover that the right side was actually ONE ISP node that just connected to Share's backbone. The ISP's coverage area expands dramatically — user dots multiply. The ISP is reaching more people, data flowing freely. Growth is immediate and visible.</div>
+                    <div class="copy-hint">"One ISP plugs in. Coverage expands. Users multiply. Revenue grows. We only earn when they earn."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-glow">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Backbone spanning screen -->
+                        <line x1="10" y1="80" x2="190" y2="80" stroke="#3b82f6" stroke-width="2" opacity="0.25"/>
+                        <!-- Share nodes on backbone -->
+                        <circle cx="50" cy="80" r="4" fill="#1d4ed8" opacity="0.5"/>
+                        <circle cx="100" cy="80" r="4" fill="#1d4ed8" opacity="0.5"/>
+                        <circle cx="150" cy="80" r="4" fill="#1d4ed8" opacity="0.5"/>
+                        <!-- Multiple ISPs -->
+                        <circle cx="35" cy="45" r="4" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="70" cy="35" r="5" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="110" cy="40" r="4" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="145" cy="42" r="4.5" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="170" cy="50" r="3.5" fill="#f59e0b" opacity="0.6"/>
+                        <circle cx="55" cy="120" r="4" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="130" cy="115" r="4.5" fill="#f59e0b" opacity="0.7"/>
+                        <!-- Connections -->
+                        <line x1="35" y1="49" x2="50" y2="76" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="70" y1="40" x2="50" y2="76" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="110" y1="44" x2="100" y2="76" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="145" y1="47" x2="150" y2="76" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="170" y1="54" x2="150" y2="76" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="55" y1="116" x2="50" y2="84" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="130" y1="111" x2="150" y2="84" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <!-- User clusters around each ISP -->
+                        <circle cx="25" cy="35" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="45" cy="35" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="60" cy="25" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="80" cy="28" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="100" cy="30" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="120" cy="32" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="155" cy="32" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="135" cy="36" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="180" cy="45" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="45" cy="130" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="65" cy="130" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="120" cy="125" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="140" cy="123" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <!-- Data pulses -->
+                        <circle cx="75" cy="78" r="1.5" fill="#93c5fd" opacity="0.6"/>
+                        <circle cx="125" cy="82" r="1.5" fill="#93c5fd" opacity="0.5"/>
+                    </svg>
+                    <div class="visual-label">Ecosystem — multiple ISPs<br>network strengthens</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 4 — The Ecosystem</div>
+                    <div class="description">Zoom out more. More ISP nodes appear — they've also connected to the Share backbone. Each has its own cluster of users. The backbone runs between them all. The network is dense, active, alive. Data pulses flow everywhere. Each new ISP makes the whole network stronger.</div>
+                    <div class="copy-hint">"More partners join. More coverage. More redundancy. The ecosystem grows stronger with every connection."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-blue">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Simplified Africa outline -->
+                        <ellipse cx="100" cy="80" rx="50" ry="60" fill="none" stroke="#3b82f6" stroke-width="0.8" opacity="0.2"/>
+                        <!-- Dense network inside -->
+                        <circle cx="85" cy="50" r="1" fill="#f59e0b" opacity="0.5"/>
+                        <circle cx="105" cy="55" r="1" fill="#f59e0b" opacity="0.5"/>
+                        <circle cx="95" cy="70" r="1.5" fill="#f59e0b" opacity="0.6"/>
+                        <circle cx="80" cy="85" r="1" fill="#f59e0b" opacity="0.5"/>
+                        <circle cx="110" cy="80" r="1" fill="#f59e0b" opacity="0.5"/>
+                        <circle cx="100" cy="95" r="1.5" fill="#f59e0b" opacity="0.6"/>
+                        <circle cx="90" cy="110" r="1" fill="#f59e0b" opacity="0.4"/>
+                        <circle cx="105" cy="105" r="1" fill="#f59e0b" opacity="0.4"/>
+                        <!-- Backbone through center -->
+                        <line x1="60" y1="75" x2="140" y2="85" stroke="#3b82f6" stroke-width="1.5" opacity="0.3"/>
+                        <!-- Subsea cables to edges -->
+                        <line x1="140" y1="85" x2="195" y2="50" stroke="#60a5fa" stroke-width="1" opacity="0.3"/>
+                        <line x1="140" y1="85" x2="195" y2="110" stroke="#60a5fa" stroke-width="1" opacity="0.25"/>
+                        <line x1="60" y1="75" x2="5" y2="60" stroke="#60a5fa" stroke-width="1" opacity="0.25"/>
+                        <line x1="60" y1="75" x2="5" y2="100" stroke="#60a5fa" stroke-width="1" opacity="0.2"/>
+                        <!-- Vision numbers -->
+                        <text x="100" y="145" fill="#60a5fa" font-size="5" font-family="monospace" opacity="0.5" text-anchor="middle">1M+ users · 100K+ km fiber · 30+ DCs</text>
+                    </svg>
+                    <div class="visual-label">Africa connected —<br>the vision</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 5 — Africa Connected</div>
+                    <div class="description">Final zoom out. The entire network spans across Africa. The backbone connects coast to coast. ISPs dot the continent. Users are everywhere. Subsea cables extend to screen edges — connecting Africa to the world. Vision numbers: "1M+ users, 100K+ km fiber, 30+ data centers."</div>
+                    <div class="copy-hint">"Africa's shared backbone. Connected to the world. The future of internet infrastructure starts here."</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="direction-analysis">
+        <div class="analysis-box strengths">
+            <h4>Strengths</h4>
+            <ul>
+                <li>The imbalance hook is immediately visceral — anyone understands abundance vs. scarcity</li>
+                <li>Data as visible light/particles makes "bandwidth" tangible for non-technical visitors</li>
+                <li>The moment data floods through is emotionally powerful — relief + speed</li>
+                <li>Works for all audiences: ISPs see the problem they live, investors see the opportunity, end users see the speed</li>
+                <li>The progressive zoom-out is a series of revelations — each one bigger than the last</li>
+            </ul>
+        </div>
+        <div class="analysis-box risks">
+            <h4>Risks</h4>
+            <ul>
+                <li>Particle-heavy first beat needs careful performance optimization for Android/slow connections</li>
+                <li>"Left vs. right" framing is more abstract — doesn't show physical infrastructure like cables and towers</li>
+                <li>The problem beat may feel negative for the first few seconds before the solution arrives</li>
+                <li>Needs very strong copy to anchor what the particles represent</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- VERSION B: Infrastructure Ready -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="direction">
+    <div class="direction-header">
+        <div class="direction-number" style="background: var(--accent-b);">B</div>
+        <div class="direction-header-text">
+            <h2>Infrastructure Ready</h2>
+            <div class="subtitle">Starts with a confident tour of existing infrastructure — then reveals none of it talks to each other</div>
+        </div>
+    </div>
+
+    <div class="direction-meta">
+        <div class="meta-item">
+            <label>Opening Hook</label>
+            <p>Tour existing infra: cables, towers, DCs. It's all there. Impressive — until it isn't.</p>
+        </div>
+        <div class="meta-item">
+            <label>Visual Style</label>
+            <p>Infrastructure icons appearing confidently, then disconnecting/dimming. Bait and switch.</p>
+        </div>
+        <div class="meta-item">
+            <label>Emotional Arc</label>
+            <p>Confidence &rarr; unease &rarr; relief &rarr; growth &rarr; awe</p>
+        </div>
+        <div class="meta-item">
+            <label>Key Moment</label>
+            <p>Beat 2: Everything that looked impressive starts DISCONNECTING. Unsettling.</p>
+        </div>
+    </div>
+
+    <div class="storyboard">
+        <div class="storyboard-label">Scroll Storyboard — 6 Beats</div>
+        <div class="storyboard-panels">
+            <div class="panel">
+                <div class="panel-visual v-blue">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Subsea cables -->
+                        <line x1="10" y1="130" x2="190" y2="130" stroke="#60a5fa" stroke-width="2" opacity="0.4"/>
+                        <!-- Data centers -->
+                        <rect x="40" y="85" width="18" height="18" rx="2" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.6"/>
+                        <circle cx="46" cy="92" r="1.5" fill="#10b981" opacity="0.6"/>
+                        <rect x="120" y="82" width="20" height="20" rx="2" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.6"/>
+                        <circle cx="126" cy="89" r="1.5" fill="#10b981" opacity="0.6"/>
+                        <!-- Towers -->
+                        <line x1="80" y1="70" x2="80" y2="40" stroke="#60a5fa" stroke-width="1.5" opacity="0.5"/>
+                        <line x1="73" y1="45" x2="87" y2="45" stroke="#60a5fa" stroke-width="1" opacity="0.4"/>
+                        <line x1="160" y1="75" x2="160" y2="50" stroke="#60a5fa" stroke-width="1.5" opacity="0.5"/>
+                        <line x1="154" y1="55" x2="166" y2="55" stroke="#60a5fa" stroke-width="1" opacity="0.4"/>
+                        <!-- Fiber connecting -->
+                        <line x1="58" y1="94" x2="120" y2="92" stroke="#3b82f6" stroke-width="0.8" opacity="0.3"/>
+                        <line x1="80" y1="70" x2="49" y2="85" stroke="#3b82f6" stroke-width="0.8" opacity="0.3"/>
+                        <!-- Stats -->
+                        <text x="100" y="20" fill="#60a5fa" font-size="5" font-family="monospace" opacity="0.5" text-anchor="middle">7 subsea · 10 DCs · 500+ km fiber</text>
+                    </svg>
+                    <div class="visual-label">Infrastructure tour —<br>it's all here</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 1 — The Infrastructure Tour</div>
+                    <div class="description">Elements appear one by one with confident energy: subsea cables (thick glowing lines), data centers (rectangle outlines with LED dots), cell towers (vertical lines with cross-arms), fiber routes, antennas. Numbers: "7 subsea cables. 10 data centers. 500+ km fiber." It all looks impressive.</div>
+                    <div class="copy-hint">"The infrastructure exists. Subsea cables have landed. Towers are up. Fiber stretches across the continent. The capacity is here."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-dark">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Same elements but disconnected, dimmed, drifted apart -->
+                        <rect x="30" y="75" width="18" height="18" rx="2" fill="none" stroke="#3565a8" stroke-width="0.8" opacity="0.25" stroke-dasharray="3,2"/>
+                        <rect x="135" y="90" width="20" height="20" rx="2" fill="none" stroke="#3565a8" stroke-width="0.8" opacity="0.25" stroke-dasharray="3,2"/>
+                        <line x1="75" y1="65" x2="75" y2="35" stroke="#3565a8" stroke-width="1" opacity="0.2"/>
+                        <line x1="165" y1="70" x2="165" y2="48" stroke="#3565a8" stroke-width="1" opacity="0.2"/>
+                        <!-- Dashed broken connections -->
+                        <line x1="48" y1="84" x2="135" y2="100" stroke="#ef4444" stroke-width="0.5" opacity="0.15" stroke-dasharray="4,4"/>
+                        <line x1="75" y1="65" x2="39" y2="75" stroke="#ef4444" stroke-width="0.5" opacity="0.15" stroke-dasharray="4,4"/>
+                        <!-- Visual gap: bright left, dim right -->
+                        <rect x="10" y="120" width="12" height="25" rx="1" fill="#38bdf8" opacity="0.4"/>
+                        <rect x="26" y="125" width="12" height="20" rx="1" fill="#38bdf8" opacity="0.35"/>
+                        <rect x="42" y="127" width="12" height="18" rx="1" fill="#38bdf8" opacity="0.3"/>
+                        <text x="32" y="117" fill="#38bdf8" font-size="4" font-family="monospace" opacity="0.4" text-anchor="middle">World</text>
+                        <rect x="150" y="140" width="10" height="5" rx="1" fill="#3565a8" opacity="0.2"/>
+                        <rect x="164" y="142" width="10" height="3" rx="1" fill="#3565a8" opacity="0.15"/>
+                        <text x="162" y="137" fill="#3565a8" font-size="4" font-family="monospace" opacity="0.3" text-anchor="middle">Africa</text>
+                    </svg>
+                    <div class="visual-label">The disconnect —<br>none of it talks</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 2 — The Disconnect</div>
+                    <div class="description">The impressive infrastructure starts DIMMING and DISCONNECTING. Lines become dashed, then fade. Elements drift apart. Each piece pulses independently — not in sync. A visual gap appears: world bandwidth bars (tall, bright) vs. Africa throughput bars (tiny, dim). The network that looked impressive now looks fragmented and wasteful.</div>
+                    <div class="copy-hint">"But none of it speaks to each other. Decades of fragmented investment. Infrastructure that runs in parallel, never together. 600 million people unconnected."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-glow">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Share node at center -->
+                        <circle cx="100" cy="80" r="10" fill="#1d4ed8" opacity="0.5"/>
+                        <circle cx="100" cy="80" r="6" fill="#1d4ed8" opacity="0.8"/>
+                        <!-- Reconnection lines to all elements -->
+                        <line x1="100" y1="80" x2="40" y2="55" stroke="#60a5fa" stroke-width="1.5" opacity="0.5"/>
+                        <line x1="100" y1="80" x2="160" y2="50" stroke="#60a5fa" stroke-width="1.5" opacity="0.5"/>
+                        <line x1="100" y1="80" x2="45" y2="110" stroke="#60a5fa" stroke-width="1.5" opacity="0.4"/>
+                        <line x1="100" y1="80" x2="155" y2="115" stroke="#60a5fa" stroke-width="1.5" opacity="0.4"/>
+                        <!-- Re-brightened elements -->
+                        <rect x="30" y="45" width="18" height="18" rx="2" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.6"/>
+                        <rect x="145" y="40" width="20" height="20" rx="2" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.6"/>
+                        <line x1="45" y1="120" x2="45" y2="140" stroke="#60a5fa" stroke-width="1.5" opacity="0.5"/>
+                        <line x1="155" y1="125" x2="155" y2="140" stroke="#60a5fa" stroke-width="1.5" opacity="0.5"/>
+                        <!-- Data flowing -->
+                        <circle cx="70" cy="68" r="1.5" fill="#93c5fd" opacity="0.7"/>
+                        <circle cx="130" cy="65" r="1.5" fill="#93c5fd" opacity="0.7"/>
+                        <circle cx="75" cy="95" r="1.5" fill="#93c5fd" opacity="0.6"/>
+                        <circle cx="125" cy="100" r="1.5" fill="#93c5fd" opacity="0.6"/>
+                    </svg>
+                    <div class="visual-label">Share reconnects —<br>data floods through</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 3 — Share Enters</div>
+                    <div class="description">Share's node appears at center with a powerful glow. Connection lines reach out to each infrastructure element. One by one, disconnected pieces RECONNECT through Share. Dashed lines become solid. Elements brighten. They pulse IN SYNC. Data that was stuck floods through — racing through all the newly connected infrastructure. Relief and power.</div>
+                    <div class="copy-hint">"Share is the coordination layer. One contract. Every provider. Unlimited backhaul with no upfront commits."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-warm">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Backbone -->
+                        <line x1="20" y1="80" x2="180" y2="80" stroke="#3b82f6" stroke-width="1.5" opacity="0.25"/>
+                        <!-- ISPs connecting sequentially -->
+                        <circle cx="50" cy="50" r="4" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="90" cy="40" r="5" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="130" cy="45" r="4" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="160" cy="55" r="3.5" fill="#f59e0b" opacity="0.6"/>
+                        <circle cx="70" cy="115" r="4" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="120" cy="120" r="4.5" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="155" cy="110" r="3.5" fill="#f59e0b" opacity="0.6"/>
+                        <!-- Connections -->
+                        <line x1="50" y1="54" x2="50" y2="76" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="90" y1="45" x2="90" y2="76" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="130" y1="49" x2="130" y2="76" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="160" y1="59" x2="160" y2="76" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="70" y1="111" x2="70" y2="84" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="120" y1="116" x2="120" y2="84" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="155" y1="106" x2="155" y2="84" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <!-- User bursts -->
+                        <circle cx="42" cy="38" r="1" fill="#fbbf24" opacity="0.4"/>
+                        <circle cx="58" cy="42" r="1" fill="#fbbf24" opacity="0.4"/>
+                        <circle cx="82" cy="30" r="1" fill="#fbbf24" opacity="0.4"/>
+                        <circle cx="98" cy="33" r="1" fill="#fbbf24" opacity="0.4"/>
+                        <circle cx="122" cy="36" r="1" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="138" cy="40" r="1" fill="#fbbf24" opacity="0.3"/>
+                    </svg>
+                    <div class="visual-label">ISPs plug in —<br>coverage expands</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 4 — ISPs Plug In</div>
+                    <div class="description">ISP nodes (amber) appear and connect to the unified network. Each ISP that connects gets a burst of user dots — coverage expanding. 5-7 ISPs connecting in sequence, each one brightening the network further. Data flows from Share's backbone through each ISP to their users.</div>
+                    <div class="copy-hint">"ISPs plug in and grow. More coverage. More users. More revenue. Share only earns when partners earn."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-glow">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Dense ecosystem -->
+                        <line x1="20" y1="80" x2="180" y2="80" stroke="#3b82f6" stroke-width="1.5" opacity="0.2"/>
+                        <!-- Financial layer (green pulse) -->
+                        <line x1="20" y1="84" x2="180" y2="84" stroke="#10b981" stroke-width="0.8" opacity="0.15" stroke-dasharray="2,3"/>
+                        <!-- Labels -->
+                        <text x="185" y="78" fill="#60a5fa" font-size="4" font-family="monospace" opacity="0.4">backbone</text>
+                        <text x="185" y="87" fill="#10b981" font-size="4" font-family="monospace" opacity="0.3">payments</text>
+                        <!-- Many ISPs + users -->
+                        <circle cx="40" cy="50" r="3" fill="#f59e0b" opacity="0.6"/>
+                        <circle cx="70" cy="40" r="4" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="100" cy="45" r="3.5" fill="#f59e0b" opacity="0.6"/>
+                        <circle cx="130" cy="42" r="4" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="160" cy="50" r="3" fill="#f59e0b" opacity="0.6"/>
+                        <circle cx="55" cy="115" r="3.5" fill="#f59e0b" opacity="0.6"/>
+                        <circle cx="90" cy="120" r="4" fill="#f59e0b" opacity="0.7"/>
+                        <circle cx="140" cy="118" r="3.5" fill="#f59e0b" opacity="0.6"/>
+                        <!-- Many user dots -->
+                        <circle cx="35" cy="38" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="48" cy="42" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="62" cy="30" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="78" cy="32" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="95" cy="35" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="108" cy="38" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="125" cy="33" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="138" cy="35" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="155" cy="40" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="168" cy="45" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                    </svg>
+                    <div class="visual-label">Ecosystem alive —<br>backbone + payments</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 5 — The Ecosystem</div>
+                    <div class="description">Full ecosystem view. Dozens of ISPs, dense user coverage. Financial layer appears as a subtle green pulse running alongside the data backbone — representing the payment gateway. Two systems, one ecosystem: backbone (blue) + payments (green). Both flowing together.</div>
+                    <div class="copy-hint">"Backbone and payment gateway. Two layers. One ecosystem. Growing every day."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-blue">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Africa outline -->
+                        <ellipse cx="100" cy="78" rx="48" ry="58" fill="none" stroke="#3b82f6" stroke-width="0.8" opacity="0.2"/>
+                        <!-- Network inside -->
+                        <line x1="60" y1="70" x2="140" y2="85" stroke="#3b82f6" stroke-width="1" opacity="0.2"/>
+                        <circle cx="80" cy="55" r="1" fill="#f59e0b" opacity="0.4"/>
+                        <circle cx="100" cy="65" r="1.5" fill="#f59e0b" opacity="0.5"/>
+                        <circle cx="115" cy="80" r="1" fill="#f59e0b" opacity="0.4"/>
+                        <circle cx="90" cy="95" r="1" fill="#f59e0b" opacity="0.4"/>
+                        <circle cx="105" cy="105" r="1" fill="#f59e0b" opacity="0.3"/>
+                        <!-- Subsea cables -->
+                        <line x1="140" y1="85" x2="195" y2="50" stroke="#60a5fa" stroke-width="0.8" opacity="0.3"/>
+                        <line x1="140" y1="85" x2="195" y2="100" stroke="#60a5fa" stroke-width="0.8" opacity="0.25"/>
+                        <line x1="60" y1="70" x2="5" y2="55" stroke="#60a5fa" stroke-width="0.8" opacity="0.25"/>
+                        <!-- Vision -->
+                        <text x="100" y="148" fill="#60a5fa" font-size="5" font-family="monospace" opacity="0.5" text-anchor="middle">1M+ users · 100K+ km fiber · 30+ DCs</text>
+                    </svg>
+                    <div class="visual-label">Africa connected —<br>the full vision</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 6 — Africa Connected</div>
+                    <div class="description">Final zoom to continental scale. Network maps onto Africa's shape. Subsea cables extend to screen edges. Vision numbers: "1M+ users, 100K+ km fiber, 30+ data centers." The full vision revealed — from disconnected infrastructure to a connected continent.</div>
+                    <div class="copy-hint">"Africa's shared backbone. The most advanced internet network, built from Africa for the world."</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="direction-analysis">
+        <div class="analysis-box strengths">
+            <h4>Strengths</h4>
+            <ul>
+                <li>The "bait and switch" — showing impressive infra then revealing it doesn't work — is memorable</li>
+                <li>Infrastructure providers specifically see their assets in Beat 1 and understand the opportunity</li>
+                <li>Most literal approach — shows real cables, towers, DCs. ISPs recognize their world.</li>
+                <li>The disconnect moment directly references Share's narrative: "none of it speaks to each other"</li>
+                <li>6 beats gives more room for each moment to breathe</li>
+                <li>The financial layer (green) in Beat 5 introduces the payment gateway naturally</li>
+            </ul>
+        </div>
+        <div class="analysis-box risks">
+            <h4>Risks</h4>
+            <ul>
+                <li>6 beats is longer — needs to maintain engagement throughout the scroll</li>
+                <li>The disconnect moment might confuse first-time visitors who don't know the context</li>
+                <li>More complex to build — many infrastructure elements with two states each (connected/disconnected)</li>
+                <li>Less emotionally immediate than Version A's abundance/scarcity contrast</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- VERSION C: Fiber Perspective -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="direction">
+    <div class="direction-header">
+        <div class="direction-number" style="background: var(--accent-c);">C</div>
+        <div class="direction-header-text">
+            <h2>Fiber Perspective</h2>
+            <div class="subtitle">Starts INSIDE a fiber cable — dark unused strands — then zooms out to the continent</div>
+        </div>
+    </div>
+
+    <div class="direction-meta">
+        <div class="meta-item">
+            <label>Opening Hook</label>
+            <p>Inside a fiber cable. 12 strands, only 2 are lit. The rest are dark. Wasted potential.</p>
+        </div>
+        <div class="meta-item">
+            <label>Visual Style</label>
+            <p>Micro to macro. Fiber strands as the consistent element at every scale. Cinematic zoom-outs.</p>
+        </div>
+        <div class="meta-item">
+            <label>Emotional Arc</label>
+            <p>Intimate wonder &rarr; frustration &rarr; satisfaction &rarr; expansion &rarr; awe</p>
+        </div>
+        <div class="meta-item">
+            <label>Key Moment</label>
+            <p>Beat 3: The frayed bundle gets BOUND together by Share. All strands light up simultaneously.</p>
+        </div>
+    </div>
+
+    <div class="storyboard">
+        <div class="storyboard-label">Scroll Storyboard — 5 Beats</div>
+        <div class="storyboard-panels">
+            <div class="panel">
+                <div class="panel-visual v-purple">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Fiber strands - most dark, 2 lit -->
+                        <line x1="0" y1="30" x2="200" y2="30" stroke="#2a1a40" stroke-width="2" opacity="0.3"/>
+                        <line x1="0" y1="45" x2="200" y2="45" stroke="#2a1a40" stroke-width="2" opacity="0.3"/>
+                        <line x1="0" y1="60" x2="200" y2="60" stroke="#a78bfa" stroke-width="2" opacity="0.6"/>
+                        <line x1="0" y1="75" x2="200" y2="75" stroke="#2a1a40" stroke-width="2" opacity="0.3"/>
+                        <line x1="0" y1="90" x2="200" y2="90" stroke="#38bdf8" stroke-width="2" opacity="0.5"/>
+                        <line x1="0" y1="105" x2="200" y2="105" stroke="#2a1a40" stroke-width="2" opacity="0.3"/>
+                        <line x1="0" y1="120" x2="200" y2="120" stroke="#2a1a40" stroke-width="2" opacity="0.3"/>
+                        <line x1="0" y1="135" x2="200" y2="135" stroke="#2a1a40" stroke-width="2" opacity="0.3"/>
+                        <!-- Light pulses on the 2 active strands -->
+                        <circle cx="80" cy="60" r="3" fill="#c4b5fd" opacity="0.8"/>
+                        <circle cx="140" cy="90" r="2.5" fill="#93c5fd" opacity="0.7"/>
+                        <circle cx="40" cy="60" r="2" fill="#a78bfa" opacity="0.5"/>
+                        <!-- Labels -->
+                        <text x="5" y="15" fill="#a78bfa" font-size="5" font-family="monospace" opacity="0.4">BARELY USED</text>
+                        <text x="140" y="15" fill="#c4b5fd" font-size="5" font-family="monospace" opacity="0.4">CAPACITY EXISTS</text>
+                        <text x="100" y="152" fill="#a78bfa" font-size="5" font-family="monospace" opacity="0.35" text-anchor="middle">&lt;15% capacity utilized</text>
+                    </svg>
+                    <div class="visual-label">Inside the cable —<br>12 strands, 2 lit</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 1 — Inside the Cable</div>
+                    <div class="description">Extreme close-up: INSIDE a fiber optic cable. Multiple glass strands stretch across the screen. But only 1-2 have light pulses racing through them. The rest are DARK. Unused capacity. Beautiful but lonely pulses — a highway at 3am, built for thousands, carrying a handful.</div>
+                    <div class="copy-hint">"7 subsea cables connect Africa to the world. The glass is laid. The light could flow. But less than 15% of capacity is being used."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-dark">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Left: thick unified bundle -->
+                        <line x1="0" y1="70" x2="70" y2="72" stroke="#60a5fa" stroke-width="6" opacity="0.25"/>
+                        <line x1="0" y1="70" x2="70" y2="72" stroke="#93c5fd" stroke-width="2" opacity="0.15"/>
+                        <!-- Right: frayed separate strands -->
+                        <line x1="80" y1="72" x2="195" y2="35" stroke="#3565a8" stroke-width="1" opacity="0.25"/>
+                        <line x1="80" y1="72" x2="195" y2="60" stroke="#3565a8" stroke-width="1" opacity="0.2"/>
+                        <line x1="80" y1="72" x2="190" y2="85" stroke="#3565a8" stroke-width="1" opacity="0.2"/>
+                        <line x1="80" y1="72" x2="185" y2="110" stroke="#3565a8" stroke-width="1" opacity="0.2"/>
+                        <line x1="80" y1="72" x2="195" y2="130" stroke="#3565a8" stroke-width="1" opacity="0.15"/>
+                        <!-- Bottleneck -->
+                        <ellipse cx="75" cy="72" rx="8" ry="20" fill="none" stroke="#ef4444" stroke-width="0.5" opacity="0.2" stroke-dasharray="3,2"/>
+                        <!-- Contract icons near each strand -->
+                        <rect x="170" y="28" width="8" height="10" rx="1" fill="none" stroke="#ef4444" stroke-width="0.5" opacity="0.2" transform="rotate(-5 174 33)"/>
+                        <rect x="172" y="55" width="8" height="10" rx="1" fill="none" stroke="#ef4444" stroke-width="0.5" opacity="0.2" transform="rotate(3 176 60)"/>
+                        <rect x="168" y="82" width="8" height="10" rx="1" fill="none" stroke="#ef4444" stroke-width="0.5" opacity="0.2"/>
+                        <rect x="165" y="107" width="8" height="10" rx="1" fill="none" stroke="#ef4444" stroke-width="0.5" opacity="0.2" transform="rotate(-4 169 112)"/>
+                        <!-- Slow dribble dots -->
+                        <circle cx="130" cy="52" r="1" fill="#3565a8" opacity="0.3"/>
+                        <circle cx="150" cy="95" r="1" fill="#3565a8" opacity="0.25"/>
+                    </svg>
+                    <div class="visual-label">Bundle frays — separate<br>contracts, no coordination</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 2 — The Bundle Splits</div>
+                    <div class="description">Pull back slightly. LEFT: a thick unified fiber bundle from the global side. RIGHT: the bundle frays into separate thin strands — each going to a different provider. Each strand has a contract document icon. A bottleneck where capacity gets lost. Data dribbles through each independently. Fragmented. Wasteful.</div>
+                    <div class="copy-hint">"Fragmented. Every provider runs their own strand. Every ISP negotiates separate contracts. Costs stack. Capacity is wasted."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-glow">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Left bundle -->
+                        <line x1="0" y1="75" x2="80" y2="78" stroke="#60a5fa" stroke-width="5" opacity="0.3"/>
+                        <!-- Share connector ring -->
+                        <circle cx="90" cy="78" r="12" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.6"/>
+                        <circle cx="90" cy="78" r="6" fill="#1d4ed8" opacity="0.8"/>
+                        <!-- Right bundle - NOW UNIFIED AND BRIGHT -->
+                        <line x1="100" y1="78" x2="200" y2="78" stroke="#60a5fa" stroke-width="5" opacity="0.3"/>
+                        <!-- Light flooding through BOTH bundles -->
+                        <circle cx="40" cy="75" r="2.5" fill="#93c5fd" opacity="0.7"/>
+                        <circle cx="60" cy="77" r="2" fill="#38bdf8" opacity="0.6"/>
+                        <circle cx="120" cy="78" r="2.5" fill="#93c5fd" opacity="0.7"/>
+                        <circle cx="150" cy="78" r="2" fill="#38bdf8" opacity="0.6"/>
+                        <circle cx="175" cy="78" r="2.5" fill="#93c5fd" opacity="0.7"/>
+                        <!-- All strands lit (visible within the bundle) -->
+                        <line x1="100" y1="72" x2="200" y2="72" stroke="#a78bfa" stroke-width="0.5" opacity="0.3"/>
+                        <line x1="100" y1="75" x2="200" y2="75" stroke="#38bdf8" stroke-width="0.5" opacity="0.3"/>
+                        <line x1="100" y1="78" x2="200" y2="78" stroke="#93c5fd" stroke-width="0.5" opacity="0.4"/>
+                        <line x1="100" y1="81" x2="200" y2="81" stroke="#60a5fa" stroke-width="0.5" opacity="0.3"/>
+                        <line x1="100" y1="84" x2="200" y2="84" stroke="#a78bfa" stroke-width="0.5" opacity="0.3"/>
+                    </svg>
+                    <div class="visual-label">Share binds the bundle —<br>all strands lit</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 3 — Share Binds the Bundle</div>
+                    <div class="description">A glowing ring appears at the bottleneck — Share. The frayed strands are PULLED TOGETHER, bound into a unified bundle. The bottleneck opens up. Light FLOODS through — ALL strands now lit, all carrying data. The right-side bundle is now as bright and thick as the left. Deeply satisfying: chaos becomes order, dark becomes light.</div>
+                    <div class="copy-hint">"Share binds the bundle. One coordination layer. One contract. Every provider. Unlimited capacity flows through."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-warm">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Backbone as single line from left -->
+                        <line x1="0" y1="80" x2="90" y2="80" stroke="#3b82f6" stroke-width="2" opacity="0.3"/>
+                        <!-- ISP node where backbone terminates -->
+                        <circle cx="100" cy="80" r="7" fill="#f59e0b" opacity="0.8"/>
+                        <text x="100" y="83" text-anchor="middle" fill="#04060c" font-size="5" font-weight="bold">ISP</text>
+                        <!-- User lines fanning out -->
+                        <line x1="107" y1="78" x2="155" y2="40" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="107" y1="80" x2="165" y2="65" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="107" y1="82" x2="160" y2="90" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="107" y1="84" x2="150" y2="115" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <line x1="100" y1="87" x2="120" y2="130" stroke="#f59e0b" stroke-width="0.5" opacity="0.2"/>
+                        <!-- User dots -->
+                        <circle cx="158" cy="38" r="2" fill="#fbbf24" opacity="0.5"/>
+                        <circle cx="168" cy="63" r="2" fill="#fbbf24" opacity="0.5"/>
+                        <circle cx="163" cy="88" r="2" fill="#fbbf24" opacity="0.5"/>
+                        <circle cx="153" cy="113" r="2" fill="#fbbf24" opacity="0.5"/>
+                        <circle cx="123" cy="128" r="2" fill="#fbbf24" opacity="0.4"/>
+                        <!-- Background ISPs -->
+                        <circle cx="50" cy="40" r="3" fill="#f59e0b" opacity="0.2"/>
+                        <circle cx="40" cy="120" r="3" fill="#f59e0b" opacity="0.2"/>
+                        <line x1="50" y1="43" x2="50" y2="77" stroke="#f59e0b" stroke-width="0.3" opacity="0.1"/>
+                        <line x1="40" y1="117" x2="40" y2="83" stroke="#f59e0b" stroke-width="0.3" opacity="0.1"/>
+                    </svg>
+                    <div class="visual-label">Zoom out — the ISP<br>backbone feeds users</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 4 — Zoom Out: The ISP</div>
+                    <div class="description">Pull back more. The unified bundle is actually the BACKBONE feeding into an ISP node. From the ISP, smaller cables and wireless signals reach out to users (amber dots). Coverage is large and active. Additional ISP nodes visible in the background — each connected to the same backbone.</div>
+                    <div class="copy-hint">"One ISP plugs in. Unlimited backhaul, zero upfront commits. Their coverage explodes. Their users multiply."</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-visual v-blue">
+                    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Subsea cables entering from left -->
+                        <line x1="0" y1="65" x2="50" y2="75" stroke="#60a5fa" stroke-width="1.5" opacity="0.3"/>
+                        <line x1="0" y1="80" x2="50" y2="78" stroke="#60a5fa" stroke-width="1.5" opacity="0.25"/>
+                        <line x1="0" y1="95" x2="50" y2="82" stroke="#60a5fa" stroke-width="1" opacity="0.2"/>
+                        <!-- Share hub -->
+                        <circle cx="55" cy="78" r="5" fill="#1d4ed8" opacity="0.5"/>
+                        <!-- Backbone spanning right -->
+                        <line x1="60" y1="78" x2="180" y2="78" stroke="#3b82f6" stroke-width="1.5" opacity="0.2"/>
+                        <!-- ISPs across Africa -->
+                        <circle cx="80" cy="55" r="2.5" fill="#f59e0b" opacity="0.5"/>
+                        <circle cx="110" cy="50" r="3" fill="#f59e0b" opacity="0.6"/>
+                        <circle cx="140" cy="60" r="2.5" fill="#f59e0b" opacity="0.5"/>
+                        <circle cx="100" cy="95" r="2.5" fill="#f59e0b" opacity="0.5"/>
+                        <circle cx="155" cy="90" r="2" fill="#f59e0b" opacity="0.4"/>
+                        <!-- User clusters -->
+                        <circle cx="75" cy="45" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="88" cy="48" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="105" cy="40" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="118" cy="43" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="135" cy="52" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="148" cy="55" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="95" cy="103" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <circle cx="108" cy="100" r="0.8" fill="#fbbf24" opacity="0.3"/>
+                        <!-- Africa hint -->
+                        <ellipse cx="115" cy="78" rx="55" ry="55" fill="none" stroke="#3b82f6" stroke-width="0.5" opacity="0.1"/>
+                        <!-- Vision -->
+                        <text x="100" y="148" fill="#60a5fa" font-size="5" font-family="monospace" opacity="0.5" text-anchor="middle">1M+ users · 100K+ km fiber · 30+ DCs</text>
+                    </svg>
+                    <div class="visual-label">Zoom out — Africa<br>from cable to continent</div>
+                </div>
+                <div class="panel-info">
+                    <div class="beat">Beat 5 — Zoom Out: Africa</div>
+                    <div class="description">Final pull-back. Full network revealed — backbone spanning Africa-scale. Multiple ISPs with user clusters dot the landscape. Subsea cable bundles enter from the left edge. The entire continent unified, active, alive. The fiber strands from Beat 1 are now the arteries of a continental network. Vision numbers appear.</div>
+                    <div class="copy-hint">"From cable to continent. Africa's shared backbone. The most advanced internet network, built from Africa for the world."</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="direction-analysis">
+        <div class="analysis-box strengths">
+            <h4>Strengths</h4>
+            <ul>
+                <li>The "inside the fiber" opening is unique — no other infra company starts here. Delivers the "internet is COOL" moment Share wants.</li>
+                <li>Fiber strands as a consistent element at every zoom level creates visual continuity</li>
+                <li>The binding moment (Beat 3) is the most visually satisfying of all three versions</li>
+                <li>Progressive zoom-out = progressive revelation. Each beat is bigger than the last.</li>
+                <li>Closest to Share's own creative brief (data packet through fiber) but reframed around the problem-solution narrative</li>
+            </ul>
+        </div>
+        <div class="analysis-box risks">
+            <h4>Risks</h4>
+            <ul>
+                <li>Abstract opening — "dark fiber strands" might not land immediately with non-technical visitors</li>
+                <li>Needs very strong copy to explain what the dark strands MEAN (unused capacity)</li>
+                <li>The zoom-out transitions are technically the hardest to execute smoothly</li>
+                <li>Less immediately accessible than Version A's abundance/scarcity contrast</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- COMPARISON -->
+<!-- ════════════════════════════════════════ -->
+<div class="comparison">
+    <h2>Version Comparison</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:120px">Version</th>
+                <th>Entry Point</th>
+                <th>Strongest For</th>
+                <th>ISP Impact</th>
+                <th>Investor Impact</th>
+                <th>WOW Factor</th>
+                <th>Build Complexity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="color: var(--accent-a);">A. Ocean of Data</td>
+                <td>Abundance vs. scarcity contrast</td>
+                <td>Universal first impression — anyone gets it</td>
+                <td>High</td>
+                <td>High</td>
+                <td>High</td>
+                <td>Medium</td>
+            </tr>
+            <tr>
+                <td style="color: var(--accent-b);">B. Infrastructure Ready</td>
+                <td>Tour existing infra, then reveal disconnect</td>
+                <td>Infrastructure providers + ISPs who know the industry</td>
+                <td>Very High</td>
+                <td>High</td>
+                <td>Medium</td>
+                <td>High (6 beats)</td>
+            </tr>
+            <tr>
+                <td style="color: var(--accent-c);">C. Fiber Perspective</td>
+                <td>Inside the fiber, zoom out progressively</td>
+                <td>Cinematic impact + "internet is COOL" feeling</td>
+                <td>High</td>
+                <td>Medium</td>
+                <td>Very High</td>
+                <td>High (zoom transitions)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer>
+    <p>VKZ internal — Direction 6 storyboards for Share website homepage | March 26, 2026</p>
+    <p style="margin-top: 8px;">All three versions share the same narrative arc and audience takeaways. The choice is about which OPENING creates the strongest hook. Can also be hybridized — e.g., Version B's infrastructure tour as a pre-roll before Version A's abundance/scarcity contrast.</p>
+</footer>
+
+</div>
+</body>
+</html>

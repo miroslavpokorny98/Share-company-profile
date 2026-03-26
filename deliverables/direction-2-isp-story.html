@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction 2 — The ISP Story</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue-700: #1d4ed8;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --blue-300: #93c5fd;
+            --amber-500: #f59e0b;
+            --amber-400: #fbbf24;
+            --amber-300: #fcd34d;
+            --green-500: #10b981;
+            --green-400: #34d399;
+        }
+
+        html, body {
+            background: #04060c;
+            color: #e0e4ec;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* -- Scroll spacer -- */
+        .scroll-spacer {
+            height: 500vh;
+            position: relative;
+        }
+
+        /* -- Fixed canvas -- */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .scene svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* -- Text overlays -- */
+        .text-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 0 80px 80px;
+        }
+
+        .beat-text {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            max-width: 560px;
+            opacity: 0;
+        }
+
+        .beat-text .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--amber-400);
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .beat-text .label.share-label {
+            color: var(--blue-400);
+        }
+
+        .beat-text .label.green-label {
+            color: var(--green-400);
+        }
+
+        .beat-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .beat-text p {
+            font-size: 17px;
+            line-height: 1.65;
+            color: rgba(224, 228, 236, 0.7);
+            max-width: 480px;
+        }
+
+        /* -- Stats overlay -- */
+        .stats-row {
+            position: absolute;
+            bottom: 80px;
+            right: 80px;
+            display: flex;
+            gap: 40px;
+            opacity: 0;
+        }
+
+        .stat {
+            text-align: right;
+        }
+
+        .stat .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--amber-400);
+            line-height: 1;
+        }
+
+        .stat .number.blue {
+            color: var(--blue-400);
+        }
+
+        .stat .number.green {
+            color: var(--green-400);
+        }
+
+        .stat .unit {
+            font-size: 13px;
+            color: rgba(224, 228, 236, 0.5);
+            margin-top: 6px;
+        }
+
+        /* -- Progress bar -- */
+        .progress-track {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: background 0.4s, transform 0.4s;
+        }
+
+        .progress-dot.active {
+            background: var(--amber-400);
+            transform: scale(1.4);
+        }
+
+        /* -- Gradient overlays -- */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center, transparent 40%, #04060c 100%),
+                linear-gradient(to top, #04060c 0%, transparent 30%);
+        }
+
+        /* -- Intro overlay -- */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #04060c;
+        }
+
+        .intro-overlay h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--amber-400);
+            font-weight: 500;
+        }
+
+        .intro-overlay .subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.35);
+            margin-top: 16px;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .intro-overlay .scroll-hint {
+            position: absolute;
+            bottom: 48px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(4px); }
+        }
+
+        /* -- CTA at end -- */
+        .cta-section {
+            position: relative;
+            z-index: 15;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            text-align: center;
+            max-width: 700px;
+            line-height: 1.2;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .cta-button {
+            margin-top: 16px;
+            padding: 16px 40px;
+            border: 1px solid var(--amber-500);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--amber-400);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cta-button:hover {
+            background: var(--amber-500);
+            color: #04060c;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Intro -->
+<div class="intro-overlay" id="intro">
+    <h1>Direction 2 — The ISP Story</h1>
+    <div class="subtitle">One partner plugs in — watch their world expand.</div>
+    <div class="scroll-hint">Scroll to begin</div>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-track" id="progress">
+    <div class="progress-dot active" data-beat="0"></div>
+    <div class="progress-dot" data-beat="1"></div>
+    <div class="progress-dot" data-beat="2"></div>
+    <div class="progress-dot" data-beat="3"></div>
+    <div class="progress-dot" data-beat="4"></div>
+</div>
+
+<!-- Fixed scene -->
+<div class="scene" id="scene">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <radialGradient id="glow-amber" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-green" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="coverage-small" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.08"/>
+                <stop offset="60%" stop-color="#f59e0b" stop-opacity="0.04"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="coverage-large" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.12"/>
+                <stop offset="40%" stop-color="#fbbf24" stop-opacity="0.06"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="blur-sm">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+            <filter id="blur-md">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+            </filter>
+            <filter id="blur-lg">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12"/>
+            </filter>
+            <filter id="blur-xl">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="20"/>
+            </filter>
+        </defs>
+
+        <!-- Background subtle grid -->
+        <g id="bg-grid" opacity="0.03">
+            <line x1="0" y1="270" x2="1920" y2="270" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="0" y1="540" x2="1920" y2="540" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="0" y1="810" x2="1920" y2="810" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="480" y1="0" x2="480" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="960" y1="0" x2="960" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="1440" y1="0" x2="1440" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+        </g>
+
+        <!-- ======================================= -->
+        <!-- BEAT 1: The Partner (Before) - Isolated ISP -->
+        <!-- ======================================= -->
+
+        <!-- Small coverage radius (faint amber circle) -->
+        <g id="isp-coverage-small" opacity="0">
+            <circle cx="960" cy="420" r="120" fill="url(#coverage-small)"/>
+            <circle cx="960" cy="420" r="120" fill="none" stroke="#f59e0b" stroke-width="0.8" opacity="0.2" stroke-dasharray="4,4"/>
+        </g>
+
+        <!-- ISP node (amber) - center of screen -->
+        <g id="isp-node" opacity="0">
+            <!-- Outer glow -->
+            <circle cx="960" cy="420" r="40" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.4"/>
+            <!-- ISP circle -->
+            <circle id="isp-core" cx="960" cy="420" r="18" fill="#1a1a10" stroke="#f59e0b" stroke-width="2"/>
+            <!-- ISP label -->
+            <text x="960" y="425" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="500">ISP</text>
+        </g>
+
+        <!-- Single thin line going up to "1 provider" -->
+        <g id="single-provider" opacity="0">
+            <line x1="960" y1="402" x2="960" y2="260" stroke="#3565a8" stroke-width="1.2" opacity="0.5"/>
+            <circle cx="960" cy="250" r="6" fill="none" stroke="#3565a8" stroke-width="1" opacity="0.4"/>
+            <text x="960" y="235" text-anchor="middle" fill="#3565a8" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1" opacity="0.5">1 PROVIDER</text>
+        </g>
+
+        <!-- Scattered user dots (few, sparse) -->
+        <g id="users-few" opacity="0">
+            <circle class="user-dot" cx="920" cy="460" r="2.5" fill="#f59e0b" opacity="0.4"/>
+            <circle class="user-dot" cx="1000" cy="450" r="2" fill="#f59e0b" opacity="0.35"/>
+            <circle class="user-dot" cx="940" cy="490" r="2" fill="#f59e0b" opacity="0.3"/>
+            <circle class="user-dot" cx="990" cy="480" r="2.5" fill="#f59e0b" opacity="0.35"/>
+            <circle class="user-dot" cx="900" cy="430" r="2" fill="#f59e0b" opacity="0.3"/>
+            <circle class="user-dot" cx="1020" cy="410" r="2" fill="#f59e0b" opacity="0.3"/>
+            <circle class="user-dot" cx="950" cy="370" r="2" fill="#f59e0b" opacity="0.25"/>
+        </g>
+
+        <!-- "Constrained" label -->
+        <g id="constraint-label" opacity="0">
+            <text x="960" y="580" text-anchor="middle" fill="#f59e0b" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.3">LIMITED COVERAGE</text>
+        </g>
+
+
+        <!-- ======================================= -->
+        <!-- BEAT 2: The Connection - Share appears -->
+        <!-- ======================================= -->
+
+        <!-- Share node (appears below the ISP) -->
+        <g id="share-node" opacity="0">
+            <!-- Outer glow -->
+            <circle cx="960" cy="650" r="50" fill="url(#glow-blue)" filter="url(#blur-md)" opacity="0.5"/>
+            <!-- Share circle -->
+            <circle id="share-core" cx="960" cy="650" r="22" fill="#0c1a3a" stroke="#3b82f6" stroke-width="2.5"/>
+            <!-- S label -->
+            <text x="960" y="657" text-anchor="middle" fill="#60a5fa" font-family="'Inter', sans-serif" font-size="18" font-weight="700">S</text>
+            <!-- Share text -->
+            <text x="960" y="695" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.6">SHARE</text>
+        </g>
+
+        <!-- Connection line (ISP to Share) - starts dashed, becomes solid -->
+        <g id="connection-line" opacity="0">
+            <!-- Dashed version -->
+            <line id="conn-dashed" x1="960" y1="438" x2="960" y2="628" stroke="#4b8df5" stroke-width="2" stroke-dasharray="8,6" opacity="0.6"/>
+            <!-- Solid version (drawn on top) -->
+            <line id="conn-solid" x1="960" y1="438" x2="960" y2="628" stroke="#60a5fa" stroke-width="2.5" opacity="0"/>
+        </g>
+
+        <!-- Connection spark at midpoint -->
+        <g id="conn-spark" opacity="0">
+            <circle cx="960" cy="533" r="4" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle cx="960" cy="533" r="12" fill="#3b82f6" filter="url(#blur-md)" opacity="0.3"/>
+        </g>
+
+
+        <!-- ======================================= -->
+        <!-- BEAT 3: The Expansion - World gets bigger -->
+        <!-- ======================================= -->
+
+        <!-- Expanded coverage radius -->
+        <g id="isp-coverage-large" opacity="0">
+            <circle cx="960" cy="420" r="380" fill="url(#coverage-large)" filter="url(#blur-lg)"/>
+            <circle cx="960" cy="420" r="380" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.15"/>
+        </g>
+
+        <!-- Multiple provider lines (12 infrastructure providers below Share) -->
+        <g id="provider-backbone" opacity="0">
+            <!-- Central backbone line down from Share -->
+            <line id="backbone-main" x1="960" y1="672" x2="960" y2="850" stroke="#3b82f6" stroke-width="3" opacity="0.7"/>
+
+            <!-- Provider nodes fanning out from backbone bottom -->
+            <line class="prov-line" x1="960" y1="850" x2="580" y2="950" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="660" y2="970" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="740" y2="980" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="820" y2="990" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="900" y2="995" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="960" y2="1000" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="1020" y2="995" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="1100" y2="990" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="1180" y2="980" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="1260" y2="970" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="1340" y2="950" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+            <line class="prov-line" x1="960" y1="850" x2="1400" y2="920" stroke="#4b8df5" stroke-width="1.5" opacity="0"/>
+
+            <!-- Provider dots -->
+            <circle class="prov-dot" cx="580" cy="950" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="660" cy="970" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="740" cy="980" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="820" cy="990" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="900" cy="995" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="960" cy="1000" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="1020" cy="995" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="1100" cy="990" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="1180" cy="980" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="1260" cy="970" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="1340" cy="950" r="4" fill="#4b8df5" opacity="0"/>
+            <circle class="prov-dot" cx="1400" cy="920" r="4" fill="#4b8df5" opacity="0"/>
+        </g>
+
+        <!-- Many user dots (rapidly multiplied) -->
+        <g id="users-many" opacity="0">
+            <!-- Inner ring -->
+            <circle class="user-many" cx="870" cy="380" r="2.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1050" cy="390" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="890" cy="480" r="2.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1040" cy="470" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="920" cy="350" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1010" cy="360" r="2.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="880" cy="440" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1030" cy="430" r="2" fill="#fbbf24" opacity="0"/>
+            <!-- Middle ring -->
+            <circle class="user-many" cx="780" cy="340" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1140" cy="350" r="2.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="750" cy="440" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1170" cy="450" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="810" cy="520" r="2.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1110" cy="510" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="840" cy="310" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1080" cy="320" r="2" fill="#fbbf24" opacity="0"/>
+            <!-- Outer ring -->
+            <circle class="user-many" cx="680" cy="300" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1240" cy="310" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="650" cy="420" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1270" cy="430" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="700" cy="540" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1220" cy="530" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="730" cy="260" r="1.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1190" cy="270" r="1.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="620" cy="370" r="1.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1300" cy="380" r="1.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="670" cy="490" r="1.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-many" cx="1250" cy="480" r="1.5" fill="#fbbf24" opacity="0"/>
+        </g>
+
+        <!-- Revenue line (climbing upward) -->
+        <g id="revenue-line" opacity="0">
+            <polyline id="revenue-path" points="1600,550 1620,540 1640,545 1660,530 1680,535 1700,510 1720,500 1740,480 1760,460 1780,430 1800,390" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+            <circle cx="1800" cy="390" r="4" fill="#10b981" opacity="0.8"/>
+            <text x="1810" y="390" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" opacity="0.6">REVENUE</text>
+        </g>
+
+        <!-- Data pulses traveling along the connection -->
+        <g id="data-pulses" opacity="0">
+            <circle class="d-pulse" cx="960" cy="470" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="d-pulse" cx="960" cy="530" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="d-pulse" cx="960" cy="590" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+        </g>
+
+
+        <!-- ======================================= -->
+        <!-- BEAT 4: The Financial Layer - Dashboard -->
+        <!-- ======================================= -->
+
+        <!-- Dashboard frame -->
+        <g id="dashboard" opacity="0">
+            <!-- Outer frame -->
+            <rect x="540" y="200" width="840" height="500" rx="12" fill="none" stroke="#1e293b" stroke-width="1.5" opacity="0.6"/>
+            <!-- Inner background -->
+            <rect x="542" y="202" width="836" height="496" rx="11" fill="#04060c" opacity="0.95"/>
+
+            <!-- Top bar -->
+            <rect x="542" y="202" width="836" height="44" rx="11" fill="#0a0f1a"/>
+            <text x="580" y="230" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="500" letter-spacing="1">SHARE DASHBOARD</text>
+            <circle cx="1340" cy="224" r="5" fill="#10b981" opacity="0.6"/>
+            <text x="1310" y="228" text-anchor="end" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="9" opacity="0.5">LIVE</text>
+
+            <!-- Payment flow visualization -->
+            <!-- Incoming payment stream -->
+            <g id="dash-flow" opacity="0">
+                <!-- "Payment in" label -->
+                <text x="600" y="290" fill="rgba(224,228,236,0.4)" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1">INCOMING PAYMENT</text>
+                <!-- Stream bar -->
+                <rect x="600" y="300" width="300" height="24" rx="4" fill="#1e293b" opacity="0.5"/>
+                <rect id="payment-bar" x="600" y="300" width="0" height="24" rx="4" fill="#fbbf24" opacity="0.4"/>
+
+                <!-- Split arrows -->
+                <line x1="960" y1="312" x2="1060" y2="370" stroke="#f59e0b" stroke-width="1.5" opacity="0.5"/>
+                <line x1="960" y1="312" x2="1060" y2="430" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>
+
+                <!-- Partner portion (amber) -->
+                <rect x="1060" y="350" width="240" height="50" rx="6" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0.4"/>
+                <text x="1080" y="372" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10">PARTNER REVENUE</text>
+                <text id="partner-amount" x="1080" y="392" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="700">KES 0</text>
+
+                <!-- Share portion (blue) -->
+                <rect x="1060" y="415" width="240" height="50" rx="6" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.4"/>
+                <text x="1080" y="437" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="10">SHARE FEE</text>
+                <text id="share-amount" x="1080" y="457" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="700">KES 0</text>
+            </g>
+
+            <!-- Wallet section -->
+            <g id="dash-wallet" opacity="0">
+                <rect x="600" y="380" width="340" height="130" rx="8" fill="#0d1420" stroke="#1e293b" stroke-width="1"/>
+                <text x="624" y="410" fill="rgba(224,228,236,0.4)" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1">WALLET BALANCE</text>
+                <text id="wallet-balance" x="624" y="445" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="700">KES 0</text>
+
+                <!-- Interest indicator -->
+                <text x="624" y="480" fill="rgba(224,228,236,0.3)" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="1">INTEREST EARNED</text>
+                <text id="interest-amount" x="624" y="500" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="500">+KES 0</text>
+            </g>
+
+            <!-- "We only earn when you earn" tagline -->
+            <g id="dash-tagline" opacity="0">
+                <text x="960" y="640" text-anchor="middle" fill="#60a5fa" font-family="'Inter', sans-serif" font-size="13" font-style="italic" opacity="0.5">We only earn when you earn.</text>
+            </g>
+        </g>
+
+
+        <!-- ======================================= -->
+        <!-- BEAT 5: The Ecosystem - Pull back, many ISPs -->
+        <!-- ======================================= -->
+
+        <!-- Central Share hub (larger) -->
+        <g id="ecosystem-hub" opacity="0">
+            <circle cx="960" cy="500" r="80" fill="url(#glow-blue)" filter="url(#blur-lg)" opacity="0.4"/>
+            <circle cx="960" cy="500" r="28" fill="#0c1a3a" stroke="#3b82f6" stroke-width="3"/>
+            <text x="960" y="508" text-anchor="middle" fill="#60a5fa" font-family="'Inter', sans-serif" font-size="22" font-weight="700">S</text>
+            <circle cx="960" cy="500" r="45" fill="none" stroke="#3b82f6" stroke-width="0.8" opacity="0.25"/>
+        </g>
+
+        <!-- ISP ecosystem nodes (amber) arranged in a ring -->
+        <g id="ecosystem-isps" opacity="0">
+            <!-- Top -->
+            <g class="eco-isp">
+                <line x1="960" y1="472" x2="960" y2="240" stroke="#4b8df5" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="960" cy="220" r="45" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.3"/>
+                <circle cx="960" cy="220" r="14" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="960" y="225" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="9">ISP</text>
+                <circle cx="960" cy="220" r="55" fill="none" stroke="#f59e0b" stroke-width="0.4" opacity="0.15" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Top-right -->
+            <g class="eco-isp">
+                <line x1="987" y1="480" x2="1260" y2="280" stroke="#4b8df5" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="1270" cy="270" r="40" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.3"/>
+                <circle cx="1270" cy="270" r="12" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="1270" y="275" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="9">ISP</text>
+                <circle cx="1270" cy="270" r="48" fill="none" stroke="#f59e0b" stroke-width="0.4" opacity="0.15" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Right -->
+            <g class="eco-isp">
+                <line x1="988" y1="500" x2="1380" y2="480" stroke="#4b8df5" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="1400" cy="475" r="50" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.3"/>
+                <circle cx="1400" cy="475" r="15" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="1400" y="480" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="9">ISP</text>
+                <circle cx="1400" cy="475" r="60" fill="none" stroke="#f59e0b" stroke-width="0.4" opacity="0.15" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Bottom-right -->
+            <g class="eco-isp">
+                <line x1="985" y1="525" x2="1280" y2="720" stroke="#4b8df5" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="1290" cy="730" r="35" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.3"/>
+                <circle cx="1290" cy="730" r="11" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="1290" y="735" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="9">ISP</text>
+                <circle cx="1290" cy="730" r="42" fill="none" stroke="#f59e0b" stroke-width="0.4" opacity="0.15" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Bottom -->
+            <g class="eco-isp">
+                <line x1="960" y1="528" x2="960" y2="770" stroke="#4b8df5" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="960" cy="790" r="40" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.3"/>
+                <circle cx="960" cy="790" r="13" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="960" y="795" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="9">ISP</text>
+                <circle cx="960" cy="790" r="50" fill="none" stroke="#f59e0b" stroke-width="0.4" opacity="0.15" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Bottom-left -->
+            <g class="eco-isp">
+                <line x1="935" y1="525" x2="640" y2="720" stroke="#4b8df5" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="630" cy="730" r="35" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.3"/>
+                <circle cx="630" cy="730" r="11" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="630" y="735" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="9">ISP</text>
+                <circle cx="630" cy="730" r="42" fill="none" stroke="#f59e0b" stroke-width="0.4" opacity="0.15" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Left -->
+            <g class="eco-isp">
+                <line x1="932" y1="500" x2="540" y2="480" stroke="#4b8df5" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="520" cy="475" r="45" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.3"/>
+                <circle cx="520" cy="475" r="14" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="520" y="480" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="9">ISP</text>
+                <circle cx="520" cy="475" r="55" fill="none" stroke="#f59e0b" stroke-width="0.4" opacity="0.15" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Top-left -->
+            <g class="eco-isp">
+                <line x1="933" y1="480" x2="650" y2="280" stroke="#4b8df5" stroke-width="1.5" opacity="0.5"/>
+                <circle cx="640" cy="270" r="38" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.3"/>
+                <circle cx="640" cy="270" r="12" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="640" y="275" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="9">ISP</text>
+                <circle cx="640" cy="270" r="46" fill="none" stroke="#f59e0b" stroke-width="0.4" opacity="0.15" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Far right -->
+            <g class="eco-isp">
+                <line x1="988" y1="495" x2="1500" y2="370" stroke="#4b8df5" stroke-width="1.2" opacity="0.35"/>
+                <circle cx="1520" cy="360" r="30" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.25"/>
+                <circle cx="1520" cy="360" r="10" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.2" opacity="0.7"/>
+                <text x="1520" y="364" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="8" opacity="0.7">ISP</text>
+                <circle cx="1520" cy="360" r="38" fill="none" stroke="#f59e0b" stroke-width="0.3" opacity="0.1" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Far left -->
+            <g class="eco-isp">
+                <line x1="932" y1="495" x2="420" y2="370" stroke="#4b8df5" stroke-width="1.2" opacity="0.35"/>
+                <circle cx="400" cy="360" r="30" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.25"/>
+                <circle cx="400" cy="360" r="10" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.2" opacity="0.7"/>
+                <text x="400" y="364" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="8" opacity="0.7">ISP</text>
+                <circle cx="400" cy="360" r="38" fill="none" stroke="#f59e0b" stroke-width="0.3" opacity="0.1" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Far bottom-right -->
+            <g class="eco-isp">
+                <line x1="980" y1="526" x2="1420" y2="680" stroke="#4b8df5" stroke-width="1.2" opacity="0.35"/>
+                <circle cx="1440" cy="690" r="28" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.25"/>
+                <circle cx="1440" cy="690" r="9" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.2" opacity="0.7"/>
+                <text x="1440" y="694" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="8" opacity="0.7">ISP</text>
+                <circle cx="1440" cy="690" r="35" fill="none" stroke="#f59e0b" stroke-width="0.3" opacity="0.1" stroke-dasharray="3,3"/>
+            </g>
+            <!-- Far bottom-left -->
+            <g class="eco-isp">
+                <line x1="940" y1="526" x2="500" y2="680" stroke="#4b8df5" stroke-width="1.2" opacity="0.35"/>
+                <circle cx="480" cy="690" r="28" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.25"/>
+                <circle cx="480" cy="690" r="9" fill="#1a1a10" stroke="#f59e0b" stroke-width="1.2" opacity="0.7"/>
+                <text x="480" y="694" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="8" opacity="0.7">ISP</text>
+                <circle cx="480" cy="690" r="35" fill="none" stroke="#f59e0b" stroke-width="0.3" opacity="0.1" stroke-dasharray="3,3"/>
+            </g>
+        </g>
+
+        <!-- Ecosystem pulse dots (traveling along lines) -->
+        <g id="eco-pulses" opacity="0">
+            <circle class="eco-pulse" cx="960" cy="350" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="1100" cy="380" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="1200" cy="490" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="1100" cy="620" r="2" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="960" cy="650" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="800" cy="620" r="2" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="720" cy="490" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="800" cy="380" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+        </g>
+
+        <!-- "Already live" status indicator -->
+        <g id="eco-status" opacity="0">
+            <circle cx="960" cy="130" r="5" fill="#10b981" opacity="0.8"/>
+            <circle cx="960" cy="130" r="12" fill="#10b981" filter="url(#blur-sm)" opacity="0.3"/>
+            <text x="960" y="110" text-anchor="middle" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="3" opacity="0.5">ECOSYSTEM LIVE</text>
+        </g>
+
+    </svg>
+</div>
+
+<!-- Vignette -->
+<div class="vignette"></div>
+
+<!-- Text overlays -->
+<div class="text-layer">
+    <div class="beat-text" id="text-0">
+        <div class="label">The Partner</div>
+        <h2>You've built something real. Growing it shouldn't be this hard.</h2>
+        <p>You've built a business. You serve your community. But growing means more contracts, more capital, more risk.</p>
+    </div>
+    <div class="beat-text" id="text-1">
+        <div class="label share-label">The Connection</div>
+        <h2>One connection. Everything changes.</h2>
+        <p>One API connection. That's it. No civil works. No new contracts. No upfront fees.</p>
+    </div>
+    <div class="beat-text" id="text-2">
+        <div class="label">The Expansion</div>
+        <h2>Your business, amplified.</h2>
+        <p>Unlimited backhaul. Zero upfront commits. 12 infrastructure providers through one contract. Your business, amplified.</p>
+    </div>
+    <div class="beat-text" id="text-3">
+        <div class="label green-label">The Platform</div>
+        <h2>Not just bandwidth. A financial ecosystem.</h2>
+        <p>Every payment, automatically split. Your revenue, your wallet, your growth tools. We only earn when you earn.</p>
+    </div>
+    <div class="beat-text" id="text-4">
+        <div class="label share-label">The Ecosystem</div>
+        <h2>Already live. Already growing.</h2>
+        <p>Join an ecosystem that's already live, already growing. The more partners join, the stronger everyone gets.</p>
+    </div>
+</div>
+
+<!-- Stats (Beat 3) -->
+<div class="text-layer">
+    <div class="stats-row" id="stats-expansion">
+        <div class="stat">
+            <div class="number">12</div>
+            <div class="unit">providers</div>
+        </div>
+        <div class="stat">
+            <div class="number green">0</div>
+            <div class="unit">upfront cost</div>
+        </div>
+        <div class="stat">
+            <div class="number">1</div>
+            <div class="unit">contract</div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats (Beat 5) -->
+<div class="text-layer">
+    <div class="stats-row" id="stats-ecosystem">
+        <div class="stat">
+            <div class="number blue">7</div>
+            <div class="unit">subsea cables</div>
+        </div>
+        <div class="stat">
+            <div class="number blue">400+</div>
+            <div class="unit">km fiber</div>
+        </div>
+        <div class="stat">
+            <div class="number">8M+</div>
+            <div class="unit">people covered</div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll spacer -->
+<div class="scroll-spacer" id="scroll-spacer"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <h2>Plug in. Keep your customers. Grow without limits.</h2>
+    <p>The more networks that join, the stronger everyone gets. There's a spot for you.</p>
+    <button class="cta-button">Become a Partner</button>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const beats = 5;
+const spacer = document.getElementById('scroll-spacer');
+const dots = document.querySelectorAll('.progress-dot');
+
+// -- Intro fade out --
+gsap.to('#intro', {
+    opacity: 0,
+    pointerEvents: 'none',
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: '+=300',
+        scrub: 0.5,
+    }
+});
+
+// -- Pulse animations (continuous) for data pulse dots --
+const dpulses = document.querySelectorAll('.d-pulse');
+dpulses.forEach((p, i) => {
+    const baseY = parseFloat(p.getAttribute('cy'));
+    gsap.to(p, {
+        attr: { cy: baseY + (i % 2 === 0 ? -80 : 80) },
+        duration: 2 + i * 0.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.3,
+    });
+});
+
+// -- Ecosystem pulse animations --
+const ecoPulses = document.querySelectorAll('.eco-pulse');
+ecoPulses.forEach((p, i) => {
+    const baseX = parseFloat(p.getAttribute('cx'));
+    const baseY = parseFloat(p.getAttribute('cy'));
+    gsap.to(p, {
+        attr: {
+            cx: baseX + (Math.random() - 0.5) * 200,
+            cy: baseY + (Math.random() - 0.5) * 150,
+        },
+        duration: 3 + Math.random() * 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.4,
+    });
+});
+
+// -- Main scroll timeline --
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        onUpdate: (self) => {
+            const p = self.progress;
+            const beat = Math.min(4, Math.floor(p * beats));
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === beat);
+            });
+        }
+    }
+});
+
+// =================================
+// BEAT 1 -- The Partner (Before)
+// =================================
+
+// ISP node fades in center
+tl.to('#isp-node', { opacity: 1, duration: 0.6 }, 0);
+tl.to('#text-0', { opacity: 1, duration: 0.5 }, 0.1);
+
+// Small coverage circle appears
+tl.to('#isp-coverage-small', { opacity: 1, duration: 0.8 }, 0.2);
+
+// Single provider line
+tl.to('#single-provider', { opacity: 1, duration: 0.6 }, 0.4);
+
+// Sparse user dots appear one by one
+tl.to('.user-dot', {
+    opacity: (i) => 0.25 + Math.random() * 0.2,
+    stagger: 0.06,
+    duration: 0.5,
+}, 0.5);
+
+// Constraint label
+tl.to('#constraint-label', { opacity: 1, duration: 0.5 }, 0.8);
+
+// Coverage circle pulses subtly (feels constrained)
+tl.to('#isp-coverage-small circle:first-child', {
+    attr: { r: 130 },
+    duration: 0.4,
+    yoyo: true,
+    repeat: 1,
+}, 1.2);
+
+// Fade out beat 1 text
+tl.to('#text-0', { opacity: 0, duration: 0.4 }, 1.8);
+
+
+// =================================
+// BEAT 2 -- The Connection
+// =================================
+
+tl.to('#text-1', { opacity: 1, duration: 0.5 }, 2);
+
+// Share node appears below ISP
+tl.to('#share-node', { opacity: 1, duration: 0.8 }, 2);
+
+// Connection line appears (dashed first)
+tl.to('#connection-line', { opacity: 1, duration: 0.3 }, 2.3);
+
+// Animate dash offset for the "connecting" feel
+tl.fromTo('#conn-dashed', {
+    strokeDashoffset: 200,
+}, {
+    strokeDashoffset: 0,
+    duration: 1,
+}, 2.3);
+
+// After dash animation, solid line appears on top
+tl.to('#conn-solid', { opacity: 1, duration: 0.4 }, 3.1);
+tl.to('#conn-dashed', { opacity: 0, duration: 0.3 }, 3.1);
+
+// Connection spark
+tl.to('#conn-spark', { opacity: 1, duration: 0.2 }, 3.1);
+tl.to('#conn-spark', { opacity: 0, duration: 0.4 }, 3.4);
+
+// Share core pulses on connection
+tl.fromTo('#share-core', { attr: { r: 22 } }, {
+    attr: { r: 28 },
+    duration: 0.3,
+    yoyo: true,
+    repeat: 1,
+}, 3.1);
+
+// Constraint label fades
+tl.to('#constraint-label', { opacity: 0, duration: 0.3 }, 2.5);
+
+// Fade out beat 2 text
+tl.to('#text-1', { opacity: 0, duration: 0.4 }, 3.8);
+
+
+// =================================
+// BEAT 3 -- The Expansion
+// =================================
+
+tl.to('#text-2', { opacity: 1, duration: 0.5 }, 4);
+
+// Coverage circle explodes outward
+tl.to('#isp-coverage-small', { opacity: 0, duration: 0.5 }, 4);
+tl.to('#isp-coverage-large', { opacity: 1, duration: 1 }, 4.1);
+
+// Single provider line fades out
+tl.to('#single-provider', { opacity: 0, duration: 0.5 }, 4);
+
+// Provider backbone appears with providers fanning out
+tl.to('#provider-backbone', { opacity: 1, duration: 0.5 }, 4.2);
+tl.to('.prov-line', {
+    opacity: 0.6,
+    stagger: 0.05,
+    duration: 0.6,
+}, 4.3);
+tl.to('.prov-dot', {
+    opacity: 0.8,
+    stagger: 0.04,
+    duration: 0.5,
+}, 4.4);
+
+// Users multiply rapidly
+tl.to('.user-many', {
+    opacity: (i) => 0.2 + Math.random() * 0.35,
+    stagger: 0.015,
+    duration: 0.3,
+}, 4.3);
+
+// Few original user dots get brighter
+tl.to('.user-dot', {
+    opacity: 0.6,
+    duration: 0.5,
+}, 4.3);
+
+// Data pulses appear along connection
+tl.to('#data-pulses', { opacity: 1, duration: 0.5 }, 4.5);
+
+// Revenue line climbs
+tl.to('#revenue-line', { opacity: 1, duration: 0.8 }, 4.6);
+
+// Stats appear
+tl.to('#stats-expansion', { opacity: 1, duration: 0.6 }, 4.5);
+
+// ISP core pulses with growth
+tl.fromTo('#isp-core', { attr: { r: 18 } }, {
+    attr: { r: 24 },
+    duration: 0.4,
+    yoyo: true,
+    repeat: 1,
+}, 4.5);
+
+// Fade out beat 3
+tl.to('#text-2', { opacity: 0, duration: 0.4 }, 5.8);
+tl.to('#stats-expansion', { opacity: 0, duration: 0.4 }, 5.8);
+
+
+// =================================
+// BEAT 4 -- The Financial Layer
+// =================================
+
+tl.to('#text-3', { opacity: 1, duration: 0.5 }, 6);
+
+// Fade out beat 3 visual elements (ISP view recedes)
+tl.to('#isp-node', { opacity: 0.2, duration: 0.8 }, 5.9);
+tl.to('#share-node', { opacity: 0.15, duration: 0.8 }, 5.9);
+tl.to('#connection-line', { opacity: 0.1, duration: 0.8 }, 5.9);
+tl.to('#isp-coverage-large', { opacity: 0, duration: 0.8 }, 5.9);
+tl.to('#provider-backbone', { opacity: 0.1, duration: 0.8 }, 5.9);
+tl.to('#users-few', { opacity: 0, duration: 0.5 }, 5.9);
+tl.to('#users-many', { opacity: 0, duration: 0.5 }, 5.9);
+tl.to('#data-pulses', { opacity: 0, duration: 0.5 }, 5.9);
+tl.to('#revenue-line', { opacity: 0, duration: 0.5 }, 5.9);
+
+// Dashboard appears
+tl.to('#dashboard', { opacity: 1, duration: 0.8 }, 6.1);
+
+// Dashboard flow animates in
+tl.to('#dash-flow', { opacity: 1, duration: 0.5 }, 6.3);
+
+// Payment bar fills
+tl.to('#payment-bar', { attr: { width: 300 }, duration: 1.2 }, 6.4);
+
+// Wallet section
+tl.to('#dash-wallet', { opacity: 1, duration: 0.5 }, 6.6);
+
+// Tagline
+tl.to('#dash-tagline', { opacity: 1, duration: 0.5 }, 7.0);
+
+// Fade out beat 4
+tl.to('#text-3', { opacity: 0, duration: 0.4 }, 7.6);
+tl.to('#dashboard', { opacity: 0, duration: 0.6 }, 7.5);
+
+
+// =================================
+// BEAT 5 -- The Ecosystem
+// =================================
+
+tl.to('#text-4', { opacity: 1, duration: 0.5 }, 8);
+
+// Clear remaining beat 3 residuals
+tl.to('#isp-node', { opacity: 0, duration: 0.3 }, 7.8);
+tl.to('#share-node', { opacity: 0, duration: 0.3 }, 7.8);
+tl.to('#connection-line', { opacity: 0, duration: 0.3 }, 7.8);
+tl.to('#provider-backbone', { opacity: 0, duration: 0.3 }, 7.8);
+
+// Ecosystem hub appears
+tl.to('#ecosystem-hub', { opacity: 1, duration: 0.8 }, 8);
+
+// ISP nodes appear one by one around the ring
+tl.to('#ecosystem-isps', { opacity: 1, duration: 0.3 }, 8.1);
+tl.to('.eco-isp', {
+    opacity: 1,
+    stagger: 0.08,
+    duration: 0.5,
+}, 8.2);
+
+// Ecosystem pulses
+tl.to('#eco-pulses', { opacity: 1, duration: 0.8 }, 8.5);
+
+// Status indicator
+tl.to('#eco-status', { opacity: 1, duration: 0.6 }, 8.6);
+
+// Ecosystem stats
+tl.to('#stats-ecosystem', { opacity: 1, duration: 0.6 }, 8.4);
+
+// Fade out everything at end
+tl.to('#text-4', { opacity: 0, duration: 0.5 }, 9.5);
+tl.to('#stats-ecosystem', { opacity: 0, duration: 0.5 }, 9.5);
+tl.to('#scene', { opacity: 0, duration: 0.8 }, 9.5);
+tl.to('#progress', { opacity: 0, duration: 0.5 }, 9.5);
+
+
+// =================================
+// Dashboard number animations
+// =================================
+// These are triggered by scroll position and animate the counter values
+
+const partnerEl = document.getElementById('partner-amount');
+const shareEl = document.getElementById('share-amount');
+const walletEl = document.getElementById('wallet-balance');
+const interestEl = document.getElementById('interest-amount');
+
+let lastBeat = -1;
+
+ScrollTrigger.create({
+    trigger: spacer,
+    start: 'top top',
+    end: 'bottom bottom',
+    onUpdate: (self) => {
+        const p = self.progress;
+        const beat = Math.min(4, Math.floor(p * beats));
+
+        if (beat === 3 && lastBeat !== 3) {
+            // Animate dashboard numbers
+            gsap.to({ val: 0 }, {
+                val: 47500,
+                duration: 2,
+                ease: 'power2.out',
+                onUpdate: function() {
+                    if (partnerEl) partnerEl.textContent = 'KES ' + Math.round(this.targets()[0].val).toLocaleString();
+                }
+            });
+            gsap.to({ val: 0 }, {
+                val: 4200,
+                duration: 2,
+                ease: 'power2.out',
+                onUpdate: function() {
+                    if (shareEl) shareEl.textContent = 'KES ' + Math.round(this.targets()[0].val).toLocaleString();
+                }
+            });
+            gsap.to({ val: 0 }, {
+                val: 285000,
+                duration: 2.5,
+                ease: 'power2.out',
+                onUpdate: function() {
+                    if (walletEl) walletEl.textContent = 'KES ' + Math.round(this.targets()[0].val).toLocaleString();
+                }
+            });
+            gsap.to({ val: 0 }, {
+                val: 3450,
+                duration: 2.5,
+                ease: 'power2.out',
+                onUpdate: function() {
+                    if (interestEl) interestEl.textContent = '+KES ' + Math.round(this.targets()[0].val).toLocaleString();
+                }
+            });
+        }
+        lastBeat = beat;
+    }
+});
+</script>
+
+</body>
+</html>

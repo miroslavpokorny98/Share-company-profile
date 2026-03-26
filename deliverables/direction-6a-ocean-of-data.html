@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction 6A — Ocean of Data</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue-900: #0c1a3a;
+            --blue-700: #1d4ed8;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --blue-300: #93c5fd;
+            --cyan-400: #38bdf8;
+            --amber-500: #f59e0b;
+            --amber-400: #fbbf24;
+        }
+
+        html, body {
+            background: #04060c;
+            color: #e0e4ec;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ── Scroll spacer ── */
+        .scroll-spacer {
+            height: 500vh;
+            position: relative;
+        }
+
+        /* ── Fixed canvas ── */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .scene svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ── Text overlays ── */
+        .text-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 0 80px 80px;
+        }
+
+        .beat-text {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            max-width: 560px;
+            opacity: 0;
+        }
+
+        .beat-text .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--blue-400);
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .beat-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .beat-text p {
+            font-size: 17px;
+            line-height: 1.65;
+            color: rgba(224, 228, 236, 0.7);
+            max-width: 480px;
+        }
+
+        /* ── Stats overlay ── */
+        .stats-row {
+            position: absolute;
+            bottom: 80px;
+            right: 80px;
+            display: flex;
+            gap: 40px;
+            opacity: 0;
+        }
+
+        .stat {
+            text-align: right;
+        }
+
+        .stat .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--blue-400);
+            line-height: 1;
+        }
+
+        .stat .unit {
+            font-size: 13px;
+            color: rgba(224, 228, 236, 0.5);
+            margin-top: 6px;
+        }
+
+        /* ── Progress bar ── */
+        .progress-track {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: background 0.4s, transform 0.4s;
+        }
+
+        .progress-dot.active {
+            background: var(--blue-400);
+            transform: scale(1.4);
+        }
+
+        /* ── Gradient overlays ── */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center, transparent 40%, #04060c 100%),
+                linear-gradient(to top, #04060c 0%, transparent 30%);
+        }
+
+        /* ── Intro overlay ── */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #04060c;
+        }
+
+        .intro-overlay h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--blue-400);
+            font-weight: 500;
+        }
+
+        .intro-overlay .scroll-hint {
+            position: absolute;
+            bottom: 48px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(4px); }
+        }
+
+        /* ── CTA at end ── */
+        .cta-section {
+            position: relative;
+            z-index: 15;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .cta-button {
+            margin-top: 16px;
+            padding: 16px 40px;
+            border: 1px solid var(--blue-500);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--blue-400);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cta-button:hover {
+            background: var(--blue-500);
+            color: #fff;
+        }
+
+        /* ── Side labels ── */
+        .side-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            fill: currentColor;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Intro -->
+<div class="intro-overlay" id="intro">
+    <h1>Direction 6A — Ocean of Data</h1>
+    <div class="scroll-hint">Scroll to begin</div>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-track" id="progress">
+    <div class="progress-dot active" data-beat="0"></div>
+    <div class="progress-dot" data-beat="1"></div>
+    <div class="progress-dot" data-beat="2"></div>
+    <div class="progress-dot" data-beat="3"></div>
+    <div class="progress-dot" data-beat="4"></div>
+</div>
+
+<!-- Fixed scene -->
+<div class="scene" id="scene">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-cyan" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-amber" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="blur-sm">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+            <filter id="blur-md">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+            </filter>
+            <filter id="blur-lg">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12"/>
+            </filter>
+            <filter id="blur-xl">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="20"/>
+            </filter>
+        </defs>
+
+        <!-- ═══ Background subtle grid ═══ -->
+        <g id="bg-grid" opacity="0.03">
+            <line x1="0" y1="270" x2="1920" y2="270" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="0" y1="540" x2="1920" y2="540" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="0" y1="810" x2="1920" y2="810" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="480" y1="0" x2="480" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="960" y1="0" x2="960" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="1440" y1="0" x2="1440" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+        </g>
+
+        <!-- ═══ BEAT 1: LEFT SIDE — Dense data cloud (Global Bandwidth) ═══ -->
+        <g id="left-data-cloud" opacity="0">
+            <!-- Ambient glow behind left cloud -->
+            <circle cx="320" cy="500" r="300" fill="url(#glow-cyan)" filter="url(#blur-xl)" opacity="0.3"/>
+
+            <!-- Data particles — bright blinking dots -->
+            <circle class="data-dot" cx="80" cy="320" r="2.5" fill="#93c5fd" opacity="0.9"/>
+            <circle class="data-dot" cx="140" cy="280" r="2" fill="#60a5fa" opacity="0.8"/>
+            <circle class="data-dot" cx="200" cy="350" r="3" fill="#38bdf8" opacity="0.9"/>
+            <circle class="data-dot" cx="110" cy="420" r="2" fill="#93c5fd" opacity="0.7"/>
+            <circle class="data-dot" cx="250" cy="260" r="2.5" fill="#60a5fa" opacity="0.85"/>
+            <circle class="data-dot" cx="60" cy="480" r="2" fill="#38bdf8" opacity="0.75"/>
+            <circle class="data-dot" cx="180" cy="510" r="3" fill="#93c5fd" opacity="0.9"/>
+            <circle class="data-dot" cx="300" cy="300" r="2" fill="#60a5fa" opacity="0.8"/>
+            <circle class="data-dot" cx="350" cy="380" r="2.5" fill="#38bdf8" opacity="0.85"/>
+            <circle class="data-dot" cx="90" cy="560" r="2" fill="#93c5fd" opacity="0.7"/>
+            <circle class="data-dot" cx="220" cy="600" r="3" fill="#60a5fa" opacity="0.9"/>
+            <circle class="data-dot" cx="340" cy="460" r="2" fill="#38bdf8" opacity="0.8"/>
+            <circle class="data-dot" cx="150" cy="650" r="2.5" fill="#93c5fd" opacity="0.85"/>
+            <circle class="data-dot" cx="280" cy="540" r="2" fill="#60a5fa" opacity="0.7"/>
+            <circle class="data-dot" cx="400" cy="340" r="3" fill="#38bdf8" opacity="0.9"/>
+            <circle class="data-dot" cx="420" cy="500" r="2" fill="#93c5fd" opacity="0.8"/>
+            <circle class="data-dot" cx="370" cy="580" r="2.5" fill="#60a5fa" opacity="0.85"/>
+            <circle class="data-dot" cx="130" cy="380" r="2" fill="#38bdf8" opacity="0.75"/>
+            <circle class="data-dot" cx="240" cy="440" r="3" fill="#93c5fd" opacity="0.9"/>
+            <circle class="data-dot" cx="310" cy="620" r="2" fill="#60a5fa" opacity="0.8"/>
+            <circle class="data-dot" cx="70" cy="700" r="2.5" fill="#38bdf8" opacity="0.85"/>
+            <circle class="data-dot" cx="190" cy="720" r="2" fill="#93c5fd" opacity="0.7"/>
+            <circle class="data-dot" cx="440" cy="420" r="3" fill="#60a5fa" opacity="0.9"/>
+            <circle class="data-dot" cx="100" cy="250" r="2" fill="#38bdf8" opacity="0.8"/>
+            <circle class="data-dot" cx="460" cy="560" r="2.5" fill="#93c5fd" opacity="0.85"/>
+            <circle class="data-dot" cx="270" cy="700" r="2" fill="#60a5fa" opacity="0.7"/>
+            <circle class="data-dot" cx="50" cy="600" r="3" fill="#38bdf8" opacity="0.9"/>
+            <circle class="data-dot" cx="380" cy="280" r="2" fill="#93c5fd" opacity="0.8"/>
+            <circle class="data-dot" cx="160" cy="760" r="2.5" fill="#60a5fa" opacity="0.85"/>
+            <circle class="data-dot" cx="330" cy="750" r="2" fill="#38bdf8" opacity="0.75"/>
+
+            <!-- Data dashes — short bright lines -->
+            <line class="data-dash" x1="120" y1="300" x2="145" y2="305" stroke="#93c5fd" stroke-width="1.5" opacity="0.8"/>
+            <line class="data-dash" x1="260" y1="380" x2="288" y2="375" stroke="#60a5fa" stroke-width="1.5" opacity="0.7"/>
+            <line class="data-dash" x1="170" y1="460" x2="198" y2="455" stroke="#38bdf8" stroke-width="1.5" opacity="0.85"/>
+            <line class="data-dash" x1="90" y1="520" x2="115" y2="528" stroke="#93c5fd" stroke-width="1.5" opacity="0.7"/>
+            <line class="data-dash" x1="320" y1="430" x2="348" y2="425" stroke="#60a5fa" stroke-width="1.5" opacity="0.8"/>
+            <line class="data-dash" x1="210" y1="560" x2="238" y2="555" stroke="#38bdf8" stroke-width="1.5" opacity="0.75"/>
+            <line class="data-dash" x1="380" y1="490" x2="408" y2="485" stroke="#93c5fd" stroke-width="1.5" opacity="0.8"/>
+            <line class="data-dash" x1="140" y1="620" x2="168" y2="618" stroke="#60a5fa" stroke-width="1.5" opacity="0.7"/>
+            <line class="data-dash" x1="300" y1="660" x2="325" y2="665" stroke="#38bdf8" stroke-width="1.5" opacity="0.85"/>
+            <line class="data-dash" x1="430" y1="380" x2="455" y2="390" stroke="#93c5fd" stroke-width="1.5" opacity="0.7"/>
+            <line class="data-dash" x1="80" y1="440" x2="105" y2="435" stroke="#60a5fa" stroke-width="1.5" opacity="0.8"/>
+            <line class="data-dash" x1="350" y1="540" x2="375" y2="548" stroke="#38bdf8" stroke-width="1.5" opacity="0.75"/>
+        </g>
+
+        <!-- ═══ BEAT 1: LEFT FIBER BUNDLE — data converges into cables heading right ═══ -->
+        <g id="left-bundle" opacity="0">
+            <line x1="480" y1="360" x2="700" y2="470" stroke="#60a5fa" stroke-width="3" opacity="0.7"/>
+            <line x1="460" y1="420" x2="700" y2="490" stroke="#93c5fd" stroke-width="2.5" opacity="0.65"/>
+            <line x1="490" y1="480" x2="700" y2="510" stroke="#38bdf8" stroke-width="3" opacity="0.7"/>
+            <line x1="470" y1="540" x2="700" y2="520" stroke="#60a5fa" stroke-width="2.5" opacity="0.65"/>
+            <line x1="480" y1="600" x2="700" y2="540" stroke="#93c5fd" stroke-width="2" opacity="0.6"/>
+            <line x1="450" y1="660" x2="700" y2="550" stroke="#38bdf8" stroke-width="2.5" opacity="0.65"/>
+            <!-- Bundle glow at convergence -->
+            <circle cx="700" cy="505" r="40" fill="url(#glow-cyan)" filter="url(#blur-md)" opacity="0.4"/>
+        </g>
+
+        <!-- ═══ BEAT 1: THE THIN CABLE — single fragile connection ═══ -->
+        <g id="thin-cable" opacity="0">
+            <line id="cable-line" x1="700" y1="505" x2="1220" y2="505" stroke="#3b82f6" stroke-width="1.5" opacity="0.5" stroke-dasharray="4,8"/>
+            <!-- Trickle data dots traveling along cable -->
+            <circle class="trickle-dot" cx="750" cy="505" r="2" fill="#60a5fa" opacity="0.6"/>
+            <circle class="trickle-dot" cx="850" cy="505" r="1.5" fill="#93c5fd" opacity="0.5"/>
+            <circle class="trickle-dot" cx="1000" cy="505" r="2" fill="#60a5fa" opacity="0.4"/>
+            <circle class="trickle-dot" cx="1100" cy="505" r="1.5" fill="#93c5fd" opacity="0.5"/>
+        </g>
+
+        <!-- ═══ BEAT 1: RIGHT SIDE — Africa's sparse cables ═══ -->
+        <g id="right-sparse" opacity="0">
+            <!-- Sparse cable ends spreading out -->
+            <line class="sparse-cable" x1="1220" y1="505" x2="1450" y2="380" stroke="#3565a8" stroke-width="2" opacity="0.3"/>
+            <line class="sparse-cable" x1="1220" y1="505" x2="1500" y2="470" stroke="#3565a8" stroke-width="1.5" opacity="0.25"/>
+            <line class="sparse-cable" x1="1220" y1="505" x2="1480" y2="560" stroke="#3565a8" stroke-width="2" opacity="0.3"/>
+            <line class="sparse-cable" x1="1220" y1="505" x2="1420" y2="640" stroke="#3565a8" stroke-width="1.5" opacity="0.25"/>
+            <line class="sparse-cable" x1="1220" y1="505" x2="1550" y2="520" stroke="#3565a8" stroke-width="1.5" opacity="0.2"/>
+
+            <!-- Very few dim data particles on right -->
+            <circle class="sparse-dot" cx="1400" cy="400" r="2" fill="#3565a8" opacity="0.3"/>
+            <circle class="sparse-dot" cx="1520" cy="480" r="1.5" fill="#3565a8" opacity="0.25"/>
+            <circle class="sparse-dot" cx="1460" cy="580" r="2" fill="#3565a8" opacity="0.2"/>
+            <circle class="sparse-dot" cx="1380" cy="620" r="1.5" fill="#3565a8" opacity="0.25"/>
+            <circle class="sparse-dot" cx="1550" cy="540" r="1.5" fill="#3565a8" opacity="0.2"/>
+        </g>
+
+        <!-- ═══ BEAT 1: LABELS ═══ -->
+        <g id="side-labels" opacity="0">
+            <text class="side-label" x="240" y="190" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="3" text-anchor="middle" opacity="0.7">GLOBAL BANDWIDTH</text>
+            <text class="side-label" x="1450" y="300" fill="#3565a8" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="3" text-anchor="middle" opacity="0.5">AFRICA</text>
+            <text class="side-label" x="960" y="475" fill="#3b82f6" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="2" text-anchor="middle" opacity="0.4">1 FRAGMENTED CONNECTION</text>
+        </g>
+
+        <!-- ═══ BEAT 2: SHARE HUB — appears in the middle ═══ -->
+        <g id="share-hub" opacity="0">
+            <!-- Glow behind hub -->
+            <circle cx="960" cy="505" r="80" fill="url(#glow-blue)" filter="url(#blur-lg)" opacity="0.5"/>
+            <!-- Hub ring -->
+            <circle cx="960" cy="505" r="32" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+            <circle cx="960" cy="505" r="48" fill="none" stroke="#1d4ed8" stroke-width="1" opacity="0.3"/>
+            <!-- Hub core -->
+            <circle id="hub-core" cx="960" cy="505" r="16" fill="#1d4ed8" opacity="0.9"/>
+            <!-- SHARE text -->
+            <text x="960" y="570" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="4" opacity="0.7">SHARE</text>
+        </g>
+
+        <!-- ═══ BEAT 2: ADDITIONAL CABLE BUNDLES — hidden infrastructure revealed ═══ -->
+        <g id="new-cables" opacity="0">
+            <!-- Cables from above -->
+            <line class="new-cable" x1="960" y1="505" x2="780" y2="180" stroke="#3b82f6" stroke-width="2.5" opacity="0"/>
+            <line class="new-cable" x1="960" y1="505" x2="1100" y2="150" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <!-- Cables from below -->
+            <line class="new-cable" x1="960" y1="505" x2="820" y2="850" stroke="#3b82f6" stroke-width="2.5" opacity="0"/>
+            <line class="new-cable" x1="960" y1="505" x2="1120" y2="820" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <!-- Additional cable from far left -->
+            <line class="new-cable" x1="960" y1="505" x2="200" y2="380" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <line class="new-cable" x1="960" y1="505" x2="150" y2="650" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+        </g>
+
+        <!-- ═══ BEAT 2: TORRENT DATA — fast-flowing data through Share ═══ -->
+        <g id="torrent-data" opacity="0">
+            <circle class="torrent-dot" cx="800" cy="505" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="torrent-dot" cx="850" cy="500" r="2.5" fill="#60a5fa" filter="url(#blur-sm)"/>
+            <circle class="torrent-dot" cx="900" cy="508" r="3" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="torrent-dot" cx="950" cy="503" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="torrent-dot" cx="1000" cy="507" r="3" fill="#60a5fa" filter="url(#blur-sm)"/>
+            <circle class="torrent-dot" cx="1050" cy="502" r="2.5" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="torrent-dot" cx="1100" cy="506" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="torrent-dot" cx="1150" cy="504" r="2.5" fill="#60a5fa" filter="url(#blur-sm)"/>
+            <circle class="torrent-dot" cx="750" cy="503" r="2" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="torrent-dot" cx="1200" cy="505" r="2" fill="#93c5fd" filter="url(#blur-sm)"/>
+        </g>
+
+        <!-- ═══ BEAT 2: ENHANCED RIGHT-SIDE CABLES (now alive) ═══ -->
+        <g id="right-alive" opacity="0">
+            <line x1="960" y1="505" x2="1450" y2="380" stroke="#60a5fa" stroke-width="2.5" opacity="0.7"/>
+            <line x1="960" y1="505" x2="1500" y2="470" stroke="#93c5fd" stroke-width="2" opacity="0.65"/>
+            <line x1="960" y1="505" x2="1480" y2="560" stroke="#60a5fa" stroke-width="2.5" opacity="0.7"/>
+            <line x1="960" y1="505" x2="1420" y2="640" stroke="#93c5fd" stroke-width="2" opacity="0.65"/>
+            <line x1="960" y1="505" x2="1550" y2="520" stroke="#38bdf8" stroke-width="2" opacity="0.6"/>
+        </g>
+
+        <!-- ═══ BEAT 2: LEFT-SIDE CABLES (connected to Share) ═══ -->
+        <g id="left-alive" opacity="0">
+            <line x1="960" y1="505" x2="480" y2="360" stroke="#60a5fa" stroke-width="3" opacity="0.7"/>
+            <line x1="960" y1="505" x2="460" y2="420" stroke="#93c5fd" stroke-width="2.5" opacity="0.65"/>
+            <line x1="960" y1="505" x2="490" y2="480" stroke="#38bdf8" stroke-width="3" opacity="0.7"/>
+            <line x1="960" y1="505" x2="470" y2="540" stroke="#60a5fa" stroke-width="2.5" opacity="0.65"/>
+            <line x1="960" y1="505" x2="480" y2="600" stroke="#93c5fd" stroke-width="2" opacity="0.6"/>
+            <line x1="960" y1="505" x2="450" y2="660" stroke="#38bdf8" stroke-width="2.5" opacity="0.65"/>
+        </g>
+
+        <!-- ═══ BEAT 3: ISP NODE — zoomed out to show one ISP ═══ -->
+        <g id="isp-node" opacity="0">
+            <!-- ISP hub (amber) -->
+            <circle cx="1400" cy="480" r="50" fill="url(#glow-amber)" filter="url(#blur-md)" opacity="0.4"/>
+            <circle id="isp-core" cx="1400" cy="480" r="12" fill="#f59e0b" opacity="0.9"/>
+            <circle cx="1400" cy="480" r="22" fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.5"/>
+            <text x="1400" y="520" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="3" opacity="0.7">ISP</text>
+
+            <!-- User dots around ISP — warm white/amber -->
+            <circle class="user-dot" cx="1440" cy="430" r="2.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot" cx="1470" cy="460" r="2" fill="#fde68a" opacity="0"/>
+            <circle class="user-dot" cx="1460" cy="510" r="2.5" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot" cx="1430" cy="540" r="2" fill="#fde68a" opacity="0"/>
+            <circle class="user-dot" cx="1380" cy="430" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot" cx="1350" cy="460" r="2.5" fill="#fde68a" opacity="0"/>
+            <circle class="user-dot" cx="1350" cy="520" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot" cx="1380" cy="550" r="2.5" fill="#fde68a" opacity="0"/>
+
+            <!-- Expanded user dots — appear as ISP grows -->
+            <circle class="user-dot-expand" cx="1500" cy="440" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot-expand" cx="1510" cy="490" r="2.5" fill="#fde68a" opacity="0"/>
+            <circle class="user-dot-expand" cx="1490" cy="530" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot-expand" cx="1460" cy="560" r="2.5" fill="#fde68a" opacity="0"/>
+            <circle class="user-dot-expand" cx="1420" cy="580" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot-expand" cx="1370" cy="570" r="2.5" fill="#fde68a" opacity="0"/>
+            <circle class="user-dot-expand" cx="1330" cy="540" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot-expand" cx="1310" cy="470" r="2.5" fill="#fde68a" opacity="0"/>
+            <circle class="user-dot-expand" cx="1330" cy="420" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot-expand" cx="1370" cy="400" r="2.5" fill="#fde68a" opacity="0"/>
+            <circle class="user-dot-expand" cx="1420" cy="390" r="2" fill="#fbbf24" opacity="0"/>
+            <circle class="user-dot-expand" cx="1480" cy="410" r="2.5" fill="#fde68a" opacity="0"/>
+
+            <!-- Connection line from Share backbone to ISP -->
+            <line id="share-to-isp" x1="960" y1="505" x2="1400" y2="480" stroke="#3b82f6" stroke-width="3" opacity="0.8"/>
+        </g>
+
+        <!-- ═══ BEAT 3: BACKBONE SEGMENT visible ═══ -->
+        <g id="backbone-b3" opacity="0">
+            <!-- Main backbone line running left-right -->
+            <line x1="200" y1="505" x2="960" y2="505" stroke="#3b82f6" stroke-width="4" opacity="0.6"/>
+            <!-- Data flowing along backbone -->
+            <circle class="backbone-pulse" cx="400" cy="505" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="backbone-pulse" cx="600" cy="505" r="2.5" fill="#60a5fa" filter="url(#blur-sm)"/>
+            <circle class="backbone-pulse" cx="800" cy="505" r="3" fill="#38bdf8" filter="url(#blur-sm)"/>
+        </g>
+
+        <!-- ═══ BEAT 4: ECOSYSTEM — multiple ISPs ═══ -->
+        <g id="ecosystem" opacity="0">
+            <!-- Backbone extends full width -->
+            <line x1="100" y1="505" x2="1820" y2="505" stroke="#3b82f6" stroke-width="4" opacity="0.5"/>
+
+            <!-- ISP 1 — top right -->
+            <line class="eco-line" x1="1300" y1="505" x2="1500" y2="320" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+            <circle class="eco-isp" cx="1500" cy="320" r="10" fill="#f59e0b" opacity="0.8"/>
+            <circle cx="1500" cy="320" r="18" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+            <circle class="eco-user" cx="1530" cy="300" r="2" fill="#fde68a" opacity="0.6"/>
+            <circle class="eco-user" cx="1520" cy="340" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="eco-user" cx="1480" cy="295" r="1.5" fill="#fde68a" opacity="0.5"/>
+            <circle class="eco-user" cx="1475" cy="340" r="2" fill="#fbbf24" opacity="0.6"/>
+            <circle class="eco-user" cx="1540" cy="325" r="1.5" fill="#fde68a" opacity="0.5"/>
+
+            <!-- ISP 2 — center top -->
+            <line class="eco-line" x1="960" y1="505" x2="960" y2="280" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+            <circle class="eco-isp" cx="960" cy="280" r="10" fill="#f59e0b" opacity="0.8"/>
+            <circle cx="960" cy="280" r="18" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+            <circle class="eco-user" cx="940" cy="260" r="2" fill="#fde68a" opacity="0.6"/>
+            <circle class="eco-user" cx="985" cy="270" r="1.5" fill="#fbbf24" opacity="0.5"/>
+            <circle class="eco-user" cx="945" cy="300" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="eco-user" cx="980" cy="295" r="1.5" fill="#fbbf24" opacity="0.6"/>
+
+            <!-- ISP 3 — left -->
+            <line class="eco-line" x1="600" y1="505" x2="420" y2="340" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+            <circle class="eco-isp" cx="420" cy="340" r="10" fill="#f59e0b" opacity="0.8"/>
+            <circle cx="420" cy="340" r="18" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+            <circle class="eco-user" cx="400" cy="320" r="2" fill="#fde68a" opacity="0.6"/>
+            <circle class="eco-user" cx="445" cy="325" r="1.5" fill="#fbbf24" opacity="0.5"/>
+            <circle class="eco-user" cx="405" cy="360" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="eco-user" cx="440" cy="355" r="1.5" fill="#fbbf24" opacity="0.6"/>
+
+            <!-- ISP 4 — bottom left -->
+            <line class="eco-line" x1="500" y1="505" x2="350" y2="680" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+            <circle class="eco-isp" cx="350" cy="680" r="10" fill="#f59e0b" opacity="0.8"/>
+            <circle cx="350" cy="680" r="18" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+            <circle class="eco-user" cx="330" cy="660" r="2" fill="#fde68a" opacity="0.6"/>
+            <circle class="eco-user" cx="370" cy="665" r="1.5" fill="#fbbf24" opacity="0.5"/>
+            <circle class="eco-user" cx="335" cy="700" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="eco-user" cx="370" cy="700" r="1.5" fill="#fbbf24" opacity="0.6"/>
+
+            <!-- ISP 5 — bottom right -->
+            <line class="eco-line" x1="1200" y1="505" x2="1400" y2="700" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+            <circle class="eco-isp" cx="1400" cy="700" r="10" fill="#f59e0b" opacity="0.8"/>
+            <circle cx="1400" cy="700" r="18" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+            <circle class="eco-user" cx="1380" cy="680" r="2" fill="#fde68a" opacity="0.6"/>
+            <circle class="eco-user" cx="1425" cy="690" r="1.5" fill="#fbbf24" opacity="0.5"/>
+            <circle class="eco-user" cx="1385" cy="720" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="eco-user" cx="1420" cy="715" r="1.5" fill="#fbbf24" opacity="0.6"/>
+
+            <!-- ISP 6 — far right -->
+            <line class="eco-line" x1="1600" y1="505" x2="1700" y2="400" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+            <circle class="eco-isp" cx="1700" cy="400" r="10" fill="#f59e0b" opacity="0.8"/>
+            <circle cx="1700" cy="400" r="18" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+            <circle class="eco-user" cx="1680" cy="380" r="2" fill="#fde68a" opacity="0.6"/>
+            <circle class="eco-user" cx="1720" cy="390" r="1.5" fill="#fbbf24" opacity="0.5"/>
+            <circle class="eco-user" cx="1690" cy="420" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="eco-user" cx="1720" cy="415" r="1.5" fill="#fbbf24" opacity="0.6"/>
+
+            <!-- Data pulses along backbone -->
+            <circle class="eco-pulse" cx="300" cy="505" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="500" cy="505" r="2.5" fill="#60a5fa" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="700" cy="505" r="3" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="900" cy="505" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="1100" cy="505" r="3" fill="#60a5fa" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="1300" cy="505" r="2.5" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="1500" cy="505" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="eco-pulse" cx="1700" cy="505" r="2.5" fill="#60a5fa" filter="url(#blur-sm)"/>
+
+            <!-- Share hub (larger in ecosystem view) -->
+            <circle cx="960" cy="505" r="70" fill="url(#glow-blue)" filter="url(#blur-lg)" opacity="0.4"/>
+            <circle cx="960" cy="505" r="18" fill="#1d4ed8" opacity="0.9"/>
+            <circle cx="960" cy="505" r="30" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>
+        </g>
+
+        <!-- ═══ BEAT 5: AFRICA MAP + GLOBAL VISION ═══ -->
+        <g id="africa-vision" opacity="0">
+            <!-- Simplified Africa continent outline (stylized) -->
+            <path id="africa-outline" d="
+                M 920,180
+                C 940,170 980,165 1010,175
+                C 1040,185 1060,200 1070,230
+                C 1080,260 1090,290 1100,320
+                C 1110,350 1120,380 1110,410
+                C 1100,440 1080,460 1070,490
+                C 1060,520 1065,550 1080,580
+                C 1095,610 1100,640 1090,670
+                C 1080,700 1060,730 1040,760
+                C 1020,790 1000,810 980,820
+                C 960,830 940,825 920,810
+                C 900,795 885,770 875,740
+                C 865,710 860,680 855,650
+                C 850,620 840,590 830,560
+                C 820,530 815,500 820,470
+                C 825,440 835,410 840,380
+                C 845,350 850,320 860,290
+                C 870,260 880,230 890,210
+                C 900,190 910,185 920,180
+                Z
+            " fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.4"/>
+
+            <!-- Backbone across Africa -->
+            <line x1="830" y1="400" x2="1100" y2="400" stroke="#3b82f6" stroke-width="3.5" opacity="0.6"/>
+            <line x1="870" y1="500" x2="1080" y2="500" stroke="#3b82f6" stroke-width="3" opacity="0.55"/>
+            <line x1="850" y1="600" x2="1060" y2="600" stroke="#3b82f6" stroke-width="2.5" opacity="0.5"/>
+            <!-- Vertical backbone -->
+            <line x1="960" y1="200" x2="960" y2="800" stroke="#3b82f6" stroke-width="3" opacity="0.5"/>
+
+            <!-- ISP dots across Africa -->
+            <circle class="africa-isp" cx="880" cy="350" r="6" fill="#f59e0b" opacity="0.7"/>
+            <circle class="africa-isp" cx="1050" cy="380" r="6" fill="#f59e0b" opacity="0.7"/>
+            <circle class="africa-isp" cx="960" cy="450" r="7" fill="#f59e0b" opacity="0.8"/>
+            <circle class="africa-isp" cx="870" cy="520" r="6" fill="#f59e0b" opacity="0.7"/>
+            <circle class="africa-isp" cx="1060" cy="530" r="6" fill="#f59e0b" opacity="0.7"/>
+            <circle class="africa-isp" cx="920" cy="620" r="6" fill="#f59e0b" opacity="0.7"/>
+            <circle class="africa-isp" cx="1000" cy="650" r="5" fill="#f59e0b" opacity="0.6"/>
+            <circle class="africa-isp" cx="960" cy="300" r="5" fill="#f59e0b" opacity="0.6"/>
+            <circle class="africa-isp" cx="1020" cy="720" r="5" fill="#f59e0b" opacity="0.6"/>
+            <circle class="africa-isp" cx="890" cy="680" r="5" fill="#f59e0b" opacity="0.6"/>
+
+            <!-- User clusters (small amber dots around ISPs) -->
+            <circle class="africa-user" cx="895" cy="340" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="870" cy="365" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="1060" cy="370" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="1040" cy="395" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="975" cy="440" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="945" cy="460" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="880" cy="510" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="860" cy="535" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="1070" cy="520" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="1050" cy="545" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="930" cy="610" r="2" fill="#fde68a" opacity="0.5"/>
+            <circle class="africa-user" cx="910" cy="635" r="2" fill="#fde68a" opacity="0.5"/>
+
+            <!-- Subsea cables extending to edges of screen -->
+            <line class="subsea-cable" x1="830" y1="400" x2="0" y2="350" stroke="#1d4ed8" stroke-width="3" opacity="0.5"/>
+            <line class="subsea-cable" x1="830" y1="500" x2="0" y2="550" stroke="#1d4ed8" stroke-width="2.5" opacity="0.45"/>
+            <line class="subsea-cable" x1="1100" y1="400" x2="1920" y2="300" stroke="#1d4ed8" stroke-width="3" opacity="0.5"/>
+            <line class="subsea-cable" x1="1100" y1="500" x2="1920" y2="550" stroke="#1d4ed8" stroke-width="2.5" opacity="0.45"/>
+            <line class="subsea-cable" x1="960" y1="200" x2="960" y2="0" stroke="#1d4ed8" stroke-width="2.5" opacity="0.4"/>
+            <line class="subsea-cable" x1="850" y1="600" x2="300" y2="1080" stroke="#1d4ed8" stroke-width="2" opacity="0.35"/>
+            <line class="subsea-cable" x1="1060" y1="600" x2="1600" y2="1080" stroke="#1d4ed8" stroke-width="2" opacity="0.35"/>
+
+            <!-- Global endpoint glows -->
+            <circle cx="0" cy="350" r="8" fill="#3b82f6" filter="url(#blur-md)" opacity="0.5"/>
+            <circle cx="1920" cy="300" r="8" fill="#3b82f6" filter="url(#blur-md)" opacity="0.5"/>
+            <circle cx="0" cy="550" r="6" fill="#3b82f6" filter="url(#blur-md)" opacity="0.4"/>
+            <circle cx="1920" cy="550" r="6" fill="#3b82f6" filter="url(#blur-md)" opacity="0.4"/>
+
+            <!-- "Connected to the world" labels -->
+            <text x="120" y="330" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.5">EUROPE</text>
+            <text x="1760" y="285" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.5">ASIA</text>
+            <text x="120" y="570" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.5">AMERICAS</text>
+            <text x="1760" y="570" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.5">MIDDLE EAST</text>
+
+            <!-- Africa data pulses -->
+            <circle class="africa-pulse" cx="900" cy="400" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="africa-pulse" cx="1000" cy="400" r="2.5" fill="#60a5fa" filter="url(#blur-sm)"/>
+            <circle class="africa-pulse" cx="960" cy="500" r="3" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="africa-pulse" cx="920" cy="600" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="africa-pulse" cx="1020" cy="600" r="3" fill="#60a5fa" filter="url(#blur-sm)"/>
+            <circle class="africa-pulse" cx="960" cy="350" r="2.5" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="africa-pulse" cx="960" cy="700" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+        </g>
+
+    </svg>
+</div>
+
+<!-- Vignette -->
+<div class="vignette"></div>
+
+<!-- Text overlays -->
+<div class="text-layer">
+    <div class="beat-text" id="text-0">
+        <div class="label">The Imbalance</div>
+        <h2>The bandwidth exists. It just can't get through.</h2>
+        <p>7 subsea cables have landed. But Africa's infrastructure runs in parallel, not together. 600 million people remain unconnected.</p>
+    </div>
+    <div class="beat-text" id="text-1">
+        <div class="label">Share Connects</div>
+        <h2>Share is the coordination layer.</h2>
+        <p>Not a new network — the connective tissue that turns fragmented infrastructure into one. Unlimited backhaul. No upfront commits.</p>
+    </div>
+    <div class="beat-text" id="text-2">
+        <div class="label">The ISP Grows</div>
+        <h2>One ISP plugs in. Everything changes.</h2>
+        <p>Coverage expands. Users multiply. Revenue grows. We only earn when they earn.</p>
+    </div>
+    <div class="beat-text" id="text-3">
+        <div class="label">The Ecosystem</div>
+        <h2>More partners. Stronger network.</h2>
+        <p>More partners join. More coverage. More redundancy. The ecosystem grows stronger with every connection.</p>
+    </div>
+    <div class="beat-text" id="text-4">
+        <div class="label">The Vision</div>
+        <h2>Africa's shared backbone. Connected to the world.</h2>
+        <p>The future of internet infrastructure starts here.</p>
+    </div>
+</div>
+
+<!-- Stats (Beat 5) -->
+<div class="text-layer">
+    <div class="stats-row" id="stats">
+        <div class="stat">
+            <div class="number">1M+</div>
+            <div class="unit">users</div>
+        </div>
+        <div class="stat">
+            <div class="number">100K+</div>
+            <div class="unit">km fiber</div>
+        </div>
+        <div class="stat">
+            <div class="number">30+</div>
+            <div class="unit">data centers</div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll spacer -->
+<div class="scroll-spacer" id="scroll-spacer"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <h2>Join the ecosystem.</h2>
+    <p>The more networks that join, the stronger everyone gets. There's a spot for you.</p>
+    <button class="cta-button">Get Started</button>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const beats = 5;
+const spacer = document.getElementById('scroll-spacer');
+const dots = document.querySelectorAll('.progress-dot');
+
+// ── Intro fade out ──
+gsap.to('#intro', {
+    opacity: 0,
+    pointerEvents: 'none',
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: '+=300',
+        scrub: 0.5,
+    }
+});
+
+// ══════════════════════════════════════════
+// CONTINUOUS ANIMATIONS — data particle life
+// ══════════════════════════════════════════
+
+// Left-side data dots: blinking + floating
+document.querySelectorAll('.data-dot').forEach((dot, i) => {
+    const baseCx = parseFloat(dot.getAttribute('cx'));
+    const baseCy = parseFloat(dot.getAttribute('cy'));
+
+    // Floating motion
+    gsap.to(dot, {
+        attr: {
+            cx: baseCx + (Math.random() - 0.5) * 40,
+            cy: baseCy + (Math.random() - 0.5) * 30,
+        },
+        duration: 2 + Math.random() * 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.15,
+    });
+
+    // Blinking
+    gsap.to(dot, {
+        opacity: 0.2 + Math.random() * 0.3,
+        duration: 0.5 + Math.random() * 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut',
+        delay: Math.random() * 2,
+    });
+});
+
+// Left-side data dashes: shimmer
+document.querySelectorAll('.data-dash').forEach((dash, i) => {
+    const baseX1 = parseFloat(dash.getAttribute('x1'));
+    const baseY1 = parseFloat(dash.getAttribute('y1'));
+
+    gsap.to(dash, {
+        attr: {
+            x1: baseX1 + (Math.random() - 0.5) * 20,
+            y1: baseY1 + (Math.random() - 0.5) * 15,
+        },
+        duration: 2.5 + Math.random() * 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.2,
+    });
+
+    gsap.to(dash, {
+        opacity: 0.2 + Math.random() * 0.4,
+        duration: 0.8 + Math.random() * 1.2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut',
+        delay: Math.random() * 1.5,
+    });
+});
+
+// Trickle dots along the thin cable (Beat 1)
+document.querySelectorAll('.trickle-dot').forEach((dot, i) => {
+    gsap.to(dot, {
+        attr: { cx: '+=80' },
+        duration: 4 + i * 0.5,
+        repeat: -1,
+        ease: 'none',
+        modifiers: {
+            attr: function(val) {
+                const cx = parseFloat(dot.getAttribute('cx'));
+                if (cx > 1200) dot.setAttribute('cx', 720);
+                return val;
+            }
+        }
+    });
+    gsap.to(dot, {
+        opacity: 0.15,
+        duration: 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.3,
+    });
+});
+
+// Sparse dots on right — very slow dim pulse
+document.querySelectorAll('.sparse-dot').forEach((dot, i) => {
+    gsap.to(dot, {
+        opacity: 0.08,
+        duration: 2 + Math.random() * 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.5,
+    });
+});
+
+// Torrent data — fast horizontal movement
+document.querySelectorAll('.torrent-dot').forEach((dot, i) => {
+    const startX = 700 + i * 50;
+    gsap.fromTo(dot, {
+        attr: { cx: startX }
+    }, {
+        attr: { cx: startX + 300 },
+        duration: 1.5 + Math.random(),
+        repeat: -1,
+        ease: 'none',
+        delay: i * 0.2,
+    });
+});
+
+// Backbone pulses — horizontal travel
+document.querySelectorAll('.backbone-pulse').forEach((dot, i) => {
+    const baseCx = parseFloat(dot.getAttribute('cx'));
+    gsap.to(dot, {
+        attr: { cx: baseCx + 200 },
+        duration: 2 + Math.random(),
+        repeat: -1,
+        ease: 'none',
+        delay: i * 0.5,
+    });
+});
+
+// Ecosystem pulses — bidirectional flow
+document.querySelectorAll('.eco-pulse').forEach((dot, i) => {
+    const baseCx = parseFloat(dot.getAttribute('cx'));
+    const dir = i % 2 === 0 ? 1 : -1;
+    gsap.to(dot, {
+        attr: { cx: baseCx + dir * 150 },
+        duration: 2 + Math.random() * 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.3,
+    });
+});
+
+// Africa vision pulses
+document.querySelectorAll('.africa-pulse').forEach((dot, i) => {
+    const baseCx = parseFloat(dot.getAttribute('cx'));
+    const baseCy = parseFloat(dot.getAttribute('cy'));
+    gsap.to(dot, {
+        attr: {
+            cx: baseCx + (Math.random() - 0.5) * 80,
+            cy: baseCy + (Math.random() - 0.5) * 60,
+        },
+        duration: 2.5 + Math.random() * 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.4,
+    });
+});
+
+// User dots gentle pulse
+document.querySelectorAll('.user-dot, .eco-user, .africa-user').forEach((dot, i) => {
+    gsap.to(dot, {
+        opacity: parseFloat(dot.getAttribute('opacity') || 0.5) * 0.4,
+        duration: 1 + Math.random() * 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: Math.random() * 2,
+    });
+});
+
+// ══════════════════════════════════════════
+// MAIN SCROLL TIMELINE
+// ══════════════════════════════════════════
+
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        onUpdate: (self) => {
+            const p = self.progress;
+            const beat = Math.min(4, Math.floor(p * beats));
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === beat);
+            });
+        }
+    }
+});
+
+// ═══════════════════════════════════
+// BEAT 1 — "The Imbalance"
+// ═══════════════════════════════════
+
+// Text appears
+tl.to('#text-0', { opacity: 1, duration: 0.5 }, 0);
+
+// Left data cloud fades in — dense, bright, alive
+tl.to('#left-data-cloud', { opacity: 1, duration: 1.2 }, 0);
+
+// Left fiber bundle appears
+tl.to('#left-bundle', { opacity: 1, duration: 1 }, 0.3);
+
+// Thin cable appears
+tl.to('#thin-cable', { opacity: 1, duration: 0.8 }, 0.5);
+
+// Right sparse side appears — dim and lifeless
+tl.to('#right-sparse', { opacity: 1, duration: 1 }, 0.5);
+
+// Side labels
+tl.to('#side-labels', { opacity: 1, duration: 0.8 }, 0.8);
+
+// Hold for reading, then fade text
+tl.to('#text-0', { opacity: 0, duration: 0.4 }, 1.8);
+
+// ═══════════════════════════════════
+// BEAT 2 — "Share Connects"
+// ═══════════════════════════════════
+
+// Text appears
+tl.to('#text-1', { opacity: 1, duration: 0.5 }, 2);
+
+// Fade out labels
+tl.to('#side-labels', { opacity: 0, duration: 0.5 }, 2);
+
+// Share hub appears in center
+tl.to('#share-hub', { opacity: 1, duration: 0.8 }, 2.1);
+
+// Hub core pulse
+tl.fromTo('#hub-core', { attr: { r: 16 } }, {
+    attr: { r: 22 },
+    duration: 0.4,
+    yoyo: true,
+    repeat: 1,
+}, 2.3);
+
+// Thin cable transforms — hide it
+tl.to('#thin-cable', { opacity: 0, duration: 0.5 }, 2.2);
+
+// Right sparse cables fade
+tl.to('#right-sparse', { opacity: 0, duration: 0.5 }, 2.2);
+
+// Left old bundle fades
+tl.to('#left-bundle', { opacity: 0, duration: 0.5 }, 2.2);
+
+// New cable bundles appear (hidden infrastructure)
+tl.to('.new-cable', {
+    opacity: 0.6,
+    duration: 0.8,
+    stagger: 0.1,
+}, 2.5);
+tl.to('#new-cables', { opacity: 1, duration: 0.3 }, 2.5);
+
+// Left alive cables connect through Share
+tl.to('#left-alive', { opacity: 1, duration: 0.8 }, 2.5);
+
+// Right alive cables — now bright
+tl.to('#right-alive', { opacity: 1, duration: 0.8 }, 2.6);
+
+// Torrent data appears — fast flow
+tl.to('#torrent-data', { opacity: 1, duration: 0.6 }, 2.8);
+
+// Data cloud dims slightly (data is now flowing through, not just sitting)
+tl.to('#left-data-cloud', { opacity: 0.5, duration: 1 }, 2.8);
+
+// Fade text
+tl.to('#text-1', { opacity: 0, duration: 0.4 }, 3.8);
+
+// ═══════════════════════════════════
+// BEAT 3 — "The ISP Grows"
+// ═══════════════════════════════════
+
+// Text appears
+tl.to('#text-2', { opacity: 1, duration: 0.5 }, 4);
+
+// Hide beat 2 elements
+tl.to('#new-cables', { opacity: 0, duration: 0.5 }, 4);
+tl.to('#right-alive', { opacity: 0, duration: 0.5 }, 4);
+tl.to('#left-alive', { opacity: 0, duration: 0.5 }, 4);
+tl.to('#torrent-data', { opacity: 0, duration: 0.5 }, 4);
+tl.to('#left-data-cloud', { opacity: 0, duration: 0.5 }, 4);
+tl.to('#share-hub', { opacity: 0, duration: 0.5 }, 4);
+
+// Backbone segment appears
+tl.to('#backbone-b3', { opacity: 1, duration: 0.8 }, 4.2);
+
+// ISP node appears
+tl.to('#isp-node', { opacity: 1, duration: 0.8 }, 4.3);
+
+// ISP core pulse
+tl.fromTo('#isp-core', { attr: { r: 12 } }, {
+    attr: { r: 16 },
+    duration: 0.3,
+    yoyo: true,
+    repeat: 1,
+}, 4.5);
+
+// User dots appear one by one
+tl.to('.user-dot', {
+    opacity: 0.7,
+    duration: 0.5,
+    stagger: 0.06,
+}, 4.6);
+
+// Expanded users appear — ISP coverage growing
+tl.to('.user-dot-expand', {
+    opacity: 0.6,
+    duration: 0.5,
+    stagger: 0.05,
+}, 5.0);
+
+// Fade text
+tl.to('#text-2', { opacity: 0, duration: 0.4 }, 5.8);
+
+// ═══════════════════════════════════
+// BEAT 4 — "The Ecosystem"
+// ═══════════════════════════════════
+
+// Text appears
+tl.to('#text-3', { opacity: 1, duration: 0.5 }, 6);
+
+// Hide beat 3 elements
+tl.to('#isp-node', { opacity: 0, duration: 0.5 }, 6);
+tl.to('#backbone-b3', { opacity: 0, duration: 0.5 }, 6);
+
+// Ecosystem appears
+tl.to('#ecosystem', { opacity: 1, duration: 0.3 }, 6.2);
+
+// ISPs pop in one by one
+tl.to('.eco-isp', {
+    opacity: 0.8,
+    duration: 0.6,
+    stagger: 0.08,
+}, 6.3);
+
+// Connection lines
+tl.to('.eco-line', {
+    opacity: 0.6,
+    duration: 0.6,
+    stagger: 0.08,
+}, 6.3);
+
+// Users cluster around ISPs
+tl.to('.eco-user', {
+    opacity: 0.6,
+    duration: 0.5,
+    stagger: 0.03,
+}, 6.6);
+
+// Fade text
+tl.to('#text-3', { opacity: 0, duration: 0.4 }, 7.6);
+
+// ═══════════════════════════════════
+// BEAT 5 — "The Vision"
+// ═══════════════════════════════════
+
+// Text appears
+tl.to('#text-4', { opacity: 1, duration: 0.5 }, 8);
+
+// Stats appear
+tl.to('#stats', { opacity: 1, duration: 0.8 }, 8.2);
+
+// Hide ecosystem
+tl.to('#ecosystem', { opacity: 0, duration: 0.8 }, 8);
+
+// Africa vision appears
+tl.to('#africa-vision', { opacity: 1, duration: 1.5 }, 8.2);
+
+// Africa outline draws in
+tl.fromTo('#africa-outline', {
+    strokeDasharray: 2000,
+    strokeDashoffset: 2000,
+}, {
+    strokeDashoffset: 0,
+    duration: 2,
+    ease: 'power1.inOut',
+}, 8.2);
+
+// ISPs across Africa pop in
+tl.to('.africa-isp', {
+    opacity: 0.8,
+    duration: 0.6,
+    stagger: 0.08,
+}, 8.8);
+
+// Users across Africa
+tl.to('.africa-user', {
+    opacity: 0.5,
+    duration: 0.5,
+    stagger: 0.04,
+}, 9.0);
+
+// Subsea cables extend
+tl.to('.subsea-cable', {
+    opacity: 0.5,
+    duration: 1,
+    stagger: 0.1,
+}, 8.5);
+
+// Fade out everything at end
+tl.to('#text-4', { opacity: 0, duration: 0.5 }, 9.5);
+tl.to('#stats', { opacity: 0, duration: 0.5 }, 9.5);
+tl.to('#scene', { opacity: 0, duration: 0.8 }, 9.5);
+tl.to('#progress', { opacity: 0, duration: 0.5 }, 9.5);
+</script>
+
+</body>
+</html>

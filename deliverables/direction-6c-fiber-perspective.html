@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction 6C — Fiber Perspective</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --purple-400: #a78bfa;
+            --purple-300: #c4b5fd;
+            --cyan-400: #38bdf8;
+            --cyan-300: #93c5fd;
+            --blue-600: #2563eb;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --amber-500: #f59e0b;
+            --amber-400: #fbbf24;
+        }
+
+        html, body {
+            background: #04060c;
+            color: #e0e4ec;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ── Scroll spacer ── */
+        .scroll-spacer {
+            height: 500vh;
+            position: relative;
+        }
+
+        /* ── Fixed canvas ── */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .scene svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ── Text overlays ── */
+        .text-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 0 80px 80px;
+        }
+
+        .beat-text {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            max-width: 560px;
+            opacity: 0;
+        }
+
+        .beat-text .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--purple-400);
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+
+        .beat-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .beat-text p {
+            font-size: 17px;
+            line-height: 1.65;
+            color: rgba(224, 228, 236, 0.7);
+            max-width: 480px;
+        }
+
+        /* ── Stats overlay ── */
+        .stats-row {
+            position: absolute;
+            bottom: 80px;
+            right: 80px;
+            display: flex;
+            gap: 40px;
+            opacity: 0;
+        }
+
+        .stat {
+            text-align: right;
+        }
+
+        .stat .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--cyan-400);
+            line-height: 1;
+        }
+
+        .stat .unit {
+            font-size: 13px;
+            color: rgba(224, 228, 236, 0.5);
+            margin-top: 6px;
+        }
+
+        /* ── Side labels ── */
+        .side-labels {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .side-label {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .side-label.left {
+            left: 80px;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .side-label.right {
+            right: 80px;
+            color: var(--purple-300);
+            opacity: 0.7;
+        }
+
+        /* ── Progress bar ── */
+        .progress-track {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: background 0.4s, transform 0.4s;
+        }
+
+        .progress-dot.active {
+            background: var(--purple-400);
+            transform: scale(1.4);
+        }
+
+        /* ── Gradient overlays ── */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center, transparent 40%, #04060c 100%),
+                linear-gradient(to top, #04060c 0%, transparent 30%);
+        }
+
+        /* ── Intro overlay ── */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #04060c;
+        }
+
+        .intro-overlay h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--purple-400);
+            font-weight: 500;
+        }
+
+        .intro-overlay .scroll-hint {
+            position: absolute;
+            bottom: 48px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(4px); }
+        }
+
+        /* ── CTA at end ── */
+        .cta-section {
+            position: relative;
+            z-index: 15;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .cta-button {
+            margin-top: 16px;
+            padding: 16px 40px;
+            border: 1px solid var(--blue-500);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--blue-400);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            font-family: 'Inter', sans-serif;
+            pointer-events: auto;
+        }
+
+        .cta-button:hover {
+            background: var(--blue-500);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Intro -->
+<div class="intro-overlay" id="intro">
+    <h1>Direction 6C — Fiber Perspective</h1>
+    <div class="scroll-hint">Scroll to begin</div>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-track" id="progress">
+    <div class="progress-dot active" data-beat="0"></div>
+    <div class="progress-dot" data-beat="1"></div>
+    <div class="progress-dot" data-beat="2"></div>
+    <div class="progress-dot" data-beat="3"></div>
+    <div class="progress-dot" data-beat="4"></div>
+</div>
+
+<!-- Fixed scene -->
+<div class="scene" id="scene">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <!-- Glow gradients -->
+            <radialGradient id="glow-purple" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-cyan" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-amber" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </radialGradient>
+
+            <!-- Filters -->
+            <filter id="blur-sm">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+            <filter id="blur-md">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+            </filter>
+            <filter id="blur-lg">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12"/>
+            </filter>
+            <filter id="blur-xl">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="20"/>
+            </filter>
+
+            <!-- Fiber strand gradient (for lit strands) -->
+            <linearGradient id="fiber-lit" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.3"/>
+                <stop offset="30%" stop-color="#38bdf8" stop-opacity="0.9"/>
+                <stop offset="70%" stop-color="#c4b5fd" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#a78bfa" stop-opacity="0.3"/>
+            </linearGradient>
+
+            <!-- Share glow gradient -->
+            <radialGradient id="share-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.9"/>
+                <stop offset="40%" stop-color="#60a5fa" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+            </radialGradient>
+        </defs>
+
+        <!-- ═══ Background subtle grid ═══ -->
+        <g id="bg-grid" opacity="0.03">
+            <line x1="0" y1="270" x2="1920" y2="270" stroke="#a78bfa" stroke-width="0.5"/>
+            <line x1="0" y1="540" x2="1920" y2="540" stroke="#a78bfa" stroke-width="0.5"/>
+            <line x1="0" y1="810" x2="1920" y2="810" stroke="#a78bfa" stroke-width="0.5"/>
+            <line x1="480" y1="0" x2="480" y2="1080" stroke="#a78bfa" stroke-width="0.5"/>
+            <line x1="960" y1="0" x2="960" y2="1080" stroke="#a78bfa" stroke-width="0.5"/>
+            <line x1="1440" y1="0" x2="1440" y2="1080" stroke="#a78bfa" stroke-width="0.5"/>
+        </g>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- BEAT 1 — INSIDE THE CABLE              -->
+        <!-- Extreme close-up: parallel fiber strands -->
+        <!-- ═══════════════════════════════════════ -->
+        <g id="beat1-fibers">
+            <!-- The "cable interior" — 12 parallel fiber strands spanning the screen -->
+            <!-- Dark/inactive strands -->
+            <line class="strand dark-strand" x1="-100" y1="260" x2="2020" y2="260" stroke="#1a1e2e" stroke-width="2.5" opacity="0"/>
+            <line class="strand dark-strand" x1="-100" y1="320" x2="2020" y2="320" stroke="#1a1e2e" stroke-width="3" opacity="0"/>
+            <line class="strand dark-strand" x1="-100" y1="380" x2="2020" y2="380" stroke="#1e2238" stroke-width="2" opacity="0"/>
+            <line class="strand dark-strand" x1="-100" y1="440" x2="2020" y2="440" stroke="#1a1e2e" stroke-width="2.8" opacity="0"/>
+            <line class="strand dark-strand" x1="-100" y1="500" x2="2020" y2="500" stroke="#1e2238" stroke-width="2.5" opacity="0"/>
+            <line class="strand dark-strand" x1="-100" y1="560" x2="2020" y2="560" stroke="#1a1e2e" stroke-width="3" opacity="0"/>
+            <line class="strand dark-strand" x1="-100" y1="620" x2="2020" y2="620" stroke="#1e2238" stroke-width="2" opacity="0"/>
+            <line class="strand dark-strand" x1="-100" y1="680" x2="2020" y2="680" stroke="#1a1e2e" stroke-width="2.5" opacity="0"/>
+            <line class="strand dark-strand" x1="-100" y1="740" x2="2020" y2="740" stroke="#1e2238" stroke-width="2.8" opacity="0"/>
+            <line class="strand dark-strand" x1="-100" y1="800" x2="2020" y2="800" stroke="#1a1e2e" stroke-width="2" opacity="0"/>
+
+            <!-- Lit/active strands (only 2 out of 12) — brighter -->
+            <line class="strand lit-strand" x1="-100" y1="440" x2="2020" y2="440" stroke="#a78bfa" stroke-width="2.8" opacity="0" filter="url(#blur-sm)"/>
+            <line class="strand lit-strand" x1="-100" y1="620" x2="2020" y2="620" stroke="#38bdf8" stroke-width="2" opacity="0" filter="url(#blur-sm)"/>
+
+            <!-- Glow halos behind lit strands -->
+            <line class="strand-glow" x1="-100" y1="440" x2="2020" y2="440" stroke="#a78bfa" stroke-width="12" opacity="0" filter="url(#blur-md)"/>
+            <line class="strand-glow" x1="-100" y1="620" x2="2020" y2="620" stroke="#38bdf8" stroke-width="10" opacity="0" filter="url(#blur-md)"/>
+
+            <!-- Light pulses racing through lit strands (animated independently) -->
+            <!-- Strand 1 pulses (y=440) -->
+            <circle class="light-pulse lp-s1" cx="-40" cy="440" r="6" fill="#c4b5fd" opacity="0" filter="url(#blur-sm)"/>
+            <circle class="light-pulse lp-s1" cx="-200" cy="440" r="4" fill="#a78bfa" opacity="0" filter="url(#blur-sm)"/>
+            <circle class="light-pulse lp-s1" cx="-500" cy="440" r="5" fill="#c4b5fd" opacity="0" filter="url(#blur-sm)"/>
+            <ellipse class="light-pulse lp-s1" cx="-350" cy="440" rx="20" ry="3" fill="#c4b5fd" opacity="0" filter="url(#blur-sm)"/>
+            <ellipse class="light-pulse lp-s1" cx="-700" cy="440" rx="16" ry="2.5" fill="#a78bfa" opacity="0" filter="url(#blur-sm)"/>
+
+            <!-- Strand 2 pulses (y=620) -->
+            <circle class="light-pulse lp-s2" cx="-100" cy="620" r="5" fill="#93c5fd" opacity="0" filter="url(#blur-sm)"/>
+            <circle class="light-pulse lp-s2" cx="-400" cy="620" r="4" fill="#38bdf8" opacity="0" filter="url(#blur-sm)"/>
+            <circle class="light-pulse lp-s2" cx="-650" cy="620" r="5" fill="#93c5fd" opacity="0" filter="url(#blur-sm)"/>
+            <ellipse class="light-pulse lp-s2" cx="-250" cy="620" rx="18" ry="2.5" fill="#38bdf8" opacity="0" filter="url(#blur-sm)"/>
+            <ellipse class="light-pulse lp-s2" cx="-550" cy="620" rx="14" ry="2" fill="#93c5fd" opacity="0" filter="url(#blur-sm)"/>
+
+            <!-- Stat labels in Beat 1 -->
+            <text class="beat1-stat" x="1500" y="200" fill="#a78bfa" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="2" opacity="0">7 SUBSEA CABLES LANDED</text>
+            <text class="beat1-stat" x="1500" y="224" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="2" opacity="0">&lt;15% CAPACITY UTILIZED</text>
+        </g>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- BEAT 2 — THE BUNDLE SPLITS              -->
+        <!-- Camera pulls back; cable bundle frays    -->
+        <!-- ═══════════════════════════════════════ -->
+        <g id="beat2-bundle" opacity="0">
+            <!-- Left side: thick unified bundle coming from edge -->
+            <!-- Bundle outer casing -->
+            <path class="bundle-casing" d="M -20,440 Q 400,440 580,440" stroke="#2a2f45" stroke-width="50" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <!-- Inner lit fibers in the bundle -->
+            <line class="bundle-fiber" x1="-20" y1="425" x2="580" y2="425" stroke="#a78bfa" stroke-width="1.5" opacity="0.7"/>
+            <line class="bundle-fiber" x1="-20" y1="432" x2="580" y2="432" stroke="#38bdf8" stroke-width="1.5" opacity="0.6"/>
+            <line class="bundle-fiber" x1="-20" y1="440" x2="580" y2="440" stroke="#c4b5fd" stroke-width="2" opacity="0.8"/>
+            <line class="bundle-fiber" x1="-20" y1="448" x2="580" y2="448" stroke="#93c5fd" stroke-width="1.5" opacity="0.6"/>
+            <line class="bundle-fiber" x1="-20" y1="455" x2="580" y2="455" stroke="#a78bfa" stroke-width="1.5" opacity="0.7"/>
+            <!-- Bundle glow -->
+            <line class="bundle-glow-line" x1="-20" y1="440" x2="580" y2="440" stroke="#a78bfa" stroke-width="30" opacity="0.15" filter="url(#blur-lg)"/>
+
+            <!-- Label: Global bandwidth -->
+            <text x="100" y="380" fill="#c4b5fd" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.6">GLOBAL BANDWIDTH</text>
+
+            <!-- Bottleneck zone (center) -->
+            <ellipse class="bottleneck" cx="720" cy="490" rx="60" ry="120" fill="none" stroke="#ff4444" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+            <text x="690" y="640" fill="#ff6666" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="2" opacity="0.5">BOTTLENECK</text>
+
+            <!-- Right side: frayed strands going to different directions -->
+            <!-- Each strand = one provider, thin, dimmer, separated -->
+            <path class="fray-strand" d="M 720,420 Q 1000,350 1400,200" stroke="#5b6b8a" stroke-width="1.8" fill="none" opacity="0.6"/>
+            <path class="fray-strand" d="M 720,440 Q 1050,400 1500,340" stroke="#5b6b8a" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <path class="fray-strand" d="M 720,460 Q 1000,480 1350,520" stroke="#5b6b8a" stroke-width="1.8" fill="none" opacity="0.6"/>
+            <path class="fray-strand" d="M 720,480 Q 950,530 1300,650" stroke="#5b6b8a" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <path class="fray-strand" d="M 720,500 Q 1000,580 1450,750" stroke="#5b6b8a" stroke-width="1.8" fill="none" opacity="0.6"/>
+            <path class="fray-strand" d="M 720,520 Q 1050,620 1550,850" stroke="#5b6b8a" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+            <!-- Contract icons (small document symbols) near each strand end -->
+            <g class="contract-icons">
+                <rect x="1380" y="185" width="16" height="20" rx="2" fill="none" stroke="#5b6b8a" stroke-width="1" opacity="0.5"/>
+                <line x1="1384" y1="192" x2="1392" y2="192" stroke="#5b6b8a" stroke-width="0.8" opacity="0.4"/>
+                <line x1="1384" y1="196" x2="1390" y2="196" stroke="#5b6b8a" stroke-width="0.8" opacity="0.4"/>
+
+                <rect x="1480" y="325" width="16" height="20" rx="2" fill="none" stroke="#5b6b8a" stroke-width="1" opacity="0.5"/>
+                <line x1="1484" y1="332" x2="1492" y2="332" stroke="#5b6b8a" stroke-width="0.8" opacity="0.4"/>
+                <line x1="1484" y1="336" x2="1490" y2="336" stroke="#5b6b8a" stroke-width="0.8" opacity="0.4"/>
+
+                <rect x="1330" y="505" width="16" height="20" rx="2" fill="none" stroke="#5b6b8a" stroke-width="1" opacity="0.5"/>
+                <rect x="1280" y="635" width="16" height="20" rx="2" fill="none" stroke="#5b6b8a" stroke-width="1" opacity="0.5"/>
+                <rect x="1430" y="735" width="16" height="20" rx="2" fill="none" stroke="#5b6b8a" stroke-width="1" opacity="0.5"/>
+                <rect x="1530" y="835" width="16" height="20" rx="2" fill="none" stroke="#5b6b8a" stroke-width="1" opacity="0.5"/>
+            </g>
+
+            <!-- Dim data dribbles on frayed strands -->
+            <circle class="dribble" cx="1000" cy="380" r="2" fill="#5b6b8a" opacity="0.4"/>
+            <circle class="dribble" cx="1100" cy="460" r="2" fill="#5b6b8a" opacity="0.4"/>
+            <circle class="dribble" cx="1050" cy="560" r="2" fill="#5b6b8a" opacity="0.4"/>
+            <circle class="dribble" cx="1150" cy="680" r="2" fill="#5b6b8a" opacity="0.4"/>
+        </g>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- BEAT 3 — SHARE BINDS THE BUNDLE         -->
+        <!-- The glowing Share ring unifies strands   -->
+        <!-- ═══════════════════════════════════════ -->
+        <g id="beat3-share" opacity="0">
+            <!-- Left bundle (same as beat 2 but stays) -->
+            <path d="M -20,440 Q 400,440 580,440" stroke="#2a2f45" stroke-width="50" fill="none" stroke-linecap="round" opacity="0.5"/>
+            <line x1="-20" y1="425" x2="580" y2="425" stroke="#a78bfa" stroke-width="1.5" opacity="0.8"/>
+            <line x1="-20" y1="432" x2="580" y2="432" stroke="#38bdf8" stroke-width="1.5" opacity="0.7"/>
+            <line x1="-20" y1="440" x2="580" y2="440" stroke="#c4b5fd" stroke-width="2" opacity="0.9"/>
+            <line x1="-20" y1="448" x2="580" y2="448" stroke="#93c5fd" stroke-width="1.5" opacity="0.7"/>
+            <line x1="-20" y1="455" x2="580" y2="455" stroke="#a78bfa" stroke-width="1.5" opacity="0.8"/>
+            <line x1="-20" y1="440" x2="580" y2="440" stroke="#a78bfa" stroke-width="30" opacity="0.15" filter="url(#blur-lg)"/>
+
+            <!-- Share connector node at bottleneck point -->
+            <circle class="share-ring-outer" cx="720" cy="490" r="50" fill="url(#share-glow)" opacity="0" filter="url(#blur-md)"/>
+            <circle class="share-ring-mid" cx="720" cy="490" r="30" fill="none" stroke="#3b82f6" stroke-width="2.5" opacity="0"/>
+            <circle class="share-ring-core" cx="720" cy="490" r="12" fill="#3b82f6" opacity="0"/>
+            <!-- Share label -->
+            <text class="share-label" x="720" y="555" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="3" opacity="0">SHARE</text>
+
+            <!-- Right side: NOW unified bundle (mirroring left) -->
+            <path class="unified-right-casing" d="M 720,490 Q 1100,490 1940,490" stroke="#2a2f45" stroke-width="50" fill="none" stroke-linecap="round" opacity="0"/>
+            <line class="unified-right-fiber" x1="720" y1="475" x2="1940" y2="475" stroke="#a78bfa" stroke-width="1.5" opacity="0"/>
+            <line class="unified-right-fiber" x1="720" y1="482" x2="1940" y2="482" stroke="#38bdf8" stroke-width="1.5" opacity="0"/>
+            <line class="unified-right-fiber" x1="720" y1="490" x2="1940" y2="490" stroke="#c4b5fd" stroke-width="2" opacity="0"/>
+            <line class="unified-right-fiber" x1="720" y1="498" x2="1940" y2="498" stroke="#93c5fd" stroke-width="1.5" opacity="0"/>
+            <line class="unified-right-fiber" x1="720" y1="505" x2="1940" y2="505" stroke="#a78bfa" stroke-width="1.5" opacity="0"/>
+            <!-- Right bundle glow -->
+            <line class="unified-right-glow" x1="720" y1="490" x2="1940" y2="490" stroke="#38bdf8" stroke-width="30" opacity="0" filter="url(#blur-lg)"/>
+
+            <!-- Data pulses flowing through unified bundle -->
+            <circle class="unified-pulse up-lr" cx="200" cy="440" r="4" fill="#c4b5fd" opacity="0" filter="url(#blur-sm)"/>
+            <ellipse class="unified-pulse up-lr" cx="400" cy="440" rx="16" ry="2.5" fill="#a78bfa" opacity="0" filter="url(#blur-sm)"/>
+            <circle class="unified-pulse up-rl" cx="1600" cy="490" r="4" fill="#93c5fd" opacity="0" filter="url(#blur-sm)"/>
+            <ellipse class="unified-pulse up-rl" cx="1300" cy="490" rx="14" ry="2.5" fill="#38bdf8" opacity="0" filter="url(#blur-sm)"/>
+            <circle class="unified-pulse up-lr" cx="100" cy="448" r="3" fill="#38bdf8" opacity="0" filter="url(#blur-sm)"/>
+            <ellipse class="unified-pulse up-rl" cx="1100" cy="482" rx="12" ry="2" fill="#c4b5fd" opacity="0" filter="url(#blur-sm)"/>
+        </g>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- BEAT 4 — ZOOM OUT: THE ISP              -->
+        <!-- Bundle feeds into ISP node, users radiate -->
+        <!-- ═══════════════════════════════════════ -->
+        <g id="beat4-isp" opacity="0">
+            <!-- Backbone cable (the unified bundle, now thinner as we've zoomed out) -->
+            <line class="backbone-line" x1="-20" y1="490" x2="700" y2="490" stroke="#a78bfa" stroke-width="4" opacity="0.8"/>
+            <line x1="-20" y1="490" x2="700" y2="490" stroke="#a78bfa" stroke-width="18" opacity="0.1" filter="url(#blur-md)"/>
+
+            <!-- ISP node (main) — amber colored -->
+            <circle class="isp-glow" cx="760" cy="490" r="60" fill="url(#glow-amber)" opacity="0.5" filter="url(#blur-md)"/>
+            <circle class="isp-core" cx="760" cy="490" r="18" fill="#f59e0b" opacity="0.9"/>
+            <circle class="isp-ring" cx="760" cy="490" r="28" fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.5"/>
+            <text x="760" y="540" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.7">ISP</text>
+
+            <!-- User connections radiating from ISP -->
+            <!-- Lines from ISP to user dots -->
+            <line class="user-line" x1="760" y1="490" x2="920" y2="340" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+            <line class="user-line" x1="760" y1="490" x2="980" y2="420" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+            <line class="user-line" x1="760" y1="490" x2="950" y2="530" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+            <line class="user-line" x1="760" y1="490" x2="900" y2="620" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+            <line class="user-line" x1="760" y1="490" x2="1050" y2="480" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+            <line class="user-line" x1="760" y1="490" x2="1020" y2="560" stroke="#fbbf24" stroke-width="1" opacity="0.3"/>
+            <line class="user-line" x1="760" y1="490" x2="880" y2="360" stroke="#fbbf24" stroke-width="0.8" opacity="0.25"/>
+            <line class="user-line" x1="760" y1="490" x2="1080" y2="350" stroke="#fbbf24" stroke-width="0.8" opacity="0.25"/>
+            <line class="user-line" x1="760" y1="490" x2="1100" y2="520" stroke="#fbbf24" stroke-width="0.8" opacity="0.25"/>
+            <line class="user-line" x1="760" y1="490" x2="1000" y2="650" stroke="#fbbf24" stroke-width="0.8" opacity="0.25"/>
+            <line class="user-line" x1="760" y1="490" x2="860" y2="680" stroke="#fbbf24" stroke-width="0.8" opacity="0.25"/>
+            <line class="user-line" x1="760" y1="490" x2="1120" y2="620" stroke="#fbbf24" stroke-width="0.8" opacity="0.25"/>
+
+            <!-- User dots (warm amber) -->
+            <circle class="user-dot" cx="920" cy="340" r="4" fill="#fbbf24" opacity="0.8"/>
+            <circle class="user-dot" cx="980" cy="420" r="3.5" fill="#fbbf24" opacity="0.7"/>
+            <circle class="user-dot" cx="950" cy="530" r="4" fill="#fbbf24" opacity="0.8"/>
+            <circle class="user-dot" cx="900" cy="620" r="3.5" fill="#fbbf24" opacity="0.7"/>
+            <circle class="user-dot" cx="1050" cy="480" r="4" fill="#fbbf24" opacity="0.8"/>
+            <circle class="user-dot" cx="1020" cy="560" r="3" fill="#fbbf24" opacity="0.7"/>
+            <circle class="user-dot" cx="880" cy="360" r="3" fill="#fbbf24" opacity="0.6"/>
+            <circle class="user-dot" cx="1080" cy="350" r="3" fill="#fbbf24" opacity="0.6"/>
+            <circle class="user-dot" cx="1100" cy="520" r="3" fill="#fbbf24" opacity="0.6"/>
+            <circle class="user-dot" cx="1000" cy="650" r="3" fill="#fbbf24" opacity="0.6"/>
+            <circle class="user-dot" cx="860" cy="680" r="3" fill="#fbbf24" opacity="0.6"/>
+            <circle class="user-dot" cx="1120" cy="620" r="2.5" fill="#fbbf24" opacity="0.5"/>
+
+            <!-- Background ISP nodes (dimmer, in background) -->
+            <!-- ISP 2 -->
+            <circle cx="400" cy="280" r="10" fill="#f59e0b" opacity="0.25"/>
+            <circle cx="400" cy="280" r="16" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.15"/>
+            <line x1="400" y1="280" x2="300" y2="490" stroke="#a78bfa" stroke-width="1.5" opacity="0.2"/>
+            <text x="400" y="305" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="8" letter-spacing="1" opacity="0.3">ISP</text>
+            <!-- Small user cluster -->
+            <circle cx="440" cy="230" r="2" fill="#fbbf24" opacity="0.2"/>
+            <circle cx="460" cy="260" r="2" fill="#fbbf24" opacity="0.2"/>
+            <circle cx="370" cy="240" r="2" fill="#fbbf24" opacity="0.2"/>
+
+            <!-- ISP 3 -->
+            <circle cx="500" cy="720" r="10" fill="#f59e0b" opacity="0.25"/>
+            <circle cx="500" cy="720" r="16" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.15"/>
+            <line x1="500" y1="720" x2="400" y2="490" stroke="#a78bfa" stroke-width="1.5" opacity="0.2"/>
+            <text x="500" y="745" text-anchor="middle" fill="#fbbf24" font-family="'JetBrains Mono', monospace" font-size="8" letter-spacing="1" opacity="0.3">ISP</text>
+            <circle cx="540" cy="690" r="2" fill="#fbbf24" opacity="0.2"/>
+            <circle cx="560" cy="730" r="2" fill="#fbbf24" opacity="0.2"/>
+            <circle cx="470" cy="760" r="2" fill="#fbbf24" opacity="0.2"/>
+
+            <!-- Data pulse along backbone -->
+            <circle class="bb-pulse" cx="200" cy="490" r="3" fill="#c4b5fd" opacity="0.8" filter="url(#blur-sm)"/>
+            <circle class="bb-pulse" cx="500" cy="490" r="3" fill="#93c5fd" opacity="0.8" filter="url(#blur-sm)"/>
+        </g>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- BEAT 5 — ZOOM OUT: AFRICA               -->
+        <!-- Full network, continental scale          -->
+        <!-- ═══════════════════════════════════════ -->
+        <g id="beat5-africa" opacity="0">
+            <!-- Subsea cables entering from left edge -->
+            <line class="subsea-cable" x1="-20" y1="380" x2="400" y2="450" stroke="#a78bfa" stroke-width="3" opacity="0.5"/>
+            <line class="subsea-cable" x1="-20" y1="480" x2="400" y2="470" stroke="#c4b5fd" stroke-width="2.5" opacity="0.45"/>
+            <line class="subsea-cable" x1="-20" y1="580" x2="400" y2="490" stroke="#38bdf8" stroke-width="2.5" opacity="0.45"/>
+            <line class="subsea-cable" x1="-20" y1="300" x2="400" y2="430" stroke="#93c5fd" stroke-width="2" opacity="0.35"/>
+            <line class="subsea-cable" x1="-20" y1="660" x2="400" y2="510" stroke="#a78bfa" stroke-width="2" opacity="0.35"/>
+            <line class="subsea-cable" x1="-20" y1="200" x2="400" y2="420" stroke="#c4b5fd" stroke-width="1.5" opacity="0.3"/>
+            <line class="subsea-cable" x1="-20" y1="760" x2="400" y2="530" stroke="#38bdf8" stroke-width="1.5" opacity="0.3"/>
+
+            <!-- Subsea cable glow at entry -->
+            <circle cx="0" cy="380" r="10" fill="#a78bfa" filter="url(#blur-md)" opacity="0.3"/>
+            <circle cx="0" cy="480" r="8" fill="#c4b5fd" filter="url(#blur-md)" opacity="0.25"/>
+            <circle cx="0" cy="580" r="8" fill="#38bdf8" filter="url(#blur-md)" opacity="0.25"/>
+
+            <!-- Central convergence / Share backbone hub -->
+            <circle cx="450" cy="470" r="80" fill="url(#glow-blue)" opacity="0.2" filter="url(#blur-lg)"/>
+            <circle cx="450" cy="470" r="16" fill="#3b82f6" opacity="0.8"/>
+            <circle cx="450" cy="470" r="26" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.5"/>
+            <text x="450" y="510" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="2" opacity="0.6">SHARE HUB</text>
+
+            <!-- Backbone lines spanning across "Africa" -->
+            <line class="backbone-span" x1="450" y1="470" x2="900" y2="350" stroke="#3b82f6" stroke-width="2.5" opacity="0.5"/>
+            <line class="backbone-span" x1="450" y1="470" x2="1100" y2="500" stroke="#3b82f6" stroke-width="2.5" opacity="0.5"/>
+            <line class="backbone-span" x1="450" y1="470" x2="800" y2="650" stroke="#3b82f6" stroke-width="2" opacity="0.4"/>
+            <line class="backbone-span" x1="450" y1="470" x2="1300" y2="380" stroke="#3b82f6" stroke-width="2" opacity="0.4"/>
+            <line class="backbone-span" x1="450" y1="470" x2="1200" y2="700" stroke="#3b82f6" stroke-width="1.8" opacity="0.35"/>
+            <line class="backbone-span" x1="900" y1="350" x2="1300" y2="380" stroke="#3b82f6" stroke-width="1.5" opacity="0.3"/>
+            <line class="backbone-span" x1="1100" y1="500" x2="1200" y2="700" stroke="#3b82f6" stroke-width="1.5" opacity="0.3"/>
+            <line class="backbone-span" x1="900" y1="350" x2="1100" y2="500" stroke="#3b82f6" stroke-width="1.5" opacity="0.3"/>
+
+            <!-- Backbone glow -->
+            <line x1="450" y1="470" x2="900" y2="350" stroke="#3b82f6" stroke-width="10" opacity="0.08" filter="url(#blur-md)"/>
+            <line x1="450" y1="470" x2="1100" y2="500" stroke="#3b82f6" stroke-width="10" opacity="0.08" filter="url(#blur-md)"/>
+
+            <!-- ISP nodes spread across the landscape -->
+            <!-- ISP A -->
+            <circle class="africa-isp" cx="900" cy="350" r="12" fill="#f59e0b" opacity="0.8"/>
+            <circle cx="900" cy="350" r="20" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+            <!-- ISP A users -->
+            <circle class="africa-user" cx="940" cy="310" r="2.5" fill="#fbbf24" opacity="0.6"/>
+            <circle class="africa-user" cx="960" cy="340" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="930" cy="380" r="2.5" fill="#fbbf24" opacity="0.6"/>
+            <circle class="africa-user" cx="870" cy="320" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="950" cy="370" r="2" fill="#fbbf24" opacity="0.5"/>
+
+            <!-- ISP B -->
+            <circle class="africa-isp" cx="1100" cy="500" r="12" fill="#f59e0b" opacity="0.8"/>
+            <circle cx="1100" cy="500" r="20" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+            <circle class="africa-user" cx="1140" cy="470" r="2.5" fill="#fbbf24" opacity="0.6"/>
+            <circle class="africa-user" cx="1160" cy="510" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="1120" cy="540" r="2.5" fill="#fbbf24" opacity="0.6"/>
+            <circle class="africa-user" cx="1070" cy="480" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="1130" cy="530" r="2" fill="#fbbf24" opacity="0.5"/>
+
+            <!-- ISP C -->
+            <circle class="africa-isp" cx="800" cy="650" r="10" fill="#f59e0b" opacity="0.7"/>
+            <circle cx="800" cy="650" r="18" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.3"/>
+            <circle class="africa-user" cx="830" cy="620" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="840" cy="660" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="770" cy="670" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="820" cy="690" r="2" fill="#fbbf24" opacity="0.4"/>
+
+            <!-- ISP D -->
+            <circle class="africa-isp" cx="1300" cy="380" r="10" fill="#f59e0b" opacity="0.7"/>
+            <circle cx="1300" cy="380" r="18" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.3"/>
+            <circle class="africa-user" cx="1340" cy="360" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="1330" cy="400" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="1280" cy="350" r="2" fill="#fbbf24" opacity="0.4"/>
+
+            <!-- ISP E -->
+            <circle class="africa-isp" cx="1200" cy="700" r="10" fill="#f59e0b" opacity="0.7"/>
+            <circle cx="1200" cy="700" r="18" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.3"/>
+            <circle class="africa-user" cx="1230" cy="680" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="1240" cy="720" r="2" fill="#fbbf24" opacity="0.5"/>
+            <circle class="africa-user" cx="1180" cy="730" r="2" fill="#fbbf24" opacity="0.4"/>
+
+            <!-- Data pulses across the network -->
+            <circle class="net-pulse" cx="600" cy="420" r="3" fill="#93c5fd" opacity="0.7" filter="url(#blur-sm)"/>
+            <circle class="net-pulse" cx="750" cy="400" r="2.5" fill="#c4b5fd" opacity="0.7" filter="url(#blur-sm)"/>
+            <circle class="net-pulse" cx="1000" cy="450" r="2.5" fill="#38bdf8" opacity="0.7" filter="url(#blur-sm)"/>
+            <circle class="net-pulse" cx="950" cy="580" r="2" fill="#a78bfa" opacity="0.6" filter="url(#blur-sm)"/>
+            <circle class="net-pulse" cx="1150" cy="600" r="2" fill="#93c5fd" opacity="0.6" filter="url(#blur-sm)"/>
+
+            <!-- "Africa" context labels -->
+            <text x="960" y="130" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="4" opacity="0.7">AFRICA'S SHARED BACKBONE</text>
+            <text x="60" y="440" fill="#a78bfa" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.5">SUBSEA CABLES</text>
+
+            <!-- Outer rings indicating continental scale -->
+            <circle cx="750" cy="470" r="380" fill="none" stroke="#60a5fa" stroke-width="0.8" opacity="0.15" stroke-dasharray="6,4"/>
+            <circle cx="750" cy="470" r="480" fill="none" stroke="#3b82f6" stroke-width="0.6" opacity="0.1" stroke-dasharray="4,6"/>
+
+            <!-- Vision numbers -->
+            <g class="vision-stats" opacity="0">
+                <text x="1600" y="200" text-anchor="end" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="700" opacity="0.9">7</text>
+                <text x="1605" y="200" fill="#93c5fd" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1" opacity="0.5"> subsea cables</text>
+                <text x="1600" y="240" text-anchor="end" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="700" opacity="0.9">400+</text>
+                <text x="1605" y="240" fill="#93c5fd" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1" opacity="0.5"> km fiber</text>
+                <text x="1600" y="280" text-anchor="end" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="700" opacity="0.9">8M+</text>
+                <text x="1605" y="280" fill="#93c5fd" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1" opacity="0.5"> people covered</text>
+                <text x="1600" y="320" text-anchor="end" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="700" opacity="0.9">7</text>
+                <text x="1605" y="320" fill="#93c5fd" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="1" opacity="0.5"> micro data centers</text>
+            </g>
+        </g>
+    </svg>
+</div>
+
+<!-- Vignette -->
+<div class="vignette"></div>
+
+<!-- Side labels (Beat 1 only) -->
+<div class="side-labels" id="side-labels">
+    <div class="side-label left">Barely used</div>
+    <div class="side-label right">Capacity exists</div>
+</div>
+
+<!-- Text overlays -->
+<div class="text-layer">
+    <div class="beat-text" id="text-0">
+        <div class="label">Inside the Cable</div>
+        <h2>The glass is laid. The light could flow.</h2>
+        <p>7 subsea cables connect Africa to the world. The glass is laid. The light could flow. But less than 15% of capacity is being used.</p>
+    </div>
+    <div class="beat-text" id="text-1">
+        <div class="label">The Bundle Splits</div>
+        <h2>Fragmented. Every provider runs their own strand.</h2>
+        <p>Every ISP negotiates separate contracts. Costs stack. Capacity is wasted. Data dribbles through when it should flood.</p>
+    </div>
+    <div class="beat-text" id="text-2">
+        <div class="label">Share Binds the Bundle</div>
+        <h2>One coordination layer. Unlimited capacity flows through.</h2>
+        <p>Share binds the bundle. One contract. Every provider. The bottleneck opens. Light floods through every strand.</p>
+    </div>
+    <div class="beat-text" id="text-3">
+        <div class="label">The ISP Plugs In</div>
+        <h2>Unlimited backhaul, zero upfront commits.</h2>
+        <p>One ISP plugs in. Their coverage explodes. Their users multiply. Additional ISPs join the same backbone.</p>
+    </div>
+    <div class="beat-text" id="text-4">
+        <div class="label">The Vision</div>
+        <h2>From cable to continent.</h2>
+        <p>Africa's shared backbone. The most advanced internet network, built from Africa for the world.</p>
+    </div>
+</div>
+
+<!-- Scroll spacer -->
+<div class="scroll-spacer" id="scroll-spacer"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <h2>Join the ecosystem.</h2>
+    <p>From subsea cables to living rooms — Share enables any participant in the internet supply chain to deliver bandwidth more efficiently.</p>
+    <button class="cta-button">Get Started</button>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const beats = 5;
+const spacer = document.getElementById('scroll-spacer');
+const dots = document.querySelectorAll('.progress-dot');
+
+// ── Intro fade out ──
+gsap.to('#intro', {
+    opacity: 0,
+    pointerEvents: 'none',
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: '+=300',
+        scrub: 0.5,
+    }
+});
+
+// ══════════════════════════════════════════════
+// CONTINUOUS LIGHT PULSE ANIMATIONS (Beat 1)
+// These run independently of scroll
+// ══════════════════════════════════════════════
+
+// Strand 1 pulses (y=440) — race left to right
+document.querySelectorAll('.lp-s1').forEach((p, i) => {
+    const dur = 2.5 + Math.random() * 1.5;
+    gsap.fromTo(p,
+        { attr: { cx: -100 - i * 400 } },
+        {
+            attr: { cx: 2100 },
+            duration: dur,
+            repeat: -1,
+            ease: 'none',
+            delay: i * 0.6,
+        }
+    );
+});
+
+// Strand 2 pulses (y=620) — race left to right
+document.querySelectorAll('.lp-s2').forEach((p, i) => {
+    const dur = 3 + Math.random() * 1.5;
+    gsap.fromTo(p,
+        { attr: { cx: -100 - i * 350 } },
+        {
+            attr: { cx: 2100 },
+            duration: dur,
+            repeat: -1,
+            ease: 'none',
+            delay: i * 0.7,
+        }
+    );
+});
+
+// Beat 3 unified pulses — continuous bidirectional flow
+function startUnifiedPulses() {
+    document.querySelectorAll('.up-lr').forEach((p, i) => {
+        gsap.fromTo(p,
+            { attr: { cx: -100 } },
+            {
+                attr: { cx: 2020 },
+                duration: 3 + Math.random() * 2,
+                repeat: -1,
+                ease: 'none',
+                delay: i * 1.2,
+            }
+        );
+    });
+    document.querySelectorAll('.up-rl').forEach((p, i) => {
+        gsap.fromTo(p,
+            { attr: { cx: 2020 } },
+            {
+                attr: { cx: -100 },
+                duration: 3.5 + Math.random() * 2,
+                repeat: -1,
+                ease: 'none',
+                delay: i * 1.0,
+            }
+        );
+    });
+}
+startUnifiedPulses();
+
+// Beat 4 backbone pulses
+document.querySelectorAll('.bb-pulse').forEach((p, i) => {
+    gsap.fromTo(p,
+        { attr: { cx: -50 } },
+        {
+            attr: { cx: 760 },
+            duration: 2 + i * 0.5,
+            repeat: -1,
+            ease: 'none',
+            delay: i * 1.0,
+        }
+    );
+});
+
+// Beat 5 network pulses — wander along backbone paths
+document.querySelectorAll('.net-pulse').forEach((p, i) => {
+    const baseX = parseFloat(p.getAttribute('cx'));
+    const baseY = parseFloat(p.getAttribute('cy'));
+    gsap.to(p, {
+        attr: {
+            cx: baseX + (Math.random() - 0.3) * 250,
+            cy: baseY + (Math.random() - 0.5) * 150,
+        },
+        duration: 3 + Math.random() * 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.6,
+    });
+});
+
+// Beat 2 dribble pulses — slow, sad
+document.querySelectorAll('.dribble').forEach((p, i) => {
+    const baseX = parseFloat(p.getAttribute('cx'));
+    gsap.to(p, {
+        attr: { cx: baseX + 60 },
+        duration: 4 + Math.random() * 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.8,
+    });
+});
+
+// ══════════════════════════════════════════════
+// MAIN SCROLL TIMELINE
+// ══════════════════════════════════════════════
+
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        onUpdate: (self) => {
+            const p = self.progress;
+            const beat = Math.min(4, Math.floor(p * beats));
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === beat);
+            });
+        }
+    }
+});
+
+
+// ═══════════════════════════════════
+// BEAT 1 — Inside the Cable
+// (0 to ~2 on timeline)
+// ═══════════════════════════════════
+
+// Text fades in
+tl.to('#text-0', { opacity: 1, duration: 0.5 }, 0);
+
+// Side labels appear
+tl.to('#side-labels', { opacity: 1, duration: 0.6 }, 0.1);
+
+// Dark strands appear first — the unused capacity
+tl.to('.dark-strand', {
+    opacity: 0.45,
+    stagger: 0.04,
+    duration: 0.8,
+}, 0);
+
+// Then lit strands glow up — the few active ones
+tl.to('.lit-strand', {
+    opacity: 0.9,
+    stagger: 0.1,
+    duration: 0.6,
+}, 0.4);
+
+// Strand glows
+tl.to('.strand-glow', {
+    opacity: 0.2,
+    duration: 0.6,
+}, 0.5);
+
+// Light pulses become visible
+tl.to('.light-pulse', {
+    opacity: 0.85,
+    stagger: 0.03,
+    duration: 0.4,
+}, 0.6);
+
+// Beat 1 stat labels
+tl.to('.beat1-stat', {
+    opacity: 0.7,
+    stagger: 0.15,
+    duration: 0.5,
+}, 0.8);
+
+// Linger, then fade
+tl.to('#text-0', { opacity: 0, duration: 0.3 }, 1.7);
+tl.to('#side-labels', { opacity: 0, duration: 0.3 }, 1.7);
+tl.to('.beat1-stat', { opacity: 0, duration: 0.3 }, 1.7);
+
+
+// ═══════════════════════════════════
+// BEAT 2 — The Bundle Splits
+// (2 to ~4 on timeline)
+// ═══════════════════════════════════
+
+// Fade out Beat 1 fiber strands (zoom out transition)
+tl.to('.dark-strand', { opacity: 0, duration: 0.5 }, 1.9);
+tl.to('.lit-strand', { opacity: 0, duration: 0.5 }, 1.9);
+tl.to('.strand-glow', { opacity: 0, duration: 0.5 }, 1.9);
+tl.to('.light-pulse', { opacity: 0, duration: 0.4 }, 1.9);
+
+// Beat 2 group fades in
+tl.to('#beat2-bundle', { opacity: 1, duration: 0.6 }, 2.0);
+
+// Text
+tl.to('#text-1', { opacity: 1, duration: 0.5 }, 2.1);
+
+// Frayed strands draw in with a dash animation
+tl.fromTo('.fray-strand', {
+    strokeDasharray: '800',
+    strokeDashoffset: 800,
+}, {
+    strokeDashoffset: 0,
+    duration: 1.2,
+    stagger: 0.1,
+}, 2.2);
+
+// Contract icons fade in
+tl.to('.contract-icons', { opacity: 1, duration: 0.6 }, 2.8);
+
+// Fade out beat 2
+tl.to('#text-1', { opacity: 0, duration: 0.3 }, 3.7);
+
+
+// ═══════════════════════════════════
+// BEAT 3 — Share Binds the Bundle
+// (4 to ~6 on timeline)
+// ═══════════════════════════════════
+
+// Fade out beat 2 frayed strands
+tl.to('#beat2-bundle', { opacity: 0, duration: 0.5 }, 3.9);
+
+// Show beat 3 unified group
+tl.to('#beat3-share', { opacity: 1, duration: 0.3 }, 4.0);
+
+// Text
+tl.to('#text-2', { opacity: 1, duration: 0.5 }, 4.1);
+
+// Share connector appears dramatically
+tl.to('.share-ring-outer', { opacity: 0.6, duration: 0.4 }, 4.2);
+tl.to('.share-ring-mid', { opacity: 0.7, duration: 0.5 }, 4.3);
+tl.to('.share-ring-core', { opacity: 0.9, duration: 0.3 }, 4.4);
+tl.to('.share-label', { opacity: 0.8, duration: 0.4 }, 4.5);
+
+// Share ring pulse
+tl.fromTo('.share-ring-mid', { attr: { r: 30 } }, {
+    attr: { r: 38 },
+    duration: 0.3,
+    yoyo: true,
+    repeat: 1,
+}, 4.5);
+
+// Right bundle unifies (the satisfying moment)
+tl.to('.unified-right-casing', { opacity: 0.5, duration: 0.8 }, 4.6);
+tl.to('.unified-right-fiber', {
+    opacity: 0.8,
+    stagger: 0.06,
+    duration: 0.6,
+}, 4.7);
+tl.to('.unified-right-glow', { opacity: 0.15, duration: 0.6 }, 4.8);
+
+// Unified data pulses become visible
+tl.to('.unified-pulse', {
+    opacity: 0.8,
+    stagger: 0.05,
+    duration: 0.4,
+}, 4.9);
+
+// Fade beat 3 text
+tl.to('#text-2', { opacity: 0, duration: 0.3 }, 5.7);
+
+
+// ═══════════════════════════════════
+// BEAT 4 — Zoom Out: The ISP
+// (6 to ~8 on timeline)
+// ═══════════════════════════════════
+
+// Fade out beat 3
+tl.to('#beat3-share', { opacity: 0, duration: 0.5 }, 5.9);
+
+// Show beat 4
+tl.to('#beat4-isp', { opacity: 1, duration: 0.5 }, 6.0);
+
+// Text
+tl.to('#text-3', { opacity: 1, duration: 0.5 }, 6.1);
+
+// ISP core pulses on appearance
+tl.fromTo('.isp-core', { attr: { r: 10 } }, {
+    attr: { r: 22 },
+    duration: 0.3,
+    yoyo: true,
+    repeat: 1,
+}, 6.3);
+
+// User connections fan out
+tl.fromTo('.user-line', {
+    strokeDasharray: '400',
+    strokeDashoffset: 400,
+}, {
+    strokeDashoffset: 0,
+    duration: 0.8,
+    stagger: 0.04,
+}, 6.4);
+
+// User dots pop in
+tl.fromTo('.user-dot', {
+    attr: { r: 0 },
+    opacity: 0,
+}, {
+    attr: { r: function(i) { return [4, 3.5, 4, 3.5, 4, 3, 3, 3, 3, 3, 3, 2.5][i] || 3; } },
+    opacity: function(i) { return [0.8, 0.7, 0.8, 0.7, 0.8, 0.7, 0.6, 0.6, 0.6, 0.6, 0.6, 0.5][i] || 0.6; },
+    duration: 0.4,
+    stagger: 0.05,
+}, 6.6);
+
+// Fade beat 4 text
+tl.to('#text-3', { opacity: 0, duration: 0.3 }, 7.7);
+
+
+// ═══════════════════════════════════
+// BEAT 5 — Zoom Out: Africa
+// (8 to ~10 on timeline)
+// ═══════════════════════════════════
+
+// Fade out beat 4
+tl.to('#beat4-isp', { opacity: 0, duration: 0.5 }, 7.9);
+
+// Show beat 5
+tl.to('#beat5-africa', { opacity: 1, duration: 0.6 }, 8.0);
+
+// Text
+tl.to('#text-4', { opacity: 1, duration: 0.5 }, 8.1);
+
+// Subsea cables draw in
+tl.fromTo('.subsea-cable', {
+    strokeDasharray: '1200',
+    strokeDashoffset: 1200,
+}, {
+    strokeDashoffset: 0,
+    duration: 1.0,
+    stagger: 0.08,
+}, 8.1);
+
+// Backbone spans draw
+tl.fromTo('.backbone-span', {
+    strokeDasharray: '900',
+    strokeDashoffset: 900,
+}, {
+    strokeDashoffset: 0,
+    duration: 0.8,
+    stagger: 0.06,
+}, 8.4);
+
+// ISP nodes pop in
+tl.fromTo('.africa-isp', {
+    attr: { r: 0 },
+}, {
+    attr: { r: function(i) { return [12, 12, 10, 10, 10][i] || 10; } },
+    duration: 0.4,
+    stagger: 0.1,
+}, 8.6);
+
+// User dots appear
+tl.to('.africa-user', {
+    opacity: 0.6,
+    duration: 0.5,
+    stagger: 0.02,
+}, 8.8);
+
+// Vision stats appear
+tl.to('.vision-stats', { opacity: 1, duration: 0.8 }, 9.0);
+
+// Fade everything at end
+tl.to('#text-4', { opacity: 0, duration: 0.5 }, 9.5);
+tl.to('#scene', { opacity: 0, duration: 0.8 }, 9.5);
+tl.to('#progress', { opacity: 0, duration: 0.5 }, 9.5);
+</script>
+
+</body>
+</html>

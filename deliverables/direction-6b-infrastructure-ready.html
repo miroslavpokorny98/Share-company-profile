@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction 6B — Infrastructure Ready</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue-900: #0c1a3a;
+            --blue-700: #1d4ed8;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --blue-300: #93c5fd;
+            --cyan-400: #38bdf8;
+            --green-500: #10b981;
+            --amber-500: #f59e0b;
+            --amber-400: #fbbf24;
+        }
+
+        html, body {
+            background: #04060c;
+            color: #e0e4ec;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* -- Scroll spacer -- */
+        .scroll-spacer {
+            height: 600vh;
+            position: relative;
+        }
+
+        /* -- Fixed canvas -- */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .scene svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* -- Text overlays -- */
+        .text-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 0 80px 80px;
+        }
+
+        .beat-text {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            max-width: 560px;
+            opacity: 0;
+        }
+
+        .beat-text .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--blue-400);
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .beat-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .beat-text p {
+            font-size: 17px;
+            line-height: 1.65;
+            color: rgba(224, 228, 236, 0.7);
+            max-width: 480px;
+        }
+
+        /* -- Stats overlay -- */
+        .stats-row {
+            position: absolute;
+            bottom: 80px;
+            right: 80px;
+            display: flex;
+            gap: 40px;
+            opacity: 0;
+        }
+
+        .stat {
+            text-align: right;
+        }
+
+        .stat .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--blue-400);
+            line-height: 1;
+        }
+
+        .stat .unit {
+            font-size: 13px;
+            color: rgba(224, 228, 236, 0.5);
+            margin-top: 6px;
+        }
+
+        /* -- Progress bar -- */
+        .progress-track {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: background 0.4s, transform 0.4s;
+        }
+
+        .progress-dot.active {
+            background: var(--blue-400);
+            transform: scale(1.4);
+        }
+
+        /* -- Gradient overlays -- */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center, transparent 40%, #04060c 100%),
+                linear-gradient(to top, #04060c 0%, transparent 30%);
+        }
+
+        /* -- Intro overlay -- */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #04060c;
+        }
+
+        .intro-overlay h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--blue-400);
+            font-weight: 500;
+        }
+
+        .intro-overlay .subtitle {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.25);
+            margin-top: 12px;
+        }
+
+        .intro-overlay .scroll-hint {
+            position: absolute;
+            bottom: 48px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(4px); }
+        }
+
+        /* -- CTA at end -- */
+        .cta-section {
+            position: relative;
+            z-index: 15;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .cta-button {
+            margin-top: 16px;
+            padding: 16px 40px;
+            border: 1px solid var(--blue-500);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--blue-400);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cta-button:hover {
+            background: var(--blue-500);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Intro -->
+<div class="intro-overlay" id="intro">
+    <h1>Direction 6B — Infrastructure Ready</h1>
+    <div class="subtitle">Starts with what exists. Reveals what's missing.</div>
+    <div class="scroll-hint">Scroll to begin</div>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-track" id="progress">
+    <div class="progress-dot active" data-beat="0"></div>
+    <div class="progress-dot" data-beat="1"></div>
+    <div class="progress-dot" data-beat="2"></div>
+    <div class="progress-dot" data-beat="3"></div>
+    <div class="progress-dot" data-beat="4"></div>
+    <div class="progress-dot" data-beat="5"></div>
+</div>
+
+<!-- Fixed scene -->
+<div class="scene" id="scene">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-cyan" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-amber" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-green" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="blur-sm">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+            <filter id="blur-md">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+            </filter>
+            <filter id="blur-lg">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12"/>
+            </filter>
+            <filter id="blur-xl">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="20"/>
+            </filter>
+        </defs>
+
+        <!-- === Background subtle grid === -->
+        <g id="bg-grid" opacity="0.03">
+            <line x1="0" y1="270" x2="1920" y2="270" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="0" y1="540" x2="1920" y2="540" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="0" y1="810" x2="1920" y2="810" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="480" y1="0" x2="480" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="960" y1="0" x2="960" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+            <line x1="1440" y1="0" x2="1440" y2="1080" stroke="#3b82f6" stroke-width="0.5"/>
+        </g>
+
+        <!-- ============================== -->
+        <!-- BEAT 1: THE INFRASTRUCTURE TOUR -->
+        <!-- ============================== -->
+
+        <!-- Subsea cables — thick horizontal lines at bottom with glow -->
+        <g id="subsea-cables">
+            <line class="subsea" x1="-100" y1="880" x2="2020" y2="880" stroke="#60a5fa" stroke-width="3.5" opacity="0"/>
+            <line class="subsea" x1="-100" y1="910" x2="2020" y2="910" stroke="#3b82f6" stroke-width="3" opacity="0"/>
+            <line class="subsea" x1="-100" y1="940" x2="2020" y2="940" stroke="#60a5fa" stroke-width="2.5" opacity="0"/>
+            <line class="subsea" x1="-100" y1="860" x2="2020" y2="860" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <line class="subsea" x1="-100" y1="960" x2="2020" y2="960" stroke="#60a5fa" stroke-width="2" opacity="0"/>
+            <line class="subsea" x1="-100" y1="895" x2="2020" y2="895" stroke="#38bdf8" stroke-width="1.8" opacity="0"/>
+            <line class="subsea" x1="-100" y1="925" x2="2020" y2="925" stroke="#38bdf8" stroke-width="1.5" opacity="0"/>
+            <!-- Subsea glow -->
+            <rect class="subsea-glow" x="0" y="840" width="1920" height="140" fill="url(#glow-blue)" filter="url(#blur-lg)" opacity="0"/>
+        </g>
+
+        <!-- Data centers — rectangle outlines with LED dots -->
+        <g id="data-centers">
+            <g class="datacenter" opacity="0">
+                <rect x="280" y="600" width="60" height="45" rx="3" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+                <circle cx="292" cy="612" r="2" fill="#38bdf8"/><circle cx="302" cy="612" r="2" fill="#38bdf8"/><circle cx="312" cy="612" r="2" fill="#3b82f6"/>
+                <circle cx="292" cy="622" r="2" fill="#3b82f6"/><circle cx="302" cy="622" r="2" fill="#38bdf8"/><circle cx="312" cy="622" r="2" fill="#38bdf8"/>
+                <circle cx="292" cy="632" r="2" fill="#38bdf8"/><circle cx="302" cy="632" r="2" fill="#3b82f6"/><circle cx="312" cy="632" r="2" fill="#38bdf8"/>
+            </g>
+            <g class="datacenter" opacity="0">
+                <rect x="620" y="520" width="60" height="45" rx="3" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+                <circle cx="632" cy="532" r="2" fill="#38bdf8"/><circle cx="642" cy="532" r="2" fill="#38bdf8"/><circle cx="652" cy="532" r="2" fill="#3b82f6"/>
+                <circle cx="632" cy="542" r="2" fill="#3b82f6"/><circle cx="642" cy="542" r="2" fill="#38bdf8"/><circle cx="652" cy="542" r="2" fill="#38bdf8"/>
+                <circle cx="632" cy="552" r="2" fill="#38bdf8"/><circle cx="642" cy="552" r="2" fill="#3b82f6"/><circle cx="652" cy="552" r="2" fill="#38bdf8"/>
+            </g>
+            <g class="datacenter" opacity="0">
+                <rect x="980" y="480" width="60" height="45" rx="3" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+                <circle cx="992" cy="492" r="2" fill="#38bdf8"/><circle cx="1002" cy="492" r="2" fill="#3b82f6"/><circle cx="1012" cy="492" r="2" fill="#38bdf8"/>
+                <circle cx="992" cy="502" r="2" fill="#3b82f6"/><circle cx="1002" cy="502" r="2" fill="#38bdf8"/><circle cx="1012" cy="502" r="2" fill="#38bdf8"/>
+                <circle cx="992" cy="512" r="2" fill="#38bdf8"/><circle cx="1002" cy="512" r="2" fill="#38bdf8"/><circle cx="1012" cy="512" r="2" fill="#3b82f6"/>
+            </g>
+            <g class="datacenter" opacity="0">
+                <rect x="1320" y="540" width="60" height="45" rx="3" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+                <circle cx="1332" cy="552" r="2" fill="#38bdf8"/><circle cx="1342" cy="552" r="2" fill="#38bdf8"/><circle cx="1352" cy="552" r="2" fill="#3b82f6"/>
+                <circle cx="1332" cy="562" r="2" fill="#3b82f6"/><circle cx="1342" cy="562" r="2" fill="#38bdf8"/><circle cx="1352" cy="562" r="2" fill="#38bdf8"/>
+                <circle cx="1332" cy="572" r="2" fill="#38bdf8"/><circle cx="1342" cy="572" r="2" fill="#3b82f6"/><circle cx="1352" cy="572" r="2" fill="#38bdf8"/>
+            </g>
+            <g class="datacenter" opacity="0">
+                <rect x="1600" y="620" width="60" height="45" rx="3" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+                <circle cx="1612" cy="632" r="2" fill="#38bdf8"/><circle cx="1622" cy="632" r="2" fill="#3b82f6"/><circle cx="1632" cy="632" r="2" fill="#38bdf8"/>
+                <circle cx="1612" cy="642" r="2" fill="#3b82f6"/><circle cx="1622" cy="642" r="2" fill="#38bdf8"/><circle cx="1632" cy="642" r="2" fill="#38bdf8"/>
+                <circle cx="1612" cy="652" r="2" fill="#38bdf8"/><circle cx="1622" cy="652" r="2" fill="#38bdf8"/><circle cx="1632" cy="652" r="2" fill="#3b82f6"/>
+            </g>
+        </g>
+
+        <!-- Cell towers — vertical lines with cross-arms -->
+        <g id="cell-towers">
+            <g class="tower" opacity="0">
+                <line x1="200" y1="450" x2="200" y2="340" stroke="#60a5fa" stroke-width="2"/>
+                <line x1="180" y1="360" x2="220" y2="360" stroke="#60a5fa" stroke-width="1.5"/>
+                <line x1="185" y1="380" x2="215" y2="380" stroke="#60a5fa" stroke-width="1.2"/>
+                <circle cx="200" cy="338" r="3" fill="#38bdf8"/>
+            </g>
+            <g class="tower" opacity="0">
+                <line x1="520" y1="400" x2="520" y2="290" stroke="#60a5fa" stroke-width="2"/>
+                <line x1="500" y1="310" x2="540" y2="310" stroke="#60a5fa" stroke-width="1.5"/>
+                <line x1="505" y1="330" x2="535" y2="330" stroke="#60a5fa" stroke-width="1.2"/>
+                <circle cx="520" cy="288" r="3" fill="#38bdf8"/>
+            </g>
+            <g class="tower" opacity="0">
+                <line x1="840" y1="380" x2="840" y2="260" stroke="#60a5fa" stroke-width="2"/>
+                <line x1="820" y1="280" x2="860" y2="280" stroke="#60a5fa" stroke-width="1.5"/>
+                <line x1="825" y1="300" x2="855" y2="300" stroke="#60a5fa" stroke-width="1.2"/>
+                <circle cx="840" cy="258" r="3" fill="#38bdf8"/>
+            </g>
+            <g class="tower" opacity="0">
+                <line x1="1150" y1="370" x2="1150" y2="250" stroke="#60a5fa" stroke-width="2"/>
+                <line x1="1130" y1="270" x2="1170" y2="270" stroke="#60a5fa" stroke-width="1.5"/>
+                <line x1="1135" y1="290" x2="1165" y2="290" stroke="#60a5fa" stroke-width="1.2"/>
+                <circle cx="1150" cy="248" r="3" fill="#38bdf8"/>
+            </g>
+            <g class="tower" opacity="0">
+                <line x1="1480" y1="420" x2="1480" y2="310" stroke="#60a5fa" stroke-width="2"/>
+                <line x1="1460" y1="330" x2="1500" y2="330" stroke="#60a5fa" stroke-width="1.5"/>
+                <line x1="1465" y1="350" x2="1495" y2="350" stroke="#60a5fa" stroke-width="1.2"/>
+                <circle cx="1480" cy="308" r="3" fill="#38bdf8"/>
+            </g>
+            <g class="tower" opacity="0">
+                <line x1="1720" y1="440" x2="1720" y2="330" stroke="#60a5fa" stroke-width="2"/>
+                <line x1="1700" y1="350" x2="1740" y2="350" stroke="#60a5fa" stroke-width="1.5"/>
+                <line x1="1705" y1="370" x2="1735" y2="370" stroke="#60a5fa" stroke-width="1.2"/>
+                <circle cx="1720" cy="328" r="3" fill="#38bdf8"/>
+            </g>
+        </g>
+
+        <!-- Fiber routes — lines connecting infrastructure elements -->
+        <g id="fiber-routes">
+            <line class="fiber" x1="200" y1="450" x2="310" y2="600" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="fiber" x1="310" y1="622" x2="520" y2="400" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="fiber" x1="520" y1="400" x2="650" y2="542" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="fiber" x1="650" y1="542" x2="840" y2="380" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="fiber" x1="840" y1="380" x2="1010" y2="502" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="fiber" x1="1010" y1="502" x2="1150" y2="370" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="fiber" x1="1150" y1="370" x2="1350" y2="562" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="fiber" x1="1350" y1="562" x2="1480" y2="420" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="fiber" x1="1480" y1="420" x2="1630" y2="642" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <line class="fiber" x1="1630" y1="642" x2="1720" y2="440" stroke="#3b82f6" stroke-width="1.5" opacity="0"/>
+            <!-- Verticals down to subsea -->
+            <line class="fiber" x1="310" y1="645" x2="310" y2="860" stroke="#3b82f6" stroke-width="1" opacity="0"/>
+            <line class="fiber" x1="650" y1="565" x2="650" y2="860" stroke="#3b82f6" stroke-width="1" opacity="0"/>
+            <line class="fiber" x1="1010" y1="525" x2="1010" y2="860" stroke="#3b82f6" stroke-width="1" opacity="0"/>
+            <line class="fiber" x1="1350" y1="585" x2="1350" y2="860" stroke="#3b82f6" stroke-width="1" opacity="0"/>
+            <line class="fiber" x1="1630" y1="665" x2="1630" y2="860" stroke="#3b82f6" stroke-width="1" opacity="0"/>
+        </g>
+
+        <!-- Antennas — small elements on towers -->
+        <g id="antennas">
+            <g class="antenna" opacity="0">
+                <circle cx="200" cy="335" r="8" fill="none" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="3,2"/>
+                <circle cx="200" cy="335" r="14" fill="none" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="4,3"/>
+            </g>
+            <g class="antenna" opacity="0">
+                <circle cx="520" cy="285" r="8" fill="none" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="3,2"/>
+                <circle cx="520" cy="285" r="14" fill="none" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="4,3"/>
+            </g>
+            <g class="antenna" opacity="0">
+                <circle cx="840" cy="255" r="8" fill="none" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="3,2"/>
+                <circle cx="840" cy="255" r="14" fill="none" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="4,3"/>
+            </g>
+            <g class="antenna" opacity="0">
+                <circle cx="1150" cy="245" r="8" fill="none" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="3,2"/>
+                <circle cx="1150" cy="245" r="14" fill="none" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="4,3"/>
+            </g>
+            <g class="antenna" opacity="0">
+                <circle cx="1480" cy="305" r="8" fill="none" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="3,2"/>
+                <circle cx="1480" cy="305" r="14" fill="none" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="4,3"/>
+            </g>
+            <g class="antenna" opacity="0">
+                <circle cx="1720" cy="325" r="8" fill="none" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="3,2"/>
+                <circle cx="1720" cy="325" r="14" fill="none" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="4,3"/>
+            </g>
+        </g>
+
+        <!-- Infrastructure stats text -->
+        <g id="infra-stats" opacity="0">
+            <text x="960" y="190" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="3" opacity="0.9">7 SUBSEA CABLES  ·  10 DATA CENTERS  ·  500+ KM FIBER</text>
+        </g>
+
+        <!-- ============================== -->
+        <!-- BEAT 2: THE DISCONNECT          -->
+        <!-- ============================== -->
+
+        <!-- Dashed disconnection lines (replacing solid fibers) -->
+        <g id="disconnect-lines" opacity="0">
+            <line class="dashed" x1="200" y1="450" x2="310" y2="600" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+            <line class="dashed" x1="310" y1="622" x2="520" y2="400" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+            <line class="dashed" x1="520" y1="400" x2="650" y2="542" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+            <line class="dashed" x1="650" y1="542" x2="840" y2="380" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+            <line class="dashed" x1="840" y1="380" x2="1010" y2="502" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+            <line class="dashed" x1="1010" y1="502" x2="1150" y2="370" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+            <line class="dashed" x1="1150" y1="370" x2="1350" y2="562" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+            <line class="dashed" x1="1350" y1="562" x2="1480" y2="420" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+            <line class="dashed" x1="1480" y1="420" x2="1630" y2="642" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+            <line class="dashed" x1="1630" y1="642" x2="1720" y2="440" stroke="#60a5fa" stroke-width="1" stroke-dasharray="6,8" opacity="0.3"/>
+        </g>
+
+        <!-- World bandwidth bar (left side) — data abundance -->
+        <g id="data-abundance" opacity="0">
+            <text x="100" y="770" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.6">WORLD BANDWIDTH</text>
+            <rect x="100" y="780" width="180" height="6" rx="3" fill="#38bdf8" opacity="0.6"/>
+            <rect x="100" y="792" width="160" height="6" rx="3" fill="#38bdf8" opacity="0.5"/>
+            <rect x="100" y="804" width="200" height="6" rx="3" fill="#38bdf8" opacity="0.4"/>
+            <rect x="100" y="816" width="140" height="6" rx="3" fill="#38bdf8" opacity="0.3"/>
+        </g>
+
+        <!-- Africa throughput bar (right side) — barely any flow -->
+        <g id="data-scarcity" opacity="0">
+            <text x="1700" y="770" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.4" text-anchor="end">AFRICA THROUGHPUT</text>
+            <rect x="1680" y="780" width="20" height="6" rx="3" fill="#60a5fa" opacity="0.25"/>
+            <rect x="1690" y="792" width="12" height="6" rx="3" fill="#60a5fa" opacity="0.2"/>
+            <rect x="1685" y="804" width="16" height="6" rx="3" fill="#60a5fa" opacity="0.15"/>
+        </g>
+
+        <!-- ============================== -->
+        <!-- BEAT 3: SHARE ENTERS            -->
+        <!-- ============================== -->
+
+        <!-- Share central node -->
+        <g id="share-node" opacity="0">
+            <circle cx="960" cy="520" r="80" fill="url(#glow-blue)" filter="url(#blur-xl)" opacity="0.4"/>
+            <circle cx="960" cy="520" r="40" fill="url(#glow-blue)" filter="url(#blur-md)" opacity="0.6"/>
+            <circle id="share-core" cx="960" cy="520" r="16" fill="#1d4ed8" opacity="0.95"/>
+            <circle cx="960" cy="520" r="26" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.6"/>
+            <circle cx="960" cy="520" r="40" fill="none" stroke="#3b82f6" stroke-width="0.8" opacity="0.3"/>
+            <text x="960" y="580" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="3">SHARE</text>
+        </g>
+
+        <!-- Share connection lines — from center to each infrastructure piece -->
+        <g id="share-connections" opacity="0">
+            <!-- To towers -->
+            <line class="sconn" x1="960" y1="520" x2="200" y2="395" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <line class="sconn" x1="960" y1="520" x2="520" y2="345" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <line class="sconn" x1="960" y1="520" x2="840" y2="320" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <line class="sconn" x1="960" y1="520" x2="1150" y2="310" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <line class="sconn" x1="960" y1="520" x2="1480" y2="365" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <line class="sconn" x1="960" y1="520" x2="1720" y2="385" stroke="#3b82f6" stroke-width="2" opacity="0"/>
+            <!-- To data centers -->
+            <line class="sconn" x1="960" y1="520" x2="310" y2="622" stroke="#3b82f6" stroke-width="1.8" opacity="0"/>
+            <line class="sconn" x1="960" y1="520" x2="650" y2="542" stroke="#3b82f6" stroke-width="1.8" opacity="0"/>
+            <line class="sconn" x1="960" y1="520" x2="1010" y2="502" stroke="#3b82f6" stroke-width="1.8" opacity="0"/>
+            <line class="sconn" x1="960" y1="520" x2="1350" y2="562" stroke="#3b82f6" stroke-width="1.8" opacity="0"/>
+            <line class="sconn" x1="960" y1="520" x2="1630" y2="642" stroke="#3b82f6" stroke-width="1.8" opacity="0"/>
+            <!-- Down to subsea -->
+            <line class="sconn" x1="960" y1="520" x2="960" y2="860" stroke="#3b82f6" stroke-width="2.5" opacity="0"/>
+        </g>
+
+        <!-- Data flow pulses — dots racing through connections -->
+        <g id="data-flow" opacity="0">
+            <circle class="flow-dot" cx="960" cy="520" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="flow-dot" cx="960" cy="520" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="flow-dot" cx="960" cy="520" r="2.5" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="flow-dot" cx="960" cy="520" r="2.5" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="flow-dot" cx="960" cy="520" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="flow-dot" cx="960" cy="520" r="2" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="flow-dot" cx="960" cy="520" r="2.5" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="flow-dot" cx="960" cy="520" r="2" fill="#38bdf8" filter="url(#blur-sm)"/>
+            <circle class="flow-dot" cx="960" cy="520" r="3" fill="#93c5fd" filter="url(#blur-sm)"/>
+            <circle class="flow-dot" cx="960" cy="520" r="2.5" fill="#38bdf8" filter="url(#blur-sm)"/>
+        </g>
+
+        <!-- ============================== -->
+        <!-- BEAT 4: ISPs PLUG IN            -->
+        <!-- ============================== -->
+
+        <g id="isp-layer" opacity="0">
+            <!-- ISP 1 -->
+            <g class="isp-group" opacity="0">
+                <circle class="isp-node" cx="280" cy="300" r="8" fill="#f59e0b" opacity="0.9"/>
+                <circle cx="280" cy="300" r="16" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+                <line class="isp-link" x1="280" y1="300" x2="200" y2="395" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+                <!-- Users -->
+                <circle class="user-dot" cx="255" cy="275" r="2" fill="#fbbf24" opacity="0.6"/>
+                <circle class="user-dot" cx="270" cy="268" r="2" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="260" cy="290" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="295" cy="280" r="1.5" fill="#fbbf24" opacity="0.4"/>
+            </g>
+
+            <!-- ISP 2 -->
+            <g class="isp-group" opacity="0">
+                <circle class="isp-node" cx="580" cy="240" r="8" fill="#f59e0b" opacity="0.9"/>
+                <circle cx="580" cy="240" r="16" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+                <line class="isp-link" x1="580" y1="240" x2="520" y2="345" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+                <circle class="user-dot" cx="560" cy="218" r="2" fill="#fbbf24" opacity="0.6"/>
+                <circle class="user-dot" cx="598" cy="225" r="2" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="570" cy="215" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="595" cy="250" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                <circle class="user-dot" cx="565" cy="255" r="1.5" fill="#fbbf24" opacity="0.4"/>
+            </g>
+
+            <!-- ISP 3 -->
+            <g class="isp-group" opacity="0">
+                <circle class="isp-node" cx="900" cy="210" r="8" fill="#f59e0b" opacity="0.9"/>
+                <circle cx="900" cy="210" r="16" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+                <line class="isp-link" x1="900" y1="210" x2="840" y2="320" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+                <circle class="user-dot" cx="880" cy="190" r="2" fill="#fbbf24" opacity="0.6"/>
+                <circle class="user-dot" cx="920" cy="195" r="2" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="888" cy="198" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="912" cy="198" r="1.5" fill="#fbbf24" opacity="0.4"/>
+            </g>
+
+            <!-- ISP 4 -->
+            <g class="isp-group" opacity="0">
+                <circle class="isp-node" cx="1080" cy="230" r="8" fill="#f59e0b" opacity="0.9"/>
+                <circle cx="1080" cy="230" r="16" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+                <line class="isp-link" x1="1080" y1="230" x2="1150" y2="310" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+                <circle class="user-dot" cx="1060" cy="212" r="2" fill="#fbbf24" opacity="0.6"/>
+                <circle class="user-dot" cx="1098" cy="215" r="2" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="1070" cy="218" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="1092" cy="244" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                <circle class="user-dot" cx="1068" cy="245" r="1.5" fill="#fbbf24" opacity="0.4"/>
+            </g>
+
+            <!-- ISP 5 -->
+            <g class="isp-group" opacity="0">
+                <circle class="isp-node" cx="1400" cy="280" r="8" fill="#f59e0b" opacity="0.9"/>
+                <circle cx="1400" cy="280" r="16" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+                <line class="isp-link" x1="1400" y1="280" x2="1480" y2="365" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+                <circle class="user-dot" cx="1382" cy="260" r="2" fill="#fbbf24" opacity="0.6"/>
+                <circle class="user-dot" cx="1420" cy="265" r="2" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="1390" cy="268" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="1414" cy="295" r="1.5" fill="#fbbf24" opacity="0.4"/>
+            </g>
+
+            <!-- ISP 6 -->
+            <g class="isp-group" opacity="0">
+                <circle class="isp-node" cx="1650" cy="340" r="8" fill="#f59e0b" opacity="0.9"/>
+                <circle cx="1650" cy="340" r="16" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+                <line class="isp-link" x1="1650" y1="340" x2="1720" y2="385" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+                <circle class="user-dot" cx="1630" cy="318" r="2" fill="#fbbf24" opacity="0.6"/>
+                <circle class="user-dot" cx="1668" cy="322" r="2" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="1638" cy="325" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="1662" cy="355" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                <circle class="user-dot" cx="1640" cy="358" r="1.5" fill="#fbbf24" opacity="0.4"/>
+            </g>
+
+            <!-- ISP 7 -->
+            <g class="isp-group" opacity="0">
+                <circle class="isp-node" cx="450" cy="500" r="8" fill="#f59e0b" opacity="0.9"/>
+                <circle cx="450" cy="500" r="16" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.4"/>
+                <line class="isp-link" x1="450" y1="500" x2="310" y2="622" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+                <circle class="user-dot" cx="432" cy="482" r="2" fill="#fbbf24" opacity="0.6"/>
+                <circle class="user-dot" cx="468" cy="485" r="2" fill="#fbbf24" opacity="0.5"/>
+                <circle class="user-dot" cx="440" cy="488" r="1.5" fill="#fbbf24" opacity="0.5"/>
+            </g>
+        </g>
+
+        <!-- ============================== -->
+        <!-- BEAT 5: THE ECOSYSTEM           -->
+        <!-- ============================== -->
+
+        <!-- Financial/payment pulse layer -->
+        <g id="financial-layer" opacity="0">
+            <!-- Green pulse lines alongside the main backbone -->
+            <line class="fin-pulse" x1="960" y1="520" x2="200" y2="400" stroke="#10b981" stroke-width="1" stroke-dasharray="4,6" opacity="0.5"/>
+            <line class="fin-pulse" x1="960" y1="520" x2="520" y2="350" stroke="#10b981" stroke-width="1" stroke-dasharray="4,6" opacity="0.5"/>
+            <line class="fin-pulse" x1="960" y1="520" x2="840" y2="325" stroke="#10b981" stroke-width="1" stroke-dasharray="4,6" opacity="0.5"/>
+            <line class="fin-pulse" x1="960" y1="520" x2="1150" y2="315" stroke="#10b981" stroke-width="1" stroke-dasharray="4,6" opacity="0.5"/>
+            <line class="fin-pulse" x1="960" y1="520" x2="1480" y2="370" stroke="#10b981" stroke-width="1" stroke-dasharray="4,6" opacity="0.5"/>
+            <line class="fin-pulse" x1="960" y1="520" x2="1720" y2="390" stroke="#10b981" stroke-width="1" stroke-dasharray="4,6" opacity="0.5"/>
+            <!-- Payment gateway label -->
+            <text x="960" y="600" text-anchor="middle" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.6">PAYMENT GATEWAY</text>
+            <!-- Backbone label -->
+            <text x="960" y="460" text-anchor="middle" fill="#3b82f6" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.6">BACKBONE</text>
+        </g>
+
+        <!-- Extra ISP coverage dots for ecosystem density -->
+        <g id="ecosystem-density" opacity="0">
+            <!-- Scattered user dots across the landscape -->
+            <circle class="eco-dot" cx="160" cy="280" r="1.5" fill="#fbbf24" opacity="0.3"/>
+            <circle class="eco-dot" cx="240" cy="260" r="1.5" fill="#fbbf24" opacity="0.3"/>
+            <circle class="eco-dot" cx="320" cy="240" r="1.5" fill="#fbbf24" opacity="0.25"/>
+            <circle class="eco-dot" cx="480" cy="200" r="1.5" fill="#fbbf24" opacity="0.3"/>
+            <circle class="eco-dot" cx="560" cy="190" r="1.5" fill="#fbbf24" opacity="0.25"/>
+            <circle class="eco-dot" cx="640" cy="210" r="1.5" fill="#fbbf24" opacity="0.3"/>
+            <circle class="eco-dot" cx="720" cy="180" r="1.5" fill="#fbbf24" opacity="0.25"/>
+            <circle class="eco-dot" cx="800" cy="200" r="1.5" fill="#fbbf24" opacity="0.3"/>
+            <circle class="eco-dot" cx="960" cy="170" r="1.5" fill="#fbbf24" opacity="0.25"/>
+            <circle class="eco-dot" cx="1040" cy="190" r="1.5" fill="#fbbf24" opacity="0.3"/>
+            <circle class="eco-dot" cx="1200" cy="210" r="1.5" fill="#fbbf24" opacity="0.25"/>
+            <circle class="eco-dot" cx="1280" cy="230" r="1.5" fill="#fbbf24" opacity="0.3"/>
+            <circle class="eco-dot" cx="1360" cy="200" r="1.5" fill="#fbbf24" opacity="0.25"/>
+            <circle class="eco-dot" cx="1540" cy="280" r="1.5" fill="#fbbf24" opacity="0.3"/>
+            <circle class="eco-dot" cx="1620" cy="260" r="1.5" fill="#fbbf24" opacity="0.25"/>
+            <circle class="eco-dot" cx="1760" cy="300" r="1.5" fill="#fbbf24" opacity="0.3"/>
+            <circle class="eco-dot" cx="380" cy="440" r="1.5" fill="#fbbf24" opacity="0.2"/>
+            <circle class="eco-dot" cx="700" cy="420" r="1.5" fill="#fbbf24" opacity="0.2"/>
+            <circle class="eco-dot" cx="1240" cy="400" r="1.5" fill="#fbbf24" opacity="0.2"/>
+            <circle class="eco-dot" cx="1560" cy="450" r="1.5" fill="#fbbf24" opacity="0.2"/>
+        </g>
+
+        <!-- ============================== -->
+        <!-- BEAT 6: AFRICA CONNECTED        -->
+        <!-- ============================== -->
+
+        <!-- Simplified Africa continent outline -->
+        <g id="africa-outline" opacity="0">
+            <path d="M 960,120 Q 920,140 900,180 Q 870,220 860,280 Q 850,320 840,360
+                     Q 820,420 810,480 Q 800,540 810,600 Q 820,660 840,720
+                     Q 860,780 880,820 Q 900,860 920,890 Q 940,910 960,930
+                     Q 980,910 1000,890 Q 1020,860 1040,820 Q 1060,780 1080,720
+                     Q 1100,660 1110,600 Q 1120,540 1110,480 Q 1100,420 1080,360
+                     Q 1060,320 1050,280 Q 1040,220 1010,180 Q 990,140 960,120 Z"
+                  fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>
+            <!-- Inner glow -->
+            <path d="M 960,120 Q 920,140 900,180 Q 870,220 860,280 Q 850,320 840,360
+                     Q 820,420 810,480 Q 800,540 810,600 Q 820,660 840,720
+                     Q 860,780 880,820 Q 900,860 920,890 Q 940,910 960,930
+                     Q 980,910 1000,890 Q 1020,860 1040,820 Q 1060,780 1080,720
+                     Q 1100,660 1110,600 Q 1120,540 1110,480 Q 1100,420 1080,360
+                     Q 1060,320 1050,280 Q 1040,220 1010,180 Q 990,140 960,120 Z"
+                  fill="url(#glow-blue)" filter="url(#blur-lg)" opacity="0.15"/>
+        </g>
+
+        <!-- Extended subsea cables going to screen edges -->
+        <g id="global-cables" opacity="0">
+            <line x1="960" y1="880" x2="0" y2="950" stroke="#1d4ed8" stroke-width="3" opacity="0.5"/>
+            <line x1="960" y1="880" x2="0" y2="700" stroke="#1d4ed8" stroke-width="2.5" opacity="0.4"/>
+            <line x1="960" y1="880" x2="1920" y2="920" stroke="#1d4ed8" stroke-width="3" opacity="0.5"/>
+            <line x1="960" y1="880" x2="1920" y2="650" stroke="#1d4ed8" stroke-width="2.5" opacity="0.4"/>
+            <line x1="960" y1="880" x2="200" y2="1080" stroke="#1d4ed8" stroke-width="2" opacity="0.35"/>
+            <line x1="960" y1="880" x2="1700" y2="1080" stroke="#1d4ed8" stroke-width="2" opacity="0.35"/>
+            <!-- Endpoint glows -->
+            <circle cx="0" cy="950" r="8" fill="#3b82f6" filter="url(#blur-md)" opacity="0.5"/>
+            <circle cx="1920" cy="920" r="8" fill="#3b82f6" filter="url(#blur-md)" opacity="0.5"/>
+            <circle cx="0" cy="700" r="6" fill="#3b82f6" filter="url(#blur-md)" opacity="0.4"/>
+            <circle cx="1920" cy="650" r="6" fill="#3b82f6" filter="url(#blur-md)" opacity="0.4"/>
+        </g>
+
+        <!-- Vision stats -->
+        <g id="vision-stats" opacity="0">
+            <text x="960" y="1020" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="16" letter-spacing="4" opacity="0.9">1M+ USERS  ·  100K+ KM FIBER  ·  30+ DATA CENTERS</text>
+        </g>
+
+        <!-- Continent label -->
+        <g id="continent-label" opacity="0">
+            <text x="960" y="100" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="4" opacity="0.7">AFRICA'S SHARED BACKBONE</text>
+            <text x="960" y="980" text-anchor="middle" fill="#3b82f6" font-family="'JetBrains Mono', monospace" font-size="11" letter-spacing="3" opacity="0.5">GLOBAL CONNECTIVITY</text>
+        </g>
+
+    </svg>
+</div>
+
+<!-- Vignette -->
+<div class="vignette"></div>
+
+<!-- Text overlays -->
+<div class="text-layer">
+    <div class="beat-text" id="text-0">
+        <div class="label">The Infrastructure Tour</div>
+        <h2>The infrastructure exists.</h2>
+        <p>Subsea cables have landed. Towers are up. Fiber stretches across the continent. The capacity is here.</p>
+    </div>
+    <div class="beat-text" id="text-1">
+        <div class="label">The Disconnect</div>
+        <h2>But none of it speaks to each other.</h2>
+        <p>Decades of fragmented investment. Infrastructure that runs in parallel, never together. 600 million people unconnected.</p>
+    </div>
+    <div class="beat-text" id="text-2">
+        <div class="label">The Coordination Layer</div>
+        <h2>Share is the coordination layer.</h2>
+        <p>One contract. Every provider. Unlimited backhaul with no upfront commits.</p>
+    </div>
+    <div class="beat-text" id="text-3">
+        <div class="label">ISPs Plug In</div>
+        <h2>ISPs plug in and grow.</h2>
+        <p>More coverage. More users. More revenue. Share only earns when partners earn.</p>
+    </div>
+    <div class="beat-text" id="text-4">
+        <div class="label">The Ecosystem</div>
+        <h2>Backbone and payment gateway.</h2>
+        <p>Two layers. One ecosystem. Growing every day.</p>
+    </div>
+    <div class="beat-text" id="text-5">
+        <div class="label">The Vision</div>
+        <h2>Africa's shared backbone.</h2>
+        <p>The most advanced internet network, built from Africa for the world.</p>
+    </div>
+</div>
+
+<!-- Stats (Beat 1) -->
+<div class="text-layer">
+    <div class="stats-row" id="stats-infra">
+        <div class="stat">
+            <div class="number">7</div>
+            <div class="unit">subsea cables</div>
+        </div>
+        <div class="stat">
+            <div class="number">10</div>
+            <div class="unit">data centers</div>
+        </div>
+        <div class="stat">
+            <div class="number">500+</div>
+            <div class="unit">km fiber</div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats (Beat 5) -->
+<div class="text-layer">
+    <div class="stats-row" id="stats-ecosystem">
+        <div class="stat">
+            <div class="number">12</div>
+            <div class="unit">infra providers</div>
+        </div>
+        <div class="stat">
+            <div class="number">7</div>
+            <div class="unit">ISP partners</div>
+        </div>
+        <div class="stat">
+            <div class="number">8M+</div>
+            <div class="unit">people covered</div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll spacer -->
+<div class="scroll-spacer" id="scroll-spacer"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <h2>Join the ecosystem.</h2>
+    <p>The more networks that join, the stronger everyone gets. There's a spot for you.</p>
+    <button class="cta-button">Get Started</button>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const beats = 6;
+const spacer = document.getElementById('scroll-spacer');
+const dots = document.querySelectorAll('.progress-dot');
+
+// -- Intro fade out --
+gsap.to('#intro', {
+    opacity: 0,
+    pointerEvents: 'none',
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: '+=300',
+        scrub: 0.5,
+    }
+});
+
+// -- Continuous pulse animations for data flow dots --
+const flowDots = document.querySelectorAll('.flow-dot');
+const flowTargets = [
+    { x: 200, y: 395 },
+    { x: 1720, y: 385 },
+    { x: 520, y: 345 },
+    { x: 1480, y: 365 },
+    { x: 840, y: 320 },
+    { x: 1150, y: 310 },
+    { x: 310, y: 622 },
+    { x: 650, y: 542 },
+    { x: 1350, y: 562 },
+    { x: 1630, y: 642 },
+];
+
+flowDots.forEach((dot, i) => {
+    const target = flowTargets[i % flowTargets.length];
+    gsap.to(dot, {
+        attr: { cx: target.x, cy: target.y },
+        duration: 2 + Math.random() * 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut',
+        delay: i * 0.3,
+    });
+});
+
+// -- Continuous pulse for financial lines --
+gsap.to('.fin-pulse', {
+    strokeDashoffset: -20,
+    duration: 1.5,
+    repeat: -1,
+    ease: 'none',
+    stagger: 0.2,
+});
+
+// -- Main scroll timeline --
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        onUpdate: (self) => {
+            const p = self.progress;
+            const beat = Math.min(5, Math.floor(p * beats));
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === beat);
+            });
+        }
+    }
+});
+
+// =========================================
+// BEAT 1 — The Infrastructure Tour (0-2)
+// "Look at all this" — confident, impressive
+// =========================================
+
+// Text fades in
+tl.to('#text-0', { opacity: 1, duration: 0.3 }, 0);
+
+// Subsea cables sweep in from left to right — thick glowing lines
+tl.to('.subsea', {
+    opacity: (i) => [0.8, 0.7, 0.6, 0.55, 0.5, 0.45, 0.4][i],
+    stagger: 0.06,
+    duration: 0.4,
+}, 0);
+tl.to('.subsea-glow', { opacity: 0.3, duration: 0.5 }, 0.1);
+
+// Data centers appear with a satisfying pop
+tl.to('.datacenter', {
+    opacity: 1,
+    stagger: 0.08,
+    duration: 0.3,
+    ease: 'back.out(1.7)',
+}, 0.3);
+
+// Cell towers rise up
+tl.to('.tower', {
+    opacity: 1,
+    stagger: 0.06,
+    duration: 0.3,
+    ease: 'power2.out',
+}, 0.5);
+
+// Fiber routes draw in connecting everything
+tl.to('.fiber', {
+    opacity: 0.6,
+    stagger: 0.04,
+    duration: 0.5,
+}, 0.7);
+
+// Antennas pulse on
+tl.to('.antenna', {
+    opacity: 0.7,
+    stagger: 0.05,
+    duration: 0.3,
+}, 0.9);
+
+// Infrastructure stats numbers appear
+tl.to('#infra-stats', { opacity: 1, duration: 0.4 }, 1.0);
+tl.to('#stats-infra', { opacity: 1, duration: 0.5 }, 1.0);
+
+// Brief moment of everything pulsing in sync — impressive
+tl.to('.subsea', {
+    opacity: 0.95,
+    duration: 0.3,
+    yoyo: true,
+    repeat: 1,
+    stagger: 0.02,
+}, 1.3);
+
+// Fade out Beat 1 text & stats
+tl.to('#text-0', { opacity: 0, duration: 0.3 }, 1.8);
+tl.to('#stats-infra', { opacity: 0, duration: 0.3 }, 1.8);
+tl.to('#infra-stats', { opacity: 0, duration: 0.3 }, 1.8);
+
+
+// =========================================
+// BEAT 2 — The Disconnect (2-4)
+// Unsettling — things falling apart
+// =========================================
+
+tl.to('#text-1', { opacity: 1, duration: 0.4 }, 2);
+
+// Fiber routes fade and become dashed
+tl.to('.fiber', { opacity: 0, duration: 0.6 }, 2);
+tl.to('#disconnect-lines', { opacity: 1, duration: 0.5 }, 2.3);
+
+// Animate dashed line offsets for restless feeling
+tl.fromTo('.dashed', {
+    strokeDashoffset: 0,
+}, {
+    strokeDashoffset: -28,
+    duration: 1.5,
+    stagger: 0.05,
+}, 2.3);
+
+// Infrastructure dims — towers, data centers, antennas lose brightness
+tl.to('.tower', { opacity: 0.3, duration: 0.8 }, 2.2);
+tl.to('.datacenter', { opacity: 0.35, duration: 0.8 }, 2.2);
+tl.to('.antenna', { opacity: 0.2, duration: 0.8 }, 2.2);
+tl.to('.subsea', { opacity: 0.2, duration: 0.8 }, 2.2);
+tl.to('.subsea-glow', { opacity: 0.08, duration: 0.8 }, 2.2);
+
+// Elements drift apart slightly (towers shift)
+tl.to('.tower:nth-child(1)', { x: -15, duration: 1 }, 2.3);
+tl.to('.tower:nth-child(2)', { x: -8, duration: 1 }, 2.3);
+tl.to('.tower:nth-child(5)', { x: 8, duration: 1 }, 2.3);
+tl.to('.tower:nth-child(6)', { x: 15, duration: 1 }, 2.3);
+
+// Data centers drift
+tl.to('.datacenter:nth-child(1)', { x: -10, y: 5, duration: 1 }, 2.3);
+tl.to('.datacenter:nth-child(2)', { x: -5, y: -5, duration: 1 }, 2.3);
+tl.to('.datacenter:nth-child(4)', { x: 5, y: -5, duration: 1 }, 2.3);
+tl.to('.datacenter:nth-child(5)', { x: 10, y: 5, duration: 1 }, 2.3);
+
+// Data abundance vs scarcity visual
+tl.to('#data-abundance', { opacity: 1, duration: 0.6 }, 2.8);
+tl.to('#data-scarcity', { opacity: 1, duration: 0.6 }, 2.8);
+
+// Fade out Beat 2
+tl.to('#text-1', { opacity: 0, duration: 0.3 }, 3.7);
+tl.to('#data-abundance', { opacity: 0, duration: 0.3 }, 3.7);
+tl.to('#data-scarcity', { opacity: 0, duration: 0.3 }, 3.7);
+
+
+// =========================================
+// BEAT 3 — Share Enters (4-6)
+// Relief and power — reconnection
+// =========================================
+
+tl.to('#text-2', { opacity: 1, duration: 0.4 }, 4);
+
+// Hide dashed disconnect lines
+tl.to('#disconnect-lines', { opacity: 0, duration: 0.5 }, 4);
+
+// Share node appears at center with a powerful glow
+tl.to('#share-node', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 4.1);
+
+// Share core pulses on entry
+tl.fromTo('#share-core', { attr: { r: 8 } }, {
+    attr: { r: 20 },
+    duration: 0.3,
+    yoyo: true,
+    repeat: 1,
+    ease: 'power2.out',
+}, 4.2);
+
+// Show share connections container
+tl.to('#share-connections', { opacity: 1, duration: 0.1 }, 4.3);
+
+// Connection lines reach out one by one — the reconnection
+tl.to('.sconn', {
+    opacity: 0.7,
+    duration: 0.6,
+    stagger: 0.06,
+    ease: 'power2.out',
+}, 4.3);
+
+// Infrastructure re-brightens as it connects through Share
+tl.to('.tower', { opacity: 0.9, x: 0, duration: 0.6 }, 4.6);
+tl.to('.datacenter', { opacity: 0.9, x: 0, y: 0, duration: 0.6 }, 4.6);
+tl.to('.antenna', { opacity: 0.7, duration: 0.6 }, 4.6);
+tl.to('.subsea', {
+    opacity: (i) => [0.7, 0.6, 0.55, 0.5, 0.45, 0.4, 0.35][i],
+    duration: 0.6,
+}, 4.6);
+tl.to('.subsea-glow', { opacity: 0.25, duration: 0.6 }, 4.6);
+
+// Data flow appears — racing through newly connected infrastructure
+tl.to('#data-flow', { opacity: 1, duration: 0.5 }, 4.8);
+
+// Fade out Beat 3
+tl.to('#text-2', { opacity: 0, duration: 0.3 }, 5.7);
+
+
+// =========================================
+// BEAT 4 — ISPs Plug In (6-8)
+// =========================================
+
+tl.to('#text-3', { opacity: 1, duration: 0.4 }, 6);
+
+// ISP layer container visible
+tl.to('#isp-layer', { opacity: 1, duration: 0.1 }, 6);
+
+// ISPs connect in sequence — each one brightening the network
+tl.to('.isp-group:nth-child(1)', { opacity: 1, duration: 0.3, ease: 'back.out(1.4)' }, 6.1);
+tl.to('.isp-group:nth-child(2)', { opacity: 1, duration: 0.3, ease: 'back.out(1.4)' }, 6.3);
+tl.to('.isp-group:nth-child(3)', { opacity: 1, duration: 0.3, ease: 'back.out(1.4)' }, 6.5);
+tl.to('.isp-group:nth-child(4)', { opacity: 1, duration: 0.3, ease: 'back.out(1.4)' }, 6.7);
+tl.to('.isp-group:nth-child(5)', { opacity: 1, duration: 0.3, ease: 'back.out(1.4)' }, 6.9);
+tl.to('.isp-group:nth-child(6)', { opacity: 1, duration: 0.3, ease: 'back.out(1.4)' }, 7.1);
+tl.to('.isp-group:nth-child(7)', { opacity: 1, duration: 0.3, ease: 'back.out(1.4)' }, 7.3);
+
+// Each ISP connection brightens the backbone slightly
+tl.to('.sconn', { opacity: 0.85, duration: 1.2 }, 6.2);
+
+// Network gets brighter overall as ISPs join
+tl.to('.tower', { opacity: 1, duration: 0.8 }, 6.5);
+
+// Fade out Beat 4
+tl.to('#text-3', { opacity: 0, duration: 0.3 }, 7.7);
+
+
+// =========================================
+// BEAT 5 — The Ecosystem (8-10)
+// =========================================
+
+tl.to('#text-4', { opacity: 1, duration: 0.4 }, 8);
+tl.to('#stats-ecosystem', { opacity: 1, duration: 0.5 }, 8.1);
+
+// Financial layer — green pulses appear
+tl.to('#financial-layer', { opacity: 1, duration: 0.8 }, 8.2);
+
+// Ecosystem density — more user dots spread across
+tl.to('#ecosystem-density', { opacity: 1, duration: 0.8 }, 8.3);
+tl.to('.eco-dot', {
+    opacity: 0.5,
+    stagger: 0.03,
+    duration: 0.5,
+}, 8.4);
+
+// Everything pulses together — ecosystem alive
+tl.to('.sconn', { opacity: 0.9, duration: 0.3, yoyo: true, repeat: 1 }, 8.8);
+
+// Fade out Beat 5
+tl.to('#text-4', { opacity: 0, duration: 0.3 }, 9.5);
+tl.to('#stats-ecosystem', { opacity: 0, duration: 0.3 }, 9.5);
+
+
+// =========================================
+// BEAT 6 — Africa Connected (10-12)
+// =========================================
+
+tl.to('#text-5', { opacity: 1, duration: 0.4 }, 10);
+
+// Africa outline appears
+tl.to('#africa-outline', { opacity: 1, duration: 1 }, 10);
+
+// Global subsea cables extend to edges
+tl.to('#global-cables', { opacity: 1, duration: 1.2 }, 10.1);
+
+// Vision stats
+tl.to('#vision-stats', { opacity: 1, duration: 0.8 }, 10.3);
+
+// Continent labels
+tl.to('#continent-label', { opacity: 1, duration: 0.8 }, 10.2);
+
+// Dim the detailed network to let the continental view shine
+tl.to('.tower', { opacity: 0.4, duration: 1 }, 10.2);
+tl.to('.datacenter', { opacity: 0.4, duration: 1 }, 10.2);
+tl.to('.sconn', { opacity: 0.35, duration: 1 }, 10.2);
+tl.to('#isp-layer', { opacity: 0.4, duration: 1 }, 10.2);
+tl.to('#financial-layer', { opacity: 0.3, duration: 1 }, 10.2);
+tl.to('#ecosystem-density', { opacity: 0.4, duration: 1 }, 10.2);
+
+// Share core glows brighter at the center of Africa
+tl.to('#share-core', { attr: { r: 20 }, duration: 0.8 }, 10.3);
+tl.to('#share-node', { opacity: 1, duration: 0.5 }, 10.3);
+
+// Fade out everything at end
+tl.to('#text-5', { opacity: 0, duration: 0.5 }, 11.3);
+tl.to('#scene', { opacity: 0, duration: 0.8 }, 11.3);
+tl.to('#progress', { opacity: 0, duration: 0.5 }, 11.3);
+</script>
+
+</body>
+</html>

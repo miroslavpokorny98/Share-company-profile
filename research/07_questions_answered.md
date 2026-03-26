@@ -1,10 +1,9 @@
-# Questions for Share — Answered from Existing Research
+# Questions for Share — All Answers
 
-_Compiled: March 17, 2026_
-_Sources: Call transcript (March 17) > Share brief PDF > Current site scrape > Market context_
-_Priority: transcript > concrete Share info > web research_
+_Compiled: March 17, 2026 | Updated: March 26, 2026 with full Notion responses_
+_Sources: Call transcript (March 17) + Share's written answers (Notion, March 24)_
 
-**Legend:** ✅ Answered | ⚠️ Partial | ❓ Unknown — must still ask
+**All questions are now answered.** Share provided detailed responses via the Notion Discovery & Questions page.
 
 ---
 
@@ -12,89 +11,70 @@ _Priority: transcript > concrete Share info > web research_
 
 **1. How do you pitch Share to an investor vs. ISP partner vs. someone on the street?**
 
-✅ Answered in transcript — Luis answered this directly and at length.
+✅ Fully answered (call + Notion).
 
-- **Investor:** "We are a marketplace for bandwidth connectivity, getting abundance of connectivity from the world and introducing it into Africa. We help multi-group partners coordinate through us to deliver capacity to end consumers." Key frame: financial coordination layer, not infrastructure builder. Avoids triggering fear of massive capital requirements.
-- **ISP partner:** Reliability, higher efficiency. Uses their familiar lingo (commits, backhaul, PoPs). Core message: "we are enablers for them to do what they do best — connect the end consumer." Not a competitor, a partner.
-- **End user:** "You deserve faster internet. You go to Share to find who can deliver it to you." Share is not the seller — the ISP is. Share points users to partners.
-- **Common thread they avoid saying publicly:** The abstract "coordination marketplace" concept — too complex for partners/users, saved for investors.
+- **General Pitch:** Share is a network that aggregates underutilized telecom infrastructure and creates a marketplace that treats bandwidth as a commodity across Africa. ~600M unconnected people — not because infrastructure doesn't exist, but because it's fragmented and economically inefficient. Share fixes the coordination layer. "We are Africa's shared backbone & payment gateway: the infrastructure enabler that lets existing networks grow without the costs, complexity, and capital barriers that have held the continent back."
+- **Investors:** A marketplace for bandwidth connectivity, getting abundance of connectivity from the world and introducing it into Africa. Key frame: financial/technical coordination layer, NOT infrastructure builder. Avoids triggering fear of massive capital requirements. Two revenue pillars: backbone provider + payment gateway. Every transaction flows through Share's financial rails.
+- **ISP partners:** Reliability and higher efficiency. Removes need to negotiate with multiple infrastructure providers. Single interface, unlimited backhaul, and a financial layer to grow on. Share works as enablers — "we only make money if they make money." Communication should use their familiar lingo (commits, backhaul, PoPs).
+- **End users:** "We want internet" / "We want faster internet." They care about speed and quality. They come to Share to find who can deliver it, but Share doesn't sell directly.
 
 ---
 
-**2. How does Share work from an ISP partner's perspective, first contact to live?**
+**2. How does Share work from an ISP partner's perspective?**
 
-⚠️ Partial. High-level journey exists on their current Networks page: (1) Plug into Share — connect to a PoP, get backhaul with no commits, (2) Onboard customers to Share's management platform, (3) Unlock growth via capital access. The transcript adds conceptual depth (fiber loops, plug into the network like a "vertically integrated ISP"), and the onboarding is meant to feel like a Stripe integration — add a module, don't rebuild your business. Specific timeline, steps, and technical onboarding detail are not in the record and need to be asked.
+✅ Answered (Notion). The only requirement for using Share's platform is the creation of internet plans — defining the relationship between speed and price. That financial relationship plus the commission structure flows through Share's payment platform. The end user pays with the same method they're used to (M-Pesa), but to a new account. The change in experience is minimal. Behind the scenes, each payment gets automatically split within Share's platform. Integration is a digital API connection with the ISP's BSS/OSS system.
 
 ---
 
 **3. What's the single biggest problem Share solves for ISPs that nobody else does?**
 
-✅ Answered — the transcript makes this clear even if it wasn't stated as a direct answer.
+✅ Answered (call + Notion).
 
-Two problems fused into one offer: (a) **Capital efficiency** — ISPs currently pay large telcos upfront for committed bandwidth capacity regardless of usage; Share eliminates that commitment entirely. (b) **Fragmented access** — ISPs normally need separate 60-page contracts with every infrastructure provider; Share is the single entity that has already done all that lift. No one else offers both.
+- **Capital efficiency** — ISPs currently pay large telcos upfront for committed bandwidth regardless of usage; Share eliminates that commitment. Creates an ecosystem where local networks benefit from aggregated capacity across multiple major telcos with maximum redundancy and reliability. Currently most local networks have 1-3 providers with costly, uncoordinated, separate contracts. With Share: all major providers, single contract.
+- **Fragmented access** — ISPs normally need separate large contracts with every infrastructure provider; Share is the single entity that has already done all that lift.
 
 ---
 
-**4. How do ISP partners react when they hear "no upfront capacity fees" for the first time?**
+**4. The "no upfront capacity fees" model — is that your main USP?**
 
-⚠️ Partial. Luis said: "The offering we're presenting is quite compelling for a lot of ISPs and there's quite a lot of ISPs wanting to join." The bottleneck is not skepticism about the model — it's **brand awareness** (they don't know Share exists) and **fear of operational disruption** (not wanting to change a working business). The no-upfront fees model itself lands well once heard; the challenge is getting in the room. Exact reaction / typical first-call response not described — worth asking for a specific anecdote.
+✅ Answered. This is arguably the strongest USP — one that genuinely disrupts the market. Framed as "unlimited backhaul with no commits."
 
 ---
 
 **5. How do you explain the hyperscale model non-technically?**
 
-✅ Answered — multiple analogies offered on the call, all usable for copy and visuals:
+✅ Answered (call).
 
-- **Highway:** Tesla, Ford, VW all build separate highways — ridiculous. Share builds one shared highway and charges a toll. More cars → wider highway → cheaper per-car.
-- **Internet supply chain:** You're an ISP 400km from the sea. You rent fiber from someone who rents from someone who rents from someone. Costs stack up for the user. Share streamlines the whole chain.
-- **Stripe:** Stripe doesn't ask merchants to rebuild their website — it's a module you add. Share is the same for ISPs.
-- **Energy grid:** Households with excess solar can sell it back to the grid. Share does the same for excess bandwidth infrastructure.
-
----
-
-**6. Where is Share in 2–3 years?**
-
-⚠️ Partial. From transcript and brief:
-- Uganda license ~2 months from March 2026, live within 2 months after that
-- Pan-African vision: "When we speak of Share, it's not Kenya. It's this ecosystem across the entire of Africa, dare I say the global south."
-- 50,000 end users by end of 2026 (goal stated on call)
-- Financial products expanding: lending, FOREX, D2C marketplace
-- Rapid country rollout model: "If in 6 months I get a license in Uganda, in 2 months I'm already live there"
-- Specific 3-year plan, target countries, or revenue targets not discussed — worth asking for a concrete roadmap.
+- **Highway:** Tesla, Ford, VW all build separate highways — ridiculous. Share builds one shared highway and charges a toll. More cars -> wider highway -> cheaper per-car.
+- **Internet supply chain:** You're an ISP 400km from the sea. You rent fiber from someone who rents from someone. Costs stack up. Share streamlines the whole chain.
+- **Stripe:** Module you add, don't rebuild your business.
+- **Energy grid:** Excess solar sold back to the grid. Share does the same for bandwidth.
 
 ---
 
-**7. How many ISP partners are currently active, and how fast is that growing?**
+**6. Where is Share in 2-3 years?**
 
-❓ Unknown. Not mentioned anywhere in the transcript or documents. Must ask. (Only data point: each new partner brings ~2,000 users. Goal is 50,000 users by end of 2026.)
+✅ Answered (call + Notion). Hyperscale network in Africa, not just Kenya. The website should reflect Share's vision, not just where they are today. Kenya will be mentioned, but the bigger story is what Share is building toward. Vision numbers: 1M+ users connected, 100K+ km of fiber, 30+ data centers.
+
+---
+
+**7. How many ISP partners are currently active?**
+
+Still not explicitly stated. Only data point: each new partner brings ~2,000 users. Goal is 50,000 users by end of 2026. A sizeable percentage of Kenya's ISP market is already aware of Share.
 
 ---
 
 **8. Future financial services (lending, FOREX) — how central, should site hint at it?**
 
-✅ Answered. Luis: "The cost of data in 2026 is not a good idea [as a business model]. It is getting so cheap." The entire long-term revenue model pivots to financial products. Lending (lines of credit for ISPs to finance fiber/hardware) is the first product. FOREX is next. The current site's Platform section already references this. The website should definitely hint at it — it's the answer to the "how does Share make money if data is getting cheap?" investor question, and it's in the brief as a Platform roadmap item.
+✅ Fully answered (Notion — detailed response).
 
----
+Financial services are NOT future — they're embedded in the product today. The automated payment splitting is the reason Share can offer competitive pricing. What IS future-looking is the longer-term vision: open marketplace with smart contracts on public blockchain, plus lending and FOREX for infrastructure financing.
 
-## BRAND & IDENTITY
+The website should absolutely reflect this while hinting at the broader financial ecosystem. Near-term: launching interest rates on deposits soon (partners earn returns on revenue kept in platform accounts).
 
-**1. What feels right about the current brand, and what no longer fits?**
+Key positioning: Share merges the product (platform) with the physical network (unlimited bandwidth) within the same ecosystem. The platform shouldn't feel like a standalone add-on but rather all embedded within the same ecosystem. They want to position as a digital platform, not a payment provider.
 
-⚠️ Partial. Luis said they're "happy with existing guidelines but open to a subtle refresh that strengthens the physical infrastructure dimension." What this tells us: the dark cinematic aesthetic, deep blues/blacks, and ribbed glass texture feel right. What no longer fits: the current site was built during pre-seed and reads too early-stage / too abstract — it doesn't communicate the physical scale they now have (400+ km fiber, 7 micro DCs, 7 subsea cables). They haven't articulated what specifically feels dated — need to ask for their honest self-assessment.
-
----
-
-**2. What's the one thing you want people to remember after visiting the website?**
-
-⚠️ Inferred, not directly stated. The word Luis returned to most on the call was "enablers." Direct quote: "We are enablers of local ISPs wanting to grow. Enablers of large ISPs with excess infrastructure. Enablers of end users not enjoying fast internet." The call also repeatedly circled "coordination" and "ecosystem." The answer is probably something like: "Share makes the internet work for everyone in Africa — partners, users, and the ecosystem." But they haven't said it as a single takeaway sentence. Worth asking to get it in their words.
-
----
-
-**3. What specifically draws you to each reference (terminal.industries, Stripe, Cloudflare, Apple, Starlink)?**
-
-⚠️ Partial. From the call, Jose explicitly cited the **Google Cloud infrastructure website** as a visual reference — "this is what they do, exactly, for Africa." That suggests they're drawn to: dense infrastructure visualization, global network maps, and the way Google makes something technical feel monumental and trustworthy.
-
-Stripe was used as a product analogy (financial middleware), but whether they admire Stripe's visual/brand approach specifically wasn't confirmed. The brief groups terminal.industries, Cloudflare, Apple, Starlink together — likely for dark cinematic aesthetic, technical credibility presented accessibly, and premium restraint. Ask them to break down each reference by what they admire: is it visual language, data storytelling, copywriting, or something else?
+Financial services need the same brand awareness and trust-building effort as the network component. Being forthcoming about this vision is important.
 
 ---
 
@@ -102,216 +82,312 @@ Stripe was used as a product analogy (financial middleware), but whether they ad
 
 **1. Who is the most important audience right now?**
 
-✅ Fully answered on call.
+✅ Fully answered (Notion — updated priority order).
 
-"Number one audience is infrastructure partners" — specifically ISPs that need backhaul connectivity and want to scale without upfront data costs. Investors are secondary — not a dedicated page, but should feel the ambition through the whole site. End users are tertiary and future.
-
----
-
-**2. What are investors most skeptical about and most excited about (Series A)?**
-
-✅ Fully answered on call.
-
-**Excited by:**
-- Growth velocity and scalability
-- Fastest internet in Africa claim
-- 50,000 users by end of 2026 = fastest-growing telco ever
-- Lean model: sign one ISP → absorb 2,000 users instantly
-- Blockchain/global collaboration investor base who believe in borderless tech
-
-**Skeptical about:**
-- Africa = perceived high risk
-- "Is this real innovation or just telco infrastructure?"
-- Adoption risk / whether it actually scales across countries
-- Fear that Share needs to build all infrastructure itself (→ counter: they're the financial/coordination layer, not the builder)
-- Market limited to Kenya only (→ counter: multi-country subsea cables, Uganda license imminent)
+1. **B2B Partners** (ISPs benefitting from unlimited backhaul with no commits)
+2. **Infrastructure partners** (big telcos and utility providers with underutilized infrastructure)
+3. **Investors** — not directly via CTA, but through the notion that Share is an infrastructure player acting as backbone + financial layer
+4. **End users**
 
 ---
 
-**3. What's the biggest ISP hesitation before joining? What gets them over the line?**
+**2. What are investors most skeptical/excited about?**
 
-✅ Fully answered on call.
+✅ Fully answered (call + Notion).
 
-1. **Brand awareness** — "One of the biggest things slowing us down is actually brand awareness." ISPs don't know Share exists. This is why the website matters.
-2. **Fear of disruption** — ISPs running stable businesses worth millions don't want to overhaul them. Stripe analogy: "If Stripe said you need to build a new website, everyone would say no." Share must feel like an add-on, not a replacement.
+**Excited by:** Growth velocity and scalability. 50,000 users by end of 2026 = fastest-growing telco ever. Lean model: sign one ISP -> absorb 2,000 users instantly. Blockchain/global collaboration investor base.
 
-What gets them over the line: Plug-and-play positioning. "You can get so much of Share by doing very little." Seamless integration, minimal lift compared to connecting to a traditional provider (civil works, fiber deployment, etc.).
+**Skeptical about:** Africa = perceived high risk. "Is this real innovation or just telco infrastructure?" Adoption risk / cross-country scaling. Fear Share needs to build all infrastructure (counter: coordination layer). Market limited to Kenya (counter: multi-country subsea cables, Uganda license imminent).
 
 ---
 
-**4. The D2C layer is "coming soon" — how real is the timeline? Placeholder or full experience?**
+**3. What's the biggest ISP hesitation?**
 
-❓ Unknown. The brief lists it as future. The current Networks page has speed packages (15Mbps for 1,300 ksh, 50Mbps for 4,000 ksh) and a "Find a Provider" map listed as coming soon. The call didn't address D2C timeline at all. Must ask — this determines whether we design a full "For Users" page or just a teaser/waitlist.
+✅ Fully answered (call + Notion).
+
+- Brand awareness is the biggest issue. ISPs don't know Share exists. TRUST is massive — new model, need to convey reliability.
+- Share needs to be viewed as a trusted partner.
+- ISPs running stable businesses don't want to overhaul them. Share must feel like an add-on, not a replacement. Ease of onboarding and integration is ESSENTIAL.
 
 ---
 
 ## COMPETITIVE LANDSCAPE
 
-**1. Who are the closest competitors and what are they doing with their digital presence?**
+**1. Who are the closest competitors?**
 
-✅ Answered on call.
+✅ Answered (call + Notion).
 
-- **Biggest competitors:** Large telcos like **Safaricom** (Kenya) that choose not to collaborate. They have the infrastructure and could theoretically do what Share does, but won't.
-- **Not direct competitors but structural parallels:** Google Cloud, AWS, Azure — they do private versions of the same interconnection model, only for themselves.
-- **No direct competitor** in African telecom is doing Share's exact model (marketplace + no-commit + financial layer combined).
-- Digital presence context (not directly discussed): Safaricom's site is corporate, carrier-grade, not innovative. That's the gap Share fills visually and narratively.
+- Largest telecoms that choose not to collaborate (Safaricom).
+- Google Cloud, AWS, Azure, Meta — private versions of the same interconnection model, only for themselves. Google Cloud infrastructure page reference: "this is what Share is doing, but for Africa to the World."
 
 ---
 
-**2. How do you want Share to feel compared to other African connectivity players?**
+**2. Any company outside Africa offering similar services?**
 
-⚠️ Partial. From the brief and call, they clearly want to feel more like a **global tech company that happens to be in Africa** rather than a regional telco. "Blend between a modern tech platform... and an infrastructure company with real, tangible assets." The references (Cloudflare, Apple, Starlink) all lean tech-forward / premium / confident. Not explicitly stated in terms of human vs. tech vs. institutional balance — worth asking directly.
+✅ Answered (call + Notion).
 
----
-
-**3. Any company outside your industry whose brand you admire?**
-
-⚠️ Partial. The brief lists: terminal.industries, Stripe, Cloudflare, Apple, Starlink. Jose cited **Google Cloud's infrastructure website** on the call. These are the confirmed references. No other companies were named. The question is worth keeping in the async send to get more specificity on each.
+- **MASMOVIL** (Spain) — uses Orange's infrastructure for rebranded packages. Partial analog, but different: Share doesn't connect end-users directly, operates B2B2C.
+- **Stripe** — for the financial middleware/add-on model. Two things provided: backbone + financial layer. Seamless, reliable.
+- **Google/AWS/Azure** — similar infrastructure interconnection, but only for themselves. Share is "democratizing" this.
 
 ---
 
-**4. Any company outside Africa offering similar services?**
+**3. How do you want Share to feel compared to other players?**
 
-✅ Answered on call.
+✅ Answered (Notion).
 
-- **MVNOs** like **MasMovil in Spain** — uses Orange's infrastructure to offer rebranded internet packages. Partial analog.
-- **Energy sector peer-to-peer grids** — companies that buy/sell excess solar energy back to the grid. Best business model analogy.
-- **Stripe** — for the financial middleware / add-on model.
-- **Google/AWS/Azure** — do the exact infrastructure interconnection model, but only for themselves. Share is "democratizing" this.
-- In telecom specifically: "As a model, yes, but in a very different industry. In our industry, no." Luis believes their exact combination (marketplace + no-commit + revenue-share financial layer) is unique in telecom.
+Definitely **more tech-forward**. Existing institutional websites are outdated and antiquated. Share has a position to showcase speed and reliability. More of an **enabler** to all ISPs — "we only make money if they make money and we only grow if they grow."
 
 ---
 
-## STORY & CONTENT
+## COMMUNICATION & REACHING ISPs
 
-**1. What's the narrative arc for the homepage scroll?**
+**1. Current outreach strategy?**
 
-⚠️ Inferred from call, not stated as a scroll arc. Based on everything Luis and Jose said, the intended arc is:
-
-1. **Who we are** — the big abstract vision (coordination marketplace, enablement, Africa scale). This is the wow.
-2. **What we do** — the physical infrastructure (network, cables, fiber, data centers).
-3. **How it works** — the product for ISPs (plug in, no upfront fees, financial layer).
-4. **Where we're going** — pan-African ambition, financial services, vision beyond Kenya.
-5. **Join us** — CTA for partners.
-
-Luis said explicitly: "the homepage is where this creativeness we would like to really come from you guys" — they want VKZ to propose the arc. They haven't scripted a specific narrative. VKZ should come with a draft arc and ask them to react to it.
+✅ Answered (Notion). 40% cold outreach, 20% referrals, 20% events, 20% inbound.
 
 ---
 
-**2. Are the infrastructure numbers confirmed? (7 cables, 400+ km fiber, 8M+ people, 7 micro DCs)**
+**2. When ISPs land on the website, what happens? Do they understand within 10-15 seconds?**
 
-❓ Not confirmed. These numbers are from the brief PDF. The call didn't address them. The brief internally flags them as needing confirmation from Share. Hard must-ask before any copy is finalized.
+✅ Answered (Notion).
 
----
+Within 10-15 seconds they should know Share is a backbone provider building a shared network across Africa. Even without knowing exact value props, they should understand Share isn't competing but enhancing their market -> feeling of wanting to collaborate.
 
-**3. ISP partner testimonials or case studies available?**
-
-❓ Unknown. Not raised on the call. Given that brand awareness is identified as their biggest challenge, it's possible they have some early partners willing to speak. Must ask.
+They quickly understand "unlimited backhaul with no commits" but take longer to understand charging model and how to actually connect. Common reaction: "What's the catch? It can't be just simple connection like I do now." Answer: it is, plus a digital API connection with their BSS/OSS.
 
 ---
 
-**4. Any content ready? (copy, bios, partner logos, investor logos, press)**
+**3. What objections do ISPs raise most often?**
 
-⚠️ Partial. On the call: Luis confirmed they have **written documentation** (product explainers) and **visual documentation** (dashboards, Mapbox network map screenshots) to share, being sent by end of week. Website-specific content — team bios, partner/investor logos, press mentions — not confirmed as ready. High likelihood it needs to be produced alongside design. Worth asking to surface any quick wins.
+✅ Answered (Notion).
 
----
-
-## 3D & IMMERSIVE DIRECTION
-
-**1. Abstract/atmospheric vs. literal/physical 3D? Or both?**
-
-⚠️ Partial, lean toward physical. Jose demoed the live Mapbox network map showing actual cables, data centers, and fiber lines — and was clearly excited about it as a visual hook. The brief calls for "real, tangible assets" alongside tech-forward feel. Google Cloud's infrastructure page (cited as reference) leads with physical infrastructure visualization, not abstraction. Signal leans physical/literal for the network visualization, with abstract/atmospheric perhaps for hero or background elements. Not confirmed as a conscious choice — ask them to react to both directions with references.
+1. Current website: they don't know exactly what Share does from just the website. Objections come during sales cycle. #1 is **trust** — new way of doing business that pushes them back.
+2. Share sounds too much like a partnership — fear of relinquishing control. Counter: Share is a product/offering.
+3. Integration fear: "Do I have to change how my company operates entirely?" Counter: Product is now super slim — only billing/payments tracking and internet package creation.
 
 ---
 
-**2. How important is it that 3D elements represent real Share infrastructure vs. conceptual?**
+**4. Beyond the website, what does marketing look like?**
 
-⚠️ Partial, lean toward real. Omar said: "screenshot of the map with no labels works as a visual hook for ISPs — density speaks for itself." The Mapbox map is already built with real network data. For the ISP audience (primary), real infrastructure data has credibility. For investors, scale needs to feel real. The 3D doesn't need to be photorealistic, but it should be accurate to their actual network — not generic "data particles." Confirm this with them.
+✅ Answered (Notion). Currently minimal — some LinkedIn, events. PR agency newly engaged for visibility, marketing, advertisement, content. Want to funnel people through the new website. Word of mouth has been the biggest factor — a sizeable percentage of Kenya's ISP market already aware of Share.
 
 ---
 
-**3. Did anything specific about Lightweight catch your attention?**
+**5. How does the website fit into the sales motion?**
 
-❓ Not addressed anywhere. "Lightweight" is not mentioned in the transcript or any document. Likely a reference website or studio mentioned in the original brief PDF not captured in research documents. This question must be sent as-is — we can't answer it.
+✅ Answered (Notion).
+
+Best case: both door-opener AND validator. Currently neither (maybe slight door-opener). Jose: "Mostly a validator given they arrive after hearing about us." For D2C side, door-opener is good for funneling demand to partners.
+
+---
+
+## BRAND & IDENTITY
+
+**1. What feels right about the current brand, and what no longer fits?**
+
+✅ Answered (Notion).
+
+Lots feels right. More than "no longer fits" — there are elements missing. Biggest missing elements: infrastructure and being that reliable player. Current brand is very human-centric/D2C-focused. Want to elevate toward tech, "super high level technology" feeling that simplifies complex processes. Colors can play around within current general spectrum guidelines.
+
+---
+
+**2. Motion language and data visualization — aligned?**
+
+✅ Confirmed. Colors and palette can be played with, staying within current general spectrum of blue, black, white, etc.
+
+---
+
+**3. Ribbed glass element — recurring or selective?**
+
+✅ Answered. "We'd be ok with these directions — relying on VKZ for design recommendations to ensure it's best suited for our end-goals."
+
+---
+
+**4. What draws you to each reference site?**
+
+✅ Answered (Notion — detailed breakdown).
+
+- **terminal.industries** — Storytelling and visuals. They make logistics/supply techy and exciting. Share wants that "cool" feeling toward IT/connectivity.
+- **Stripe, Cloudflare** — Not visually/website. As companies: globally renowned enablers, simple, data-driven, "infrastructure reliability." Onboarding Stripe is EASY.
+- **Starlink** — Very tech-forward (satellites into space). DTC direction: SUPER FAST INTERNET. Digestible website.
+- **Apple** — Physical product screams innovation and technological advancement accessible to all. NOT a website visual reference (it's a shopping place).
+- **Helium** (helium.com) — Simple, to the point. People understand what and who they are. Clear message to user.
+- **toptier.relats.com** — New reference. Design they really liked.
+
+---
+
+## CONTENT
+
+**1. Any content ready?**
+
+✅ Answered (Notion). Partner & investor logos available. Rest to be produced alongside design. No team bios — "we want to use 'Share' as a single pseudonym."
+
+---
+
+**2. Photos of actual infrastructure?**
+
+✅ Answered (Notion). Can share photos of data centers, racks with routers/servers, fiber cables, etc. Will send pictures throughout the week — from fiber to hardware devices.
+
+---
+
+**3. Infrastructure numbers confirmed?**
+
+✅ CONFIRMED. Usable publicly as of April 1, 2026: 7 subsea cables, 500+ km fiber, 10 data centers, 8M+ people in area covered, 12 telco infrastructure providers.
+
+---
+
+**4. ISP partner testimonials/case studies?**
+
+✅ Answered (Notion). "We could totally get these for you from a couple of them."
+
+---
+
+## STORY, 3D & IMMERSIVE DIRECTION
+
+**1. Main message / homepage narrative arc?**
+
+✅ Fully answered (Notion — detailed narrative).
+
+1. Africa is not infrastructure-poor. Subsea cables landed, towers up, fiber everywhere. Capacity exists. But none of it speaks to each other — decades of fragmented investment produced infrastructure running in parallel, not together.
+2. Result: not a bandwidth shortage, but a coordination failure at scale. Abundance without coherence. 600M unconnected because there's no unifying layer.
+3. Share is that coordination layer. Not a new network on top, but the connective tissue — physically and financially — that turns fragmented infrastructure into one functioning ecosystem.
+4. From subsea cables through data centers, towers, fiber, antennas, all the way to the user's home — Share enables any participant to deliver bandwidth more economically.
+5. ISPs reaching further, scaling without capital constraints. Big providers increasing infrastructure utility. All through a single financial ecosystem treating bandwidth as commodity.
+
+---
+
+**2. What's the one thing you want people to remember?**
+
+✅ Answered (Notion — multiple perspectives).
+
+- "WOW, Share is here, and Share is for everyone, I want to participate in the Share Ecosystem." **Participation and Enablement.**
+- Bringing Africa's value forward and outward to the world. So much value hidden within the continent — Share unlocks Africa for the world.
+- "Share is building dope shit and the most advanced internet network in the world from Africa."
+- "Internet is COOL... how do we speak through light beams... WOW." Companies should want to join because it's cool.
+- This is a technology that outlasts time — internet is fundamental to the future of technology.
+
+---
+
+**3. Abstract vs. literal 3D?**
+
+✅ Answered (Notion — detailed creative brief).
+
+More literal and physical. Abstract only for transitions. Recognizable elements always present (e.g., point-cloud solutions).
+
+Central concept: **data packet moving through Share network** with fiber optic cable as central visual element. Key insight: data packet = light moving at speed of light through glass mediums.
+
+Journey stops: Fiber backbone (primary, dynamic) -> Data center/router (routing, intelligence) -> Cell tower/last mile (wired to wireless) -> Home/living room (tangible). Then zoom out: millions of packets, density, Africa coverage map, subsea cables, global connectivity.
+
+---
+
+**4. Real infrastructure vs. conceptual 3D?**
+
+✅ Answered (Notion). Real representation more. Homepage can be more conceptual visualization of connectivity/scale as long as concepts and market are clear. ISP partners page: more concrete coverage map (possibly no 3D, defer to VKZ).
+
+---
+
+**5. Platform showcase: conceptual or actual UI?**
+
+✅ Answered (Notion). Mix — they have UI designs but not all features (e.g., financial tooling beyond wallet). Can provide existing UI screens/guidelines for VKZ to elevate. Homepage: conceptual/allusion. ISP page: more focused on product.
+
+---
+
+## WEBSITE GOAL
+
+**1. Primary goal?**
+
+✅ Answered (Notion). Success = regardless of who sees the website (ISPs, infrastructure providers, investors), they want to reach out / complete a form / work with Share. "We're an enabler that's growing, that's already LIVE and connecting networks. The feeling must be that they want to participate in our ecosystem."
+
+---
+
+**2. Secondary goal?**
+
+✅ Answered (Notion). Showcase this isn't a regular seed-stage startup. Massive infrastructure already trusts the model. Data centers, hundreds of KMs of fiber — a shared network building the future of physical and digital infrastructure in Africa. "We're building the most advanced network in Africa — a network stack/design people in the west wish they could have." Even governments should understand that Share improves their market.
 
 ---
 
 ## TECHNICAL
 
-**1. React/Next.js + Sanity CMS — comfortable?**
+**1. Google Analytics?**
 
-❓ Not addressed. Luis said technical questions would be answered offline/async. No objections were raised when the stack was mentioned. Send in the async doc.
+✅ Will share. Minimal effort on analytics so far. Mostly mobile. Visits per month very dependent on ads, spiking soon.
 
-**2. Vercel for hosting — does it work?**
+---
 
-❓ Same — no objections, not confirmed. Send async.
+**2. Hardware/connectivity limitations in African market?**
 
-**3. Third-party integrations needed?**
+✅ Answered. iPhone/Mac are NOT common. Android is king for mobile. Connectivity isn't as seamless as in western countries. Internet speeds slower. Website must feel lean and fast on loading.
 
-⚠️ Partial. Current site has **Facebook Pixel** (ID: 1557573675632258). All lead flow goes to **app.share.inc** — they already have a web app/portal. **Mapbox** is confirmed for the network map. CRM, email marketing, chatbot, and demo booking tools not mentioned. Send in async doc — especially important to know if they have a CRM they're already using.
+---
 
-**4. "Get Started" flow — where do leads currently go?**
+**3. React/Next.js + Sanity CMS?**
 
-⚠️ Partial. Currently: all CTAs point to **app.share.inc**. The Networks page sign-up form collects name, email, country, phone, address, speed preference, property type. What happens after submission (email sequence, CRM, manual follow-up?) is not documented. Must ask.
+✅ Confirmed. Their webapp is built on React/Next.js. Would love to understand Sanity CMS experience better.
 
-**5. Coverage map / "Find a Provider" — existing data source or build from scratch?**
+---
 
-⚠️ Partial. The Mapbox-based network map **exists and is already built with live data** (demoed on call). It shows fiber partner lines, data centers, telecom towers. The question is whether this internal map can be adapted for a public-facing "Find a Provider" feature, or if the data structure is different. Ask: can the Mapbox layer you already have power the public coverage map, or is that a separate data source?
+**4. Vercel for hosting?**
 
-**6. Performance benchmarks beyond sub-3s?**
+✅ Confirmed. Already on Vercel for their platform.
 
-❓ Unknown. Send async.
+---
 
-**7. Who handles site post-launch?**
+**5. Third-party integrations?**
 
-❓ Unknown. All three founders (Luis, Jose, Omar) appear to be hands-on — they manage Slack, attended the call, demoed their own tools. Likely one of them will be the CMS user. Confirm.
+✅ Answered. Minimal for now — buttons to existing surveys/forms, Calendly integration for booking calls on some CTAs, links to other apps they've built.
+
+---
+
+**6. Where do leads go?**
+
+✅ Answered. Currently have a separate survey for ISPs. ISPs click website -> survey and/or schedule a call. Open to discussing a simple form on the website, comfortable with it living in their app.
+
+---
+
+**7. Coverage map data source?**
+
+✅ Answered. API exists (webapp has this info). However, for the website may benefit from a new globe design catered to global audience with less confidential information. To be discussed with Miroslav.
+
+---
+
+**8. English only?**
+
+✅ English only for now.
 
 ---
 
 ## PRACTICAL / PROCESS
 
-**1. Who from your team will be involved in feedback and approvals?**
+**1. Hard deadlines?**
 
-⚠️ Inferred. All three (Luis, Jose, Omar) were on the call and appear to be the entire core team. Likely all three are in the loop, but Luis as CEO probably has final say. Confirm explicitly to avoid approval bottlenecks.
-
-**2. Any hard deadlines?**
-
-⚠️ Partial. Nothing explicitly stated on the call. However:
-- Uganda license ~2 months away → wanting to launch there quickly → site needs to not feel Kenya-specific
-- Series A is actively being approached → investor-facing site is time-sensitive
-- Brief says 2–3 months timeline from engagement
-
-Strong implicit urgency — but no specific date, event, or investor meeting deadline was stated. Must ask. Important for scoping and timeline.
-
-**3. Legal or compliance considerations?**
-
-❓ Unknown. NDAs are being signed (confirmed on call). Legal constraints on publishing metrics (especially unverified ones like 8M+ coverage), naming infrastructure partners (Meta, Google Cloud), or presenting financial information on the site — none of this was discussed. Must ask, especially given the financial services angle.
-
-**4. Contract and deposit process?**
-
-⚠️ Acknowledged, not confirmed. Luis acknowledged it without objection on the call: "once we align on direction and budget, we'd move to signing a contract and collecting a deposit." No pushback. Standard process — no obstacles flagged, but needs formal sign-off once budget is aligned.
+✅ Answered. The sooner the better. Speed is key without compromising quality. May starts being big PR moments — website would be a perfect add-on.
 
 ---
 
-## Summary: What Still Needs to Go to Share
+**2. Legal/compliance?**
 
-**Factual gaps — block copy and design:**
-- Verify all infrastructure numbers (7 cables, 400+ km, 8M+, 7 micro DCs)
-- Number of active ISP partners
-- D2C timeline — placeholder or real experience
-- Hard deadlines tied to investors, events, or launches
-- Legal/compliance constraints on metrics, partner names, financial info
+✅ Answered. Flexible considerations but need to ensure partnerships and metrics are properly presented. Updated numbers confirmed. Language compliance: will walk hand-in-hand with VKZ.
 
-**Creative gaps — needed before concept phase:**
-- Narrative arc for homepage scroll (suggest VKZ drafts one and asks them to react)
-- What specifically draws them to each reference site (terminal.industries, Stripe, Cloudflare, Apple, Starlink)
-- What feels dated about the current brand in their own words
-- "Lightweight" reference — what is it and what did they like about it
-- Abstract vs. physical 3D direction — ask them to react to both with visual examples
+---
 
-**Operational gaps — needed before scope is locked:**
-- Tech stack approval (Next.js, Sanity, Vercel)
-- Post-submission lead flow (what happens after someone fills in the form)
-- Coverage map data source — can the existing Mapbox layer power the public feature?
-- Who manages site post-launch / day-to-day CMS
-- Third-party integrations / CRM in use
+**3. Contract and deposit?**
+
+✅ "Good with us."
+
+---
+
+**4. Site structure?**
+
+✅ Share believes site can be slightly leaner than initially proposed — 3-4 pages. Looking forward to VKZ recommendation based on all responses.
+
+---
+
+## Additional Context from Share
+
+**Homepage audience:** Works for everyone — B2B, infrastructure providers, D2C, investors, governments. Tone: less like a pitch, more like a statement of intent each audience can see themselves inside. A definition of what Share is and does.
+
+**Share's proposed 3-page structure:**
+- **Page 1 — Home:** Ecosystem vision. Speaks to everyone. Scale, mission, "what is Share, why Africa." Most immersive.
+- **Page 2 — For ISP Partners:** Commercial/operational case. Backhaul, platform tools, payment gateway. Full ecosystem membership.
+- **Page 3 — For End Users:** Demand-side. Find Share-connected ISPs. What being on the Share network means for them.

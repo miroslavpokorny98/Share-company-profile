@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction 4 — The Light Journey</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --purple-600: #8b5cf6;
+            --purple-400: #a78bfa;
+            --purple-300: #c4b5fd;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --green-500: #10b981;
+            --amber-500: #f59e0b;
+            --amber-400: #fbbf24;
+        }
+
+        html, body {
+            background: #04060c;
+            color: #e0e4ec;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* -- Scroll spacer -- */
+        .scroll-spacer {
+            height: 600vh;
+            position: relative;
+        }
+
+        /* -- Fixed canvas -- */
+        .scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .scene svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* -- Text overlays -- */
+        .text-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 0 80px 80px;
+        }
+
+        .beat-text {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            max-width: 560px;
+            opacity: 0;
+        }
+
+        .beat-text .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--purple-400);
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+
+        .beat-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .beat-text p {
+            font-size: 17px;
+            line-height: 1.65;
+            color: rgba(224, 228, 236, 0.7);
+            max-width: 480px;
+        }
+
+        /* -- Location tag -- */
+        .location-tag {
+            position: absolute;
+            top: 60px;
+            right: 80px;
+            opacity: 0;
+            text-align: right;
+        }
+
+        .location-tag .place {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--purple-300);
+            opacity: 0.6;
+        }
+
+        /* -- Progress bar -- */
+        .progress-track {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: background 0.4s, transform 0.4s;
+        }
+
+        .progress-dot.active {
+            background: var(--purple-400);
+            transform: scale(1.4);
+        }
+
+        /* -- Gradient overlays -- */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center, transparent 40%, #04060c 100%),
+                linear-gradient(to top, #04060c 0%, transparent 30%);
+        }
+
+        /* -- Intro overlay -- */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #04060c;
+            gap: 16px;
+        }
+
+        .intro-overlay h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--purple-400);
+            font-weight: 500;
+        }
+
+        .intro-overlay .subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 1px;
+            max-width: 420px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .intro-overlay .scroll-hint {
+            position: absolute;
+            bottom: 48px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(4px); }
+        }
+
+        /* -- CTA at end -- */
+        .cta-section {
+            position: relative;
+            z-index: 15;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cta-section h2 {
+            font-size: 44px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            text-align: center;
+            max-width: 700px;
+            line-height: 1.2;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .cta-button {
+            margin-top: 16px;
+            padding: 16px 40px;
+            border: 1px solid var(--purple-600);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--purple-400);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cta-button:hover {
+            background: var(--purple-600);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Intro -->
+<div class="intro-overlay" id="intro">
+    <h1>Direction 4 — The Light Journey</h1>
+    <div class="subtitle">Follow a data packet from ocean floor to living room — but the story is human.</div>
+    <div class="scroll-hint">Scroll to begin</div>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-track" id="progress">
+    <div class="progress-dot active" data-beat="0"></div>
+    <div class="progress-dot" data-beat="1"></div>
+    <div class="progress-dot" data-beat="2"></div>
+    <div class="progress-dot" data-beat="3"></div>
+    <div class="progress-dot" data-beat="4"></div>
+</div>
+
+<!-- Fixed scene -->
+<div class="scene" id="scene">
+    <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <!-- Gradients -->
+            <radialGradient id="glow-purple" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.9"/>
+                <stop offset="50%" stop-color="#8b5cf6" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-amber" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glow-green" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="water-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0c1a3a" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#04060c" stop-opacity="0.8"/>
+            </linearGradient>
+            <linearGradient id="cable-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#3b6aaf"/>
+                <stop offset="50%" stop-color="#2d4a7a"/>
+                <stop offset="100%" stop-color="#3b6aaf"/>
+            </linearGradient>
+            <linearGradient id="fiber-pulse-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0"/>
+                <stop offset="40%" stop-color="#a78bfa" stop-opacity="0.8"/>
+                <stop offset="50%" stop-color="#c4b5fd" stop-opacity="1"/>
+                <stop offset="60%" stop-color="#a78bfa" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+            </linearGradient>
+
+            <!-- Filters -->
+            <filter id="blur-sm">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+            </filter>
+            <filter id="blur-md">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+            </filter>
+            <filter id="blur-lg">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="14"/>
+            </filter>
+            <filter id="blur-xl">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="25"/>
+            </filter>
+
+            <!-- Clip paths -->
+            <clipPath id="scene-clip">
+                <rect x="0" y="0" width="1920" height="1080"/>
+            </clipPath>
+        </defs>
+
+        <!-- ============================================ -->
+        <!-- BEAT 1: THE ORIGIN — Subsea Cable           -->
+        <!-- ============================================ -->
+        <g id="beat1" opacity="0" clip-path="url(#scene-clip)">
+            <!-- Deep water background texture — wavy horizontal lines -->
+            <g id="water-texture">
+                <path d="M0,180 Q480,160 960,185 Q1440,210 1920,175" stroke="#1e4a7a" stroke-width="0.8" fill="none" opacity="0.4"/>
+                <path d="M0,260 Q480,240 960,265 Q1440,290 1920,250" stroke="#1e4070" stroke-width="0.6" fill="none" opacity="0.35"/>
+                <path d="M0,340 Q480,325 960,350 Q1440,370 1920,335" stroke="#1e4a7a" stroke-width="0.7" fill="none" opacity="0.3"/>
+                <path d="M0,420 Q480,400 960,425 Q1440,445 1920,410" stroke="#1a3860" stroke-width="0.5" fill="none" opacity="0.25"/>
+                <path d="M0,500 Q480,485 960,505 Q1440,525 1920,495" stroke="#1e4a7a" stroke-width="0.6" fill="none" opacity="0.2"/>
+                <path d="M0,580 Q480,560 960,585 Q1440,605 1920,575" stroke="#1e4070" stroke-width="0.5" fill="none" opacity="0.18"/>
+                <path d="M0,660 Q480,645 960,665 Q1440,680 1920,655" stroke="#1e4a7a" stroke-width="0.4" fill="none" opacity="0.15"/>
+            </g>
+
+            <!-- Particle dust in water -->
+            <g id="water-particles">
+                <circle cx="200" cy="300" r="1" fill="#3b82f6" opacity="0.3"/>
+                <circle cx="500" cy="450" r="1.2" fill="#3b82f6" opacity="0.25"/>
+                <circle cx="800" cy="250" r="0.8" fill="#60a5fa" opacity="0.3"/>
+                <circle cx="1100" cy="380" r="1" fill="#3b82f6" opacity="0.25"/>
+                <circle cx="1400" cy="300" r="1.3" fill="#60a5fa" opacity="0.08"/>
+                <circle cx="1700" cy="420" r="0.9" fill="#3b82f6" opacity="0.1"/>
+                <circle cx="350" cy="550" r="1.1" fill="#60a5fa" opacity="0.07"/>
+                <circle cx="650" cy="600" r="0.7" fill="#3b82f6" opacity="0.09"/>
+                <circle cx="1250" cy="520" r="1" fill="#60a5fa" opacity="0.08"/>
+                <circle cx="1600" cy="580" r="0.8" fill="#3b82f6" opacity="0.06"/>
+            </g>
+
+            <!-- Ocean floor -->
+            <path d="M0,850 Q200,840 400,855 Q600,870 800,845 Q1000,830 1200,850 Q1400,865 1600,840 Q1800,830 1920,845 L1920,1080 L0,1080 Z"
+                  fill="#060d1a" opacity="0.9"/>
+            <path d="M0,860 Q200,850 400,865 Q600,878 800,858 Q1000,843 1200,860 Q1400,875 1600,852 Q1800,842 1920,855"
+                  stroke="#1e4a7a" stroke-width="1" fill="none" opacity="0.4"/>
+
+            <!-- The subsea cable — thick, running along bottom -->
+            <path id="subsea-cable" d="M-100,780 Q200,790 480,775 Q760,760 960,770 Q1200,780 1440,765 Q1680,755 2020,770"
+                  stroke="#2d5580" stroke-width="12" fill="none" stroke-linecap="round"/>
+            <path d="M-100,780 Q200,790 480,775 Q760,760 960,770 Q1200,780 1440,765 Q1680,755 2020,770"
+                  stroke="#243d5c" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <!-- Cable texture ridges -->
+            <path d="M-100,780 Q200,790 480,775 Q760,760 960,770 Q1200,780 1440,765 Q1680,755 2020,770"
+                  stroke="#4a7aae" stroke-width="2" fill="none" stroke-dasharray="3,15" opacity="0.3"/>
+
+            <!-- The data pulse — the main character -->
+            <circle id="pulse-main" cx="-60" cy="780" r="8" fill="#c4b5fd" opacity="0"/>
+            <circle id="pulse-glow-lg" cx="-60" cy="780" r="50" fill="url(#glow-purple)" filter="url(#blur-lg)" opacity="0"/>
+            <circle id="pulse-glow-md" cx="-60" cy="780" r="25" fill="url(#glow-purple)" filter="url(#blur-md)" opacity="0"/>
+            <!-- Inner bright core -->
+            <circle id="pulse-core" cx="-60" cy="780" r="3" fill="#fff" opacity="0"/>
+
+            <!-- Cable illumination trail (follows pulse) -->
+            <circle id="cable-illumination" cx="-60" cy="780" r="120" fill="url(#glow-purple)" filter="url(#blur-xl)" opacity="0"/>
+
+            <!-- Location text in SVG -->
+            <text id="location-label" x="1920" y="100" text-anchor="end" fill="#60a5fa" font-family="'JetBrains Mono', monospace"
+                  font-size="11" letter-spacing="3" opacity="0">INDIAN OCEAN, OFF THE COAST OF MOMBASA</text>
+        </g>
+
+        <!-- ============================================ -->
+        <!-- BEAT 2: THE NODE — Data Center               -->
+        <!-- ============================================ -->
+        <g id="beat2" opacity="0">
+            <!-- Floor / ceiling lines -->
+            <line x1="0" y1="180" x2="1920" y2="180" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+            <line x1="0" y1="900" x2="1920" y2="900" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+
+            <!-- Server rack 1 -->
+            <g id="rack1" transform="translate(220, 200)">
+                <rect x="0" y="0" width="90" height="680" fill="none" stroke="#3b6090" stroke-width="1.5" rx="3"/>
+                <rect x="8" y="20" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="52" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="84" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="116" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="148" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="180" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="212" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="244" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="276" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="308" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="340" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="372" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="404" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="436" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="468" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="500" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="532" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="564" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="596" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="628" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <!-- LEDs -->
+                <circle class="led" cx="72" cy="31" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="63" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="95" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="127" r="2" fill="#10b981" opacity="0.5"/>
+                <circle class="led" cx="72" cy="159" r="2" fill="#10b981" opacity="0.7"/>
+                <circle class="led" cx="72" cy="191" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="223" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="255" r="2" fill="#10b981" opacity="0.4"/>
+                <circle class="led" cx="72" cy="287" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="319" r="2" fill="#10b981" opacity="0.7"/>
+                <circle class="led" cx="72" cy="351" r="2" fill="#10b981" opacity="0.5"/>
+                <circle class="led" cx="72" cy="383" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="415" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="447" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="479" r="2" fill="#10b981" opacity="0.7"/>
+                <circle class="led" cx="72" cy="511" r="2" fill="#10b981" opacity="0.4"/>
+                <circle class="led" cx="72" cy="543" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="575" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="607" r="2" fill="#10b981" opacity="0.5"/>
+                <circle class="led" cx="72" cy="639" r="2" fill="#10b981" opacity="0.8"/>
+            </g>
+
+            <!-- Server rack 2 -->
+            <g id="rack2" transform="translate(460, 200)">
+                <rect x="0" y="0" width="90" height="680" fill="none" stroke="#3b6090" stroke-width="1.5" rx="3"/>
+                <rect x="8" y="20" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="52" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="84" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="116" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="148" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="180" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="212" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="244" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="276" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="308" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="340" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="372" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="404" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="436" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="468" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="500" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="532" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="564" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="596" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="628" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <circle class="led" cx="72" cy="31" r="2" fill="#10b981" opacity="0.7"/>
+                <circle class="led" cx="72" cy="63" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="95" r="2" fill="#10b981" opacity="0.5"/>
+                <circle class="led" cx="72" cy="127" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="159" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="191" r="2" fill="#10b981" opacity="0.7"/>
+                <circle class="led" cx="72" cy="223" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="255" r="2" fill="#10b981" opacity="0.5"/>
+                <circle class="led" cx="72" cy="287" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="319" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="351" r="2" fill="#10b981" opacity="0.7"/>
+                <circle class="led" cx="72" cy="383" r="2" fill="#10b981" opacity="0.5"/>
+                <circle class="led" cx="72" cy="415" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="447" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="479" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="511" r="2" fill="#10b981" opacity="0.7"/>
+                <circle class="led" cx="72" cy="543" r="2" fill="#10b981" opacity="0.5"/>
+                <circle class="led" cx="72" cy="575" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="607" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="639" r="2" fill="#10b981" opacity="0.7"/>
+            </g>
+
+            <!-- Server rack 3 -->
+            <g id="rack3" transform="translate(700, 200)">
+                <rect x="0" y="0" width="90" height="680" fill="none" stroke="#3b6090" stroke-width="1.5" rx="3"/>
+                <rect x="8" y="20" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="52" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="84" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="116" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="148" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="180" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="212" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="244" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="276" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <rect x="8" y="308" width="74" height="22" fill="#0a1525" stroke="#162840" stroke-width="0.5" rx="1"/>
+                <circle class="led" cx="72" cy="31" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="63" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="95" r="2" fill="#10b981" opacity="0.7"/>
+                <circle class="led" cx="72" cy="127" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="159" r="2" fill="#10b981" opacity="0.5"/>
+                <circle class="led" cx="72" cy="191" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="223" r="2" fill="#10b981" opacity="0.6"/>
+                <circle class="led" cx="72" cy="255" r="2" fill="#10b981" opacity="0.7"/>
+                <circle class="led" cx="72" cy="287" r="2" fill="#10b981" opacity="0.8"/>
+                <circle class="led" cx="72" cy="319" r="2" fill="#10b981" opacity="0.5"/>
+            </g>
+
+            <!-- Horizontal cable connections between racks -->
+            <line x1="310" y1="540" x2="460" y2="540" stroke="#2d5580" stroke-width="3" opacity="0.5"/>
+            <line x1="310" y1="440" x2="460" y2="440" stroke="#2d5580" stroke-width="2" opacity="0.4"/>
+            <line x1="550" y1="540" x2="700" y2="540" stroke="#2d5580" stroke-width="3" opacity="0.5"/>
+            <line x1="550" y1="440" x2="700" y2="440" stroke="#2d5580" stroke-width="2" opacity="0.4"/>
+            <!-- Cable going off to the right (exit) -->
+            <line x1="790" y1="540" x2="1920" y2="540" stroke="#2d5580" stroke-width="3" opacity="0.3"/>
+
+            <!-- Faint dashboard suggestion -->
+            <g id="dashboard" opacity="0.2">
+                <rect x="1050" y="280" width="480" height="300" fill="none" stroke="#3b6090" stroke-width="1" rx="6"/>
+                <text x="1070" y="310" fill="#3b82f6" font-family="'JetBrains Mono', monospace" font-size="10" letter-spacing="2" opacity="0.5">SHARE ROUTING ENGINE</text>
+                <line x1="1070" y1="325" x2="1510" y2="325" stroke="#2d4a78" stroke-width="0.5"/>
+                <!-- Graph lines -->
+                <polyline points="1070,400 1120,380 1170,420 1220,370 1270,390 1320,350 1370,380 1420,340 1470,360 1510,330"
+                          stroke="#8b5cf6" stroke-width="1.5" fill="none" opacity="0.4"/>
+                <polyline points="1070,450 1120,440 1170,460 1220,430 1270,450 1320,420 1370,440 1420,410 1470,430 1510,400"
+                          stroke="#3b82f6" stroke-width="1" fill="none" opacity="0.3"/>
+                <!-- Data rows -->
+                <line x1="1070" y1="490" x2="1200" y2="490" stroke="#3b6090" stroke-width="3" opacity="0.3"/>
+                <line x1="1070" y1="510" x2="1280" y2="510" stroke="#3b6090" stroke-width="3" opacity="0.25"/>
+                <line x1="1070" y1="530" x2="1150" y2="530" stroke="#3b6090" stroke-width="3" opacity="0.2"/>
+                <line x1="1070" y1="550" x2="1230" y2="550" stroke="#3b6090" stroke-width="3" opacity="0.2"/>
+            </g>
+
+            <!-- Transceiver glow points -->
+            <circle class="transceiver" cx="310" cy="540" r="4" fill="#8b5cf6" opacity="0.6"/>
+            <circle class="transceiver" cx="460" cy="540" r="4" fill="#8b5cf6" opacity="0.6"/>
+            <circle class="transceiver" cx="550" cy="540" r="4" fill="#8b5cf6" opacity="0.6"/>
+            <circle class="transceiver" cx="700" cy="540" r="4" fill="#8b5cf6" opacity="0.6"/>
+            <circle class="transceiver" cx="790" cy="540" r="4" fill="#8b5cf6" opacity="0.6"/>
+
+            <!-- Pulse traveling through data center -->
+            <circle id="pulse-dc" cx="0" cy="540" r="7" fill="#c4b5fd" opacity="0"/>
+            <circle id="pulse-dc-glow" cx="0" cy="540" r="40" fill="url(#glow-purple)" filter="url(#blur-md)" opacity="0"/>
+            <circle id="pulse-dc-core" cx="0" cy="540" r="3" fill="#fff" opacity="0"/>
+        </g>
+
+        <!-- ============================================ -->
+        <!-- BEAT 3: THE SPEED — Fiber Backbone           -->
+        <!-- ============================================ -->
+        <g id="beat3" opacity="0">
+            <!-- Multiple fiber strands — horizontal parallel lines -->
+            <g id="fiber-strands">
+                <line x1="-100" y1="340" x2="2020" y2="340" stroke="#2a4060" stroke-width="2.5" opacity="0.5"/>
+                <line x1="-100" y1="400" x2="2020" y2="400" stroke="#2a4060" stroke-width="3" opacity="0.6"/>
+                <line x1="-100" y1="460" x2="2020" y2="460" stroke="#2a4060" stroke-width="2" opacity="0.45"/>
+                <line x1="-100" y1="520" x2="2020" y2="520" stroke="#2a4060" stroke-width="3.5" opacity="0.6"/>
+                <line x1="-100" y1="580" x2="2020" y2="580" stroke="#2a4060" stroke-width="2" opacity="0.45"/>
+                <line x1="-100" y1="640" x2="2020" y2="640" stroke="#2a4060" stroke-width="2.5" opacity="0.5"/>
+                <line x1="-100" y1="700" x2="2020" y2="700" stroke="#2a4060" stroke-width="2" opacity="0.4"/>
+                <line x1="-100" y1="760" x2="2020" y2="760" stroke="#2a4060" stroke-width="1.5" opacity="0.35"/>
+            </g>
+
+            <!-- Speed pulses — main character pulse + secondary pulses -->
+            <!-- Main pulse on strand 4 (y=520) -->
+            <circle id="pulse-fiber-main" cx="-80" cy="520" r="6" fill="#c4b5fd" opacity="0"/>
+            <circle id="pulse-fiber-main-glow" cx="-80" cy="520" r="35" fill="url(#glow-purple)" filter="url(#blur-md)" opacity="0"/>
+            <circle id="pulse-fiber-main-core" cx="-80" cy="520" r="2.5" fill="#fff" opacity="0"/>
+
+            <!-- Speed trail for main pulse -->
+            <line id="speed-trail-main" x1="-80" y1="520" x2="-80" y2="520" stroke="#a78bfa" stroke-width="2" opacity="0" stroke-linecap="round"/>
+
+            <!-- Secondary pulses on other strands -->
+            <circle class="fiber-pulse-secondary" cx="-200" cy="340" r="4" fill="#60a5fa" opacity="0"/>
+            <line class="speed-trail-sec" x1="-200" y1="340" x2="-200" y2="340" stroke="#3b82f6" stroke-width="1.5" opacity="0" stroke-linecap="round"/>
+
+            <circle class="fiber-pulse-secondary" cx="-400" cy="400" r="5" fill="#a78bfa" opacity="0"/>
+            <line class="speed-trail-sec" x1="-400" y1="400" x2="-400" y2="400" stroke="#8b5cf6" stroke-width="1.5" opacity="0" stroke-linecap="round"/>
+
+            <circle class="fiber-pulse-secondary" cx="-150" cy="460" r="3.5" fill="#60a5fa" opacity="0"/>
+            <line class="speed-trail-sec" x1="-150" y1="460" x2="-150" y2="460" stroke="#3b82f6" stroke-width="1.2" opacity="0" stroke-linecap="round"/>
+
+            <circle class="fiber-pulse-secondary" cx="-350" cy="580" r="4.5" fill="#a78bfa" opacity="0"/>
+            <line class="speed-trail-sec" x1="-350" y1="580" x2="-350" y2="580" stroke="#8b5cf6" stroke-width="1.5" opacity="0" stroke-linecap="round"/>
+
+            <circle class="fiber-pulse-secondary" cx="-250" cy="640" r="3" fill="#60a5fa" opacity="0"/>
+            <line class="speed-trail-sec" x1="-250" y1="640" x2="-250" y2="640" stroke="#3b82f6" stroke-width="1" opacity="0" stroke-linecap="round"/>
+
+            <circle class="fiber-pulse-secondary" cx="-500" cy="700" r="4" fill="#a78bfa" opacity="0"/>
+            <line class="speed-trail-sec" x1="-500" y1="700" x2="-500" y2="700" stroke="#8b5cf6" stroke-width="1.2" opacity="0" stroke-linecap="round"/>
+
+            <circle class="fiber-pulse-secondary" cx="-300" cy="760" r="3" fill="#60a5fa" opacity="0"/>
+            <line class="speed-trail-sec" x1="-300" y1="760" x2="-300" y2="760" stroke="#3b82f6" stroke-width="1" opacity="0" stroke-linecap="round"/>
+
+            <!-- Fiber strand illumination (glows when pulse passes) -->
+            <rect id="fiber-illumination" x="-200" y="505" width="200" height="30" fill="url(#fiber-pulse-grad)" filter="url(#blur-sm)" opacity="0" rx="15"/>
+        </g>
+
+        <!-- ============================================ -->
+        <!-- BEAT 4: THE LAST MILE — Cell Tower           -->
+        <!-- ============================================ -->
+        <g id="beat4" opacity="0">
+            <!-- Ground line -->
+            <line x1="0" y1="880" x2="1920" y2="880" stroke="#2d4a78" stroke-width="1" opacity="0.3"/>
+
+            <!-- Cell tower — center -->
+            <g id="cell-tower" transform="translate(960, 0)">
+                <!-- Tower vertical mast -->
+                <line x1="0" y1="200" x2="0" y2="880" stroke="#4a7aae" stroke-width="4"/>
+                <!-- Cross arms at intervals -->
+                <line x1="-80" y1="260" x2="80" y2="260" stroke="#4a7aae" stroke-width="3"/>
+                <line x1="-60" y1="360" x2="60" y2="360" stroke="#4a7aae" stroke-width="2.5"/>
+                <line x1="-45" y1="460" x2="45" y2="460" stroke="#4a7aae" stroke-width="2"/>
+                <!-- Antenna panels -->
+                <rect x="-90" y="240" width="18" height="40" fill="#3b6090" stroke="#4a7aae" stroke-width="1" rx="2"/>
+                <rect x="72" y="240" width="18" height="40" fill="#3b6090" stroke="#4a7aae" stroke-width="1" rx="2"/>
+                <rect x="-68" y="340" width="14" height="35" fill="#3b6090" stroke="#4a7aae" stroke-width="1" rx="2"/>
+                <rect x="54" y="340" width="14" height="35" fill="#3b6090" stroke="#4a7aae" stroke-width="1" rx="2"/>
+                <!-- Top beacon -->
+                <circle cx="0" cy="195" r="5" fill="#f59e0b" opacity="0.8"/>
+                <circle cx="0" cy="195" r="15" fill="url(#glow-amber)" filter="url(#blur-sm)" opacity="0.5"/>
+                <!-- Tower structure diagonal supports -->
+                <line x1="-30" y1="260" x2="0" y2="460" stroke="#3b6090" stroke-width="1.5" opacity="0.5"/>
+                <line x1="30" y1="260" x2="0" y2="460" stroke="#3b6090" stroke-width="1.5" opacity="0.5"/>
+                <line x1="0" y1="460" x2="-20" y2="880" stroke="#3b6090" stroke-width="1" opacity="0.4"/>
+                <line x1="0" y1="460" x2="20" y2="880" stroke="#3b6090" stroke-width="1" opacity="0.4"/>
+            </g>
+
+            <!-- Signal waves radiating outward -->
+            <circle class="signal-wave" cx="960" cy="300" r="0" fill="none" stroke="#a78bfa" stroke-width="1.5" opacity="0"/>
+            <circle class="signal-wave" cx="960" cy="300" r="0" fill="none" stroke="#8b5cf6" stroke-width="1.2" opacity="0"/>
+            <circle class="signal-wave" cx="960" cy="300" r="0" fill="none" stroke="#a78bfa" stroke-width="1" opacity="0"/>
+            <circle class="signal-wave" cx="960" cy="300" r="0" fill="none" stroke="#8b5cf6" stroke-width="0.8" opacity="0"/>
+            <circle class="signal-wave" cx="960" cy="300" r="0" fill="none" stroke="#a78bfa" stroke-width="0.6" opacity="0"/>
+
+            <!-- Fiber connection coming in from the left -->
+            <line x1="0" y1="700" x2="940" y2="700" stroke="#2d5580" stroke-width="3" opacity="0.4"/>
+            <line x1="940" y1="700" x2="960" y2="880" stroke="#2d5580" stroke-width="3" opacity="0.4"/>
+
+            <!-- Nearby building outlines -->
+            <g id="buildings">
+                <!-- Building 1 — left -->
+                <rect x="300" y="720" width="100" height="160" fill="none" stroke="#3b6090" stroke-width="1.2" opacity="0.4"/>
+                <rect x="310" y="735" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="340" y="735" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="370" y="735" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="310" y="765" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="340" y="765" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="370" y="765" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <!-- Fiber to building -->
+                <line x1="350" y1="880" x2="600" y2="880" stroke="#2d5580" stroke-width="1.5" opacity="0.3"/>
+                <line x1="600" y1="700" x2="600" y2="880" stroke="#2d5580" stroke-width="1.5" opacity="0.3"/>
+
+                <!-- Building 2 — right -->
+                <rect x="1480" y="680" width="120" height="200" fill="none" stroke="#3b6090" stroke-width="1.2" opacity="0.4"/>
+                <rect x="1490" y="695" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="1520" y="695" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="1550" y="695" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="1580" y="695" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="1490" y="725" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="1520" y="725" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="1550" y="725" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <rect x="1580" y="725" width="20" height="20" fill="none" stroke="#2d4a78" stroke-width="0.5" opacity="0.3"/>
+                <!-- Fiber to building -->
+                <line x1="1320" y1="880" x2="1540" y2="880" stroke="#2d5580" stroke-width="1.5" opacity="0.3"/>
+                <line x1="1320" y1="700" x2="1320" y2="880" stroke="#2d5580" stroke-width="1.5" opacity="0.3"/>
+            </g>
+
+            <!-- Window glow on buildings (warm amber) -->
+            <rect class="window-glow" x="312" y="737" width="16" height="16" fill="#f59e0b" opacity="0" rx="1"/>
+            <rect class="window-glow" x="372" y="767" width="16" height="16" fill="#fbbf24" opacity="0" rx="1"/>
+            <rect class="window-glow" x="1522" y="697" width="16" height="16" fill="#f59e0b" opacity="0" rx="1"/>
+            <rect class="window-glow" x="1582" y="727" width="16" height="16" fill="#fbbf24" opacity="0" rx="1"/>
+            <rect class="window-glow" x="1492" y="727" width="16" height="16" fill="#f59e0b" opacity="0" rx="1"/>
+
+            <!-- Pulse traveling up the tower -->
+            <circle id="pulse-tower" cx="0" cy="700" r="6" fill="#c4b5fd" opacity="0"/>
+            <circle id="pulse-tower-glow" cx="0" cy="700" r="35" fill="url(#glow-purple)" filter="url(#blur-md)" opacity="0"/>
+            <circle id="pulse-tower-core" cx="0" cy="700" r="2.5" fill="#fff" opacity="0"/>
+        </g>
+
+        <!-- ============================================ -->
+        <!-- BEAT 5: THE DESTINATION — Home + Zoom Out    -->
+        <!-- ============================================ -->
+        <g id="beat5" opacity="0">
+            <!-- Person at desk — center of screen -->
+            <g id="human-scene" transform="translate(960, 540)">
+                <!-- Desk -->
+                <rect x="-80" y="40" width="160" height="8" fill="#3b6090" rx="2"/>
+                <!-- Desk legs -->
+                <line x1="-70" y1="48" x2="-70" y2="100" stroke="#2d4a78" stroke-width="2"/>
+                <line x1="70" y1="48" x2="70" y2="100" stroke="#2d4a78" stroke-width="2"/>
+
+                <!-- Monitor -->
+                <rect x="-50" y="-20" width="100" height="60" fill="#0a1525" stroke="#4a7aae" stroke-width="1.5" rx="3"/>
+                <!-- Screen glow -->
+                <rect id="screen-glow" x="-45" y="-15" width="90" height="50" fill="#8b5cf6" opacity="0" rx="2"/>
+                <!-- Screen content lines -->
+                <line x1="-35" y1="-2" x2="5" y2="-2" stroke="#60a5fa" stroke-width="1.5" opacity="0.3"/>
+                <line x1="-35" y1="8" x2="20" y2="8" stroke="#3b82f6" stroke-width="1" opacity="0.2"/>
+                <line x1="-35" y1="18" x2="-5" y2="18" stroke="#60a5fa" stroke-width="1" opacity="0.2"/>
+                <!-- Monitor stand -->
+                <line x1="0" y1="40" x2="0" y2="48" stroke="#4a7aae" stroke-width="3"/>
+
+                <!-- Person silhouette — simplified -->
+                <!-- Head -->
+                <circle cx="-120" cy="-10" r="18" fill="#2d4a78" stroke="#4a7aae" stroke-width="1"/>
+                <!-- Body -->
+                <path d="M-120,8 Q-120,40 -120,60 Q-130,62 -140,80 M-120,8 Q-120,40 -120,60 Q-110,62 -100,80"
+                      stroke="#4a7aae" stroke-width="2" fill="none"/>
+                <!-- Torso -->
+                <path d="M-120,8 L-140,55 M-120,8 L-100,55" stroke="#4a7aae" stroke-width="1.5" fill="none"/>
+                <!-- Arms reaching to keyboard area -->
+                <path d="M-120,25 Q-100,45 -80,42" stroke="#4a7aae" stroke-width="1.5" fill="none"/>
+
+                <!-- WiFi symbol above -->
+                <g id="wifi-symbol" transform="translate(0, -70)">
+                    <path d="M-20,0 Q0,-15 20,0" fill="none" stroke="#a78bfa" stroke-width="1.5" opacity="0"/>
+                    <path d="M-14,-8 Q0,-20 14,-8" fill="none" stroke="#a78bfa" stroke-width="1.5" opacity="0"/>
+                    <path d="M-8,-16 Q0,-24 8,-16" fill="none" stroke="#a78bfa" stroke-width="1.5" opacity="0"/>
+                    <circle cx="0" cy="4" r="2.5" fill="#a78bfa" opacity="0"/>
+                </g>
+
+                <!-- Warm ambient glow around person -->
+                <circle id="ambient-glow" cx="-40" cy="20" r="120" fill="url(#glow-amber)" filter="url(#blur-xl)" opacity="0"/>
+            </g>
+
+            <!-- Packet arrival indicator -->
+            <circle id="pulse-arrival" cx="960" cy="540" r="5" fill="#c4b5fd" opacity="0"/>
+            <circle id="pulse-arrival-glow" cx="960" cy="540" r="30" fill="url(#glow-purple)" filter="url(#blur-md)" opacity="0"/>
+
+            <!-- === ZOOM OUT: Network of millions of light pulses === -->
+            <g id="network-millions" opacity="0">
+                <!-- Dense field of tiny light dots forming Africa-like shape -->
+                <!-- Eastern Africa cluster (Kenya, Tanzania, etc) -->
+                <circle class="net-dot" cx="1050" cy="440" r="1.2" fill="#a78bfa"/>
+                <circle class="net-dot" cx="1070" cy="420" r="1" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="1090" cy="445" r="0.8" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="1060" cy="460" r="1" fill="#a78bfa"/>
+                <circle class="net-dot" cx="1080" cy="470" r="1.3" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="1040" cy="480" r="0.9" fill="#a78bfa"/>
+                <circle class="net-dot" cx="1100" cy="430" r="1.1" fill="#60a5fa"/>
+                <circle class="net-dot" cx="1030" cy="450" r="0.7" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="1065" cy="435" r="1.4" fill="#a78bfa"/>
+                <circle class="net-dot" cx="1085" cy="455" r="0.9" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="1045" cy="470" r="1.1" fill="#60a5fa"/>
+                <circle class="net-dot" cx="1075" cy="485" r="0.8" fill="#a78bfa"/>
+                <circle class="net-dot" cx="1095" cy="415" r="1" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="1055" cy="490" r="1.2" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="1035" cy="425" r="0.7" fill="#a78bfa"/>
+
+                <!-- Horn of Africa -->
+                <circle class="net-dot" cx="1120" cy="380" r="0.8" fill="#60a5fa"/>
+                <circle class="net-dot" cx="1140" cy="370" r="1" fill="#a78bfa"/>
+                <circle class="net-dot" cx="1110" cy="400" r="0.9" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="1130" cy="390" r="0.7" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="1150" cy="385" r="0.6" fill="#a78bfa"/>
+
+                <!-- North Africa -->
+                <circle class="net-dot" cx="920" cy="300" r="0.8" fill="#60a5fa"/>
+                <circle class="net-dot" cx="950" cy="290" r="1" fill="#a78bfa"/>
+                <circle class="net-dot" cx="980" cy="295" r="0.7" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="1010" cy="305" r="0.9" fill="#60a5fa"/>
+                <circle class="net-dot" cx="1040" cy="310" r="0.8" fill="#a78bfa"/>
+                <circle class="net-dot" cx="940" cy="310" r="0.6" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="970" cy="305" r="1.1" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="890" cy="310" r="0.7" fill="#60a5fa"/>
+                <circle class="net-dot" cx="870" cy="300" r="0.9" fill="#a78bfa"/>
+
+                <!-- West Africa -->
+                <circle class="net-dot" cx="820" cy="400" r="1" fill="#a78bfa"/>
+                <circle class="net-dot" cx="840" cy="420" r="0.8" fill="#60a5fa"/>
+                <circle class="net-dot" cx="800" cy="410" r="1.2" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="830" cy="430" r="0.7" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="850" cy="400" r="0.9" fill="#a78bfa"/>
+                <circle class="net-dot" cx="810" cy="390" r="0.6" fill="#60a5fa"/>
+                <circle class="net-dot" cx="860" cy="415" r="1.1" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="790" cy="420" r="0.8" fill="#a78bfa"/>
+                <circle class="net-dot" cx="835" cy="440" r="0.7" fill="#c4b5fd"/>
+
+                <!-- Central Africa -->
+                <circle class="net-dot" cx="930" cy="460" r="0.9" fill="#60a5fa"/>
+                <circle class="net-dot" cx="950" cy="470" r="1" fill="#a78bfa"/>
+                <circle class="net-dot" cx="970" cy="450" r="0.8" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="920" cy="440" r="0.7" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="940" cy="480" r="1.1" fill="#a78bfa"/>
+                <circle class="net-dot" cx="960" cy="490" r="0.6" fill="#60a5fa"/>
+                <circle class="net-dot" cx="910" cy="470" r="0.9" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="980" cy="475" r="0.8" fill="#a78bfa"/>
+
+                <!-- Southern Africa -->
+                <circle class="net-dot" cx="960" cy="560" r="1" fill="#a78bfa"/>
+                <circle class="net-dot" cx="980" cy="580" r="0.8" fill="#60a5fa"/>
+                <circle class="net-dot" cx="940" cy="570" r="1.2" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="970" cy="590" r="0.7" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="950" cy="600" r="0.9" fill="#a78bfa"/>
+                <circle class="net-dot" cx="990" cy="560" r="0.6" fill="#60a5fa"/>
+                <circle class="net-dot" cx="930" cy="590" r="1" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="955" cy="620" r="0.8" fill="#a78bfa"/>
+                <circle class="net-dot" cx="975" cy="610" r="0.7" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="945" cy="640" r="0.9" fill="#60a5fa"/>
+                <circle class="net-dot" cx="965" cy="650" r="0.7" fill="#a78bfa"/>
+
+                <!-- Additional density dots scattered across Africa shape -->
+                <circle class="net-dot" cx="880" cy="350" r="0.5" fill="#60a5fa"/>
+                <circle class="net-dot" cx="900" cy="380" r="0.7" fill="#a78bfa"/>
+                <circle class="net-dot" cx="870" cy="440" r="0.6" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="1000" cy="400" r="0.8" fill="#a78bfa"/>
+                <circle class="net-dot" cx="1020" cy="380" r="0.5" fill="#60a5fa"/>
+                <circle class="net-dot" cx="990" cy="420" r="0.7" fill="#c4b5fd"/>
+                <circle class="net-dot" cx="1010" cy="500" r="0.6" fill="#a78bfa"/>
+                <circle class="net-dot" cx="1000" cy="520" r="0.8" fill="#8b5cf6"/>
+                <circle class="net-dot" cx="1020" cy="540" r="0.5" fill="#60a5fa"/>
+                <circle class="net-dot" cx="985" cy="550" r="0.7" fill="#a78bfa"/>
+            </g>
+
+            <!-- Subsea cables stretching to edges -->
+            <g id="global-cables" opacity="0">
+                <!-- East coast cables -->
+                <line x1="1100" y1="440" x2="1920" y2="200" stroke="#60a5fa" stroke-width="2" opacity="0.6"/>
+                <line x1="1100" y1="460" x2="1920" y2="500" stroke="#60a5fa" stroke-width="1.8" opacity="0.5"/>
+                <line x1="1080" y1="480" x2="1920" y2="700" stroke="#3b82f6" stroke-width="1.5" opacity="0.4"/>
+                <!-- West coast cables -->
+                <line x1="800" y1="420" x2="0" y2="300" stroke="#60a5fa" stroke-width="2" opacity="0.6"/>
+                <line x1="790" y1="440" x2="0" y2="550" stroke="#60a5fa" stroke-width="1.8" opacity="0.5"/>
+                <!-- North cables -->
+                <line x1="940" y1="290" x2="700" y2="0" stroke="#3b82f6" stroke-width="1.5" opacity="0.4"/>
+                <line x1="980" y1="300" x2="1200" y2="0" stroke="#3b82f6" stroke-width="1.5" opacity="0.4"/>
+                <!-- Cable endpoint glows -->
+                <circle cx="1920" cy="200" r="10" fill="#60a5fa" filter="url(#blur-md)" opacity="0.5"/>
+                <circle cx="0" cy="300" r="10" fill="#60a5fa" filter="url(#blur-md)" opacity="0.5"/>
+                <circle cx="1920" cy="500" r="8" fill="#3b82f6" filter="url(#blur-md)" opacity="0.4"/>
+                <circle cx="0" cy="550" r="8" fill="#3b82f6" filter="url(#blur-md)" opacity="0.4"/>
+            </g>
+
+            <!-- Africa continent map (from simplemaps.com, MIT license) -->
+            <g id="africa-map" opacity="0" transform="translate(750, 270) scale(0.42)" style="stroke-linejoin: round; fill: rgba(139,92,246,0.06); stroke: #a78bfa; stroke-width: 0.8;">
+                <path d="m 495.3,598.6 -36,-0.2 -4.3,1.7 -3.5,-0.3 -5.1,1.9 -1.1,2.7 6,8.7 2.4,9.3 3.6,13.4 -3.8,5.5 -0.6,2.8 2.9,8.3 3.1,8.4 3.6,5 0.6,7.8 -1.4,10.3 -4,6.1 -7.1,9.1 -2.9,5.6 -4.1,12.5 -0.8,5.9 -4.3,12.7 -1.9,12.2 1,8.7 5.9,-2.7 7.2,-2.3 7.8,0.4 7.1,6.3 1.9,-1 48.8,-0.6 8.2,6.6 29.1,2 22.4,-5.7 -7.6,-8.6 -7.8,-11.3 1.6,-44 25.3,0.1 -1,-4.7 2,-5.2 -2,-6.5 1.5,-6.7 -1.2,-4.3 -5.5,-0.8 -7.6,2 -5.3,-0.3 -3,1.3 0.9,-16.5 -3.9,-5.1 -0.8,-8.5 1.9,-8.4 -2.4,-5.3 -0.1,-8.7 -14.8,0.1 1.1,-5 -6.2,0.1 -0.7,2.4 -7.6,0.5 -3.1,8.1 -1.9,3.4 -6.7,-1.9 -4,1.9 -8.1,1.1 -4.6,-7.2 -2.7,-4.5 -3.5,-8.3 -2.9,-10.3 z m -47.4,-2.7 0.4,-6 2,-3.5 4.5,-2.9 -4.6,-4.8 -3.7,2.3 -5,6 3.3,10.4 3.1,-1.5 z"/>
+                <path d="m 669,556.1 -0.6,-5.4 0,0 -6.5,-0.9 -3.8,7.9 -7.4,-1.1 3,6.3 0.1,2.4 4.3,13.2 0,0.6 1.2,-0.2 4.5,-5 4.9,-7.2 3,-2.9 -0.1,-4.5 -2.6,-3.2 z"/>
+                <path d="m 340,356 -9.3,-8 -4.3,0.1 -4.1,4 -2.6,4.2 -6,1.2 -2.5,6.1 -4.1,1.6 -1.6,7.2 3.7,4.1 4.3,4.9 0.4,6.8 2.5,2.8 -0.5,31.8 3,9.5 10.1,-1.6 0.6,-22.3 -0.3,-8.8 2.3,-8.7 3.7,-4.3 5.9,-8.5 -1.3,-3.7 2.4,-5.6 -2.8,-8.2 0.5,-4.6 z"/>
+                <path d="m 300.7,310.8 -7.8,0 -3,-2.6 -6.7,1.9 -11.3,5.8 -2.3,4.3 -9.4,6.2 -1.7,3.6 -5.1,2.8 -5.8,-1.9 -3.4,3.4 -1.8,9.5 -9.7,11.4 0.3,4.7 -3.4,5.9 0.8,8 5.5,3 2.1,4.6 5.4,2.9 4.3,-3.4 5.7,-0.6 8.3,3.6 -1.6,-10.4 0.3,-7.9 21.1,-0.6 5.4,1 3.9,-2.2 5.6,1.1 10.7,0.3 4.1,-1.6 2.5,-6.1 6,-1.2 2.6,-4.2 0.3,-9.5 -14,-3.1 -0.4,-6.7 -6.9,-9 -1.6,-6.3 1,-6.7 z"/>
+                <path d="m 600.6,762.7 -2.2,-1 -6.9,3.1 -3.6,0 -7.9,5.4 -4.4,-5.7 -18.7,4.9 -9,0.4 -1.9,49.3 -11.8,0.5 -1.4,40.4 3.2,2 6.5,13.2 -1.5,8.4 2.5,4.9 8.5,-1.4 6.2,-6.2 5.8,-4.2 3.2,-6.6 6,-3.2 4.9,1.7 5.5,3.9 9.6,0.6 7.8,-3.2 1.4,-4.3 2.4,-6.6 6.5,-1.1 3.9,-5.2 4.4,-9.3 11.2,-10.3 17.3,-10.2 -7.3,-6.2 -9.2,-2.1 -3.1,-8.8 0.2,-4.9 -5.1,-1.5 -13,-15.2 -3.5,-8 -2.3,-2.4 -4.2,-11.1 z"/>
+                <path d="m 587,398.1 -1,-0.7 -4.2,-4 -0.9,-4.3 1.9,-5.7 -0.1,-5.7 -7.2,-8.6 -1.5,-5.9 -7.7,2.3 -6,5.6 -8.6,15.1 -11.3,6.4 -11.8,-0.8 -3.4,1.2 1.2,4.9 -6.3,4.8 -5.1,5.4 -15.3,5.3 -3,-3.1 -2.1,-0.3 -2.2,3.6 -10,1 -6.1,14 -2.9,2.6 -0.8,10.7 1.2,5.8 -0.9,4.1 5.8,7.3 1,4.9 4.6,7.2 5.6,4.4 0.6,6.3 1.3,4 6.3,-12.8 7.3,-7.4 8.2,2.4 7.9,0.7 1,-9.6 4.7,-7.1 6.5,-4.4 10.1,4.7 7.8,5.1 9,1.4 9.1,2.7 3.6,-8.4 1.6,-1.1 5.6,1.4 13.5,-6.9 4.9,3 3.9,-0.5 1.8,-3.3 4.5,-1.2 9.2,1.4 7.9,0.4 4,-1.5 -2,-4.4 -9.2,-5.5 -3.2,-8.3 -5.2,-6 -8.3,-7.2 -0.1,-4.5 -6.8,-5.5 -8.4,-5.4 z"/>
+                <path d="m 230.4,373.8 -5,2.1 -2.9,1.7 -1.8,-5.9 -3.5,1.6 -2.1,-0.3 -2.3,4 -9.4,-0.1 -3.3,-2.1 -1.6,1.3 -2.5,1.1 -1,4.7 2.8,5.7 3,11.1 -4.6,1.6 -1.1,1.9 0.9,2.7 -0.8,6.1 -1.9,0 -0.6,4 1.2,6.7 -2.7,6.1 3.6,3.8 3.8,0.9 5.2,5.8 0.3,5.5 -1.1,1.7 -1,11.4 2.3,0.4 12.1,-5.1 8.5,-4 14.5,-2.4 7.8,-0.2 8.5,2.7 5.6,-0.1 0.5,-5.5 -5.2,-11.9 3.2,-15.6 5.1,-11.6 -3.2,-19.7 -8.3,-3.6 -5.7,0.6 -4.3,3.4 -5.4,-2.9 -2.1,-4.6 -5.5,-3 z"/>
+                <path d="m 477.5,366.6 0.4,-9.2 -1,-9.1 -4.9,-8.9 -3.4,0.8 -0.4,4.4 4.9,5.5 -1.3,2.5 -0.5,4.6 -10.2,10.7 -3.1,8.8 -1.6,7.2 -2.6,3.1 -2.4,9.7 -6.4,5.7 -1.9,7 -2.7,5.6 -1.1,5.7 -8.3,4.7 -6.9,-5.7 -4.6,0.2 -7.2,8.1 -3.6,0.1 -5.7,13.4 -3.1,9.8 -0.1,3.8 3.1,2 2.5,6.2 5.6,2.3 4.8,9.2 -1.8,10.9 19.9,0.3 5.8,-0.9 7.4,1.9 7.3,-1.8 1.5,0.7 15.4,0.6 9.9,3.6 9.7,3.3 0.9,-7.5 -1.3,-4 -0.6,-6.3 -5.6,-4.4 -4.6,-7.2 -1,-4.9 -5.8,-7.3 0.9,-4.1 -1.2,-5.8 0.8,-10.7 2.9,-2.6 6.1,-14 1.8,-3.7 -3.9,-9.6 -1.8,-5.7 -5.3,-2.3 -7.2,-8.1 2.5,-6.5 5.6,1.3 3.4,-0.9 6.8,0.1 -6.8,-12.6 z"/>
+                <path d="m 618.3,446 -9.2,-1.4 -4.5,1.2 -1.8,3.3 -3.9,0.5 -4.9,-3 -13.5,6.9 -5.6,-1.4 -1.6,1.1 -3.6,8.4 -9.1,-2.7 -9,-1.4 -7.8,-5.1 -10.1,-4.7 -6.5,4.4 -4.7,7.1 -1,9.6 -0.7,8.4 -3.6,7.4 -2.4,8.6 -1.5,12.3 0.7,7.8 -2,4.8 -0.3,5.1 -1.4,4.4 -8.1,6.7 -5.6,7.1 -5.3,13.4 0.3,11.4 -3.1,4.4 -7.2,6.8 -7.2,8.7 -4.5,-2.5 -0.8,-3.9 -6.6,-0.1 -4.2,5.3 -3.2,-1.4 -4.5,2.9 -2,3.5 -0.4,6 -3.1,1.5 1.6,4.3 5.1,-1.9 3.5,0.3 4.3,-1.7 36,0.2 2.9,10.3 3.5,8.3 2.7,4.5 4.6,7.2 8.1,-1.1 4,-1.9 6.7,1.9 1.9,-3.4 3.1,-8.1 7.6,-0.5 0.7,-2.4 6.2,-0.1 -1.1,5 14.8,-0.1 0.1,8.7 2.4,5.3 -1.9,8.4 0.8,8.5 3.9,5.1 -0.9,16.5 3,-1.3 5.3,0.3 7.6,-2 5.5,0.8 4.2,0.3 0.6,4.3 5.7,-0.3 7.7,1.3 3.9,6.2 9.7,2 7.5,-4.4 2.6,7.3 9.2,1.9 4.3,5.9 4.8,7.6 9.3,0.1 -0.6,-14.9 -3.4,2.5 -8.4,-5.4 -3.2,-2.4 1.9,-13.9 2.5,-16.4 -2.6,-6.1 3.6,-8.8 3.3,-1.7 16.4,-2.3 2.1,0.6 0.6,-2.3 -3.4,-3.7 -1.5,-7.6 -7.3,-7.6 -4.1,-9.9 2.3,-5.8 -3.2,-7.8 2.4,-22.1 0.1,0.2 -0.1,-2.4 -3,-6.3 1.2,-7.6 1.7,-1 0.5,-8.3 3.5,-3.8 0.1,-10.5 2.9,-5.3 0.6,-11.1 2.6,-6.4 4.6,-7.2 4.7,-3.7 3.9,-4.9 -4.9,-1.9 0.6,-16.1 0,0 -10.9,-9.2 -2.9,-5.9 -6.8,2.9 -5.7,-0.9 -3.2,2.3 -5.5,-1.7 -7.5,-11.4 -4,1.5 -7.9,-0.4 z"/>
+                <path d="m 521.5,468.8 -7.9,-0.7 -8.2,-2.4 -7.3,7.4 -6.3,12.8 -0.9,7.5 -9.7,-3.3 -9.9,-3.6 -15.4,-0.6 -0.9,6.1 3.4,7.1 9.1,-1.1 3.1,2.7 -5.3,16.1 5.8,8.2 1.3,10.8 -1.6,9.2 -3.7,6.5 -10.8,-0.6 -6.5,-6.6 -1,6.1 -8.3,1.7 -4.2,3.5 4.6,9.1 -9.3,7.7 9.9,14.6 5,-6 3.7,-2.3 4.6,4.8 3.2,1.4 4.2,-5.3 6.6,0.1 0.8,3.9 4.5,2.5 7.2,-8.7 7.2,-6.8 3.1,-4.4 -0.3,-11.4 5.3,-13.4 5.6,-7.1 8.1,-6.7 1.4,-4.4 0.3,-5.1 2,-4.8 -0.7,-7.8 1.5,-12.3 2.4,-8.6 3.6,-7.4 0.7,-8.4 z"/>
+                <path d="m 820.3,358.7 -5.3,-3.8 6.8,-3.3 0.1,-5.7 -3,-4.3 -3.6,3.4 -5.2,-1.2 -4,6.1 -3.9,6.5 1.1,3.8 0.3,4.2 6.8,0.2 2.9,-0.9 2.8,2.4 4.2,-7.4 z"/>
+                <path d="M 392.4,5.7 384.6,6.5 379.8,3.3 367.6,3.4 357,8.9 351.2,6.8 332.3,8 l -19.4,2.5 -11,4.3 -7.2,5.8 -12.4,2.4 -11.1,7.7 4.2,9 0.7,8.4 3.9,14.7 3.1,2.9 -2.2,5.4 -15.2,2.3 -5.4,5.1 -6.7,1.2 -0.6,10.2 -13.8,5.4 -4.6,7 -9.6,3.7 -11.8,2.1 -19.2,10.2 -0.2,16.3 0,1 -0.3,2.7 44.1,33.5 40,30.2 40.4,30.2 2.9,6.4 7.5,4 5.5,2.2 0.2,8.8 13.3,-1.3 16.9,-6.2 34.5,-27.1 40.5,-26.4 -5.4,-8.7 -9.6,-6.4 -5.5,2.5 -4.3,-7.7 -0.6,-5.9 -7.2,-10.1 4.6,-5.8 -1.3,-8.7 1.4,-7.6 -1,-6.3 1.8,-11.3 -0.8,-6.4 -4.1,-12.2 -5.7,-24.7 -7.3,-5.6 -0.2,-3.3 -9.7,-8.3 -1.3,-10.4 7,-7.8 2.4,-11.6 -2.3,-13.4 2.2,-7.2 z"/>
+                <path d="m 628.8,88.1 -11.9,-4 -11.5,-3.7 -15.6,0.2 -3.7,6.6 2.2,5.9 -2.4,8.5 4.2,11.2 2.9,49.2 2.2,50.9 48.1,0 46.4,0 47.4,0 -2.2,-2.8 -14.7,-12.4 -0.9,-9 2.2,-2.4 -11.6,-15.3 -4.4,-7.9 -4.9,-7.5 -10.5,-21.6 -8.4,-13.9 -6.1,-14.5 1.1,-1.3 10.1,19.8 5.8,6.2 4.3,4.4 2.5,-2.4 2.7,-7.2 1.6,-10.4 2.8,-5.6 -1.5,-3.5 -8.5,-20.1 0,0 -5.4,3.4 -9.2,-0.8 -9.6,-3.2 -2.3,4.5 -3.8,-6.8 -8.5,-1.8 -10.2,1.2 -4.5,3.9 -8.6,4.4 -5.6,-2.2 z"/>
+                <path d="m 777.6,303.8 -7,-6.8 -4,-12.7 -7.8,-16 -5.7,7.9 -8.8,2.3 -3.6,4.2 -0.7,9.2 -4.3,20.3 1.5,5.6 14.3,2.9 3.3,-10.4 7.6,6.3 7,-3.2 3,2.9 8.3,0.1 10.8,5.6 3.4,4.8 5.5,4.4 5.4,8.1 4.3,4.5 5.2,1.2 3.6,-3.4 -6.2,-4.2 -4,-4.7 -6.9,-8 -7.1,-7.9 -17.1,-13 z"/>
+                <path d="m 754.8,310.3 -3.3,10.4 -14.3,-2.9 -1.4,11.9 -4.5,13.6 -7.1,6.8 -4.8,10.6 -1.1,5.7 -5.6,3.8 -3.3,14.5 0.1,1.7 0.4,10.8 -1.8,4.2 -6.4,0.3 -4,7.9 7.5,1 6.3,6.7 2.2,5.6 5.7,3.2 7.4,15 6.4,2.4 0.1,7.7 4.2,4.6 8.5,0 15.7,11.7 3.8,0.2 2.9,-0.4 2.7,1.6 8.2,1.1 3.5,-5.8 11.1,-5.8 4.9,4.7 8.4,0 3.3,-4.4 7.8,-0.2 10.7,-9.8 15.9,-0.6 33.5,-41.5 -10.3,0.1 -40.3,-16.4 -4.8,-5 -4.6,-6.6 -4.8,-7.7 2.5,-4.9 -2.8,-2.4 -2.9,0.9 -6.8,-0.2 -0.3,-4.2 -1.1,-3.8 3.9,-6.5 4,-6.1 -4.3,-4.5 -5.4,-8.1 -5.5,-4.4 -3.4,-4.8 -10.8,-5.6 -8.3,-0.1 -3,-2.9 -7,3.2 -7.6,-6.3 z"/>
+                <path d="m 455.9,485.9 -1.5,-0.7 -7.3,1.8 -7.4,-1.9 -5.8,0.9 0.1,16.7 -17.7,-0.2 -4.2,0.8 -2.4,10.3 -3,10.1 -2.7,4.4 -0.3,4.6 7.3,14.3 8.1,11.4 12.5,14 9.3,-7.7 -4.6,-9.1 4.2,-3.5 8.3,-1.7 1,-6.1 6.5,6.6 10.8,0.6 3.7,-6.5 1.6,-9.2 -1.3,-10.8 -5.8,-8.2 5.3,-16.1 -3.1,-2.7 -9.1,1.1 -3.4,-7.1 0.9,-6.1 z"/>
+                <path d="m 296.4,364.9 -5.6,-1.1 -3.9,2.2 -5.4,-1 -21.1,0.6 -0.3,7.9 1.6,10.4 3.2,19.7 -5.1,11.6 -3.2,15.6 5.2,11.9 -0.5,5.5 10.9,3.9 11,-4 6.7,-4.7 19.2,-8.1 -2.8,-4.9 -3.2,-8.8 -1,-6.8 2.7,-12.5 -3,-5 -1.2,-10.9 0,-10.1 -5.1,-7.1 0.9,-4.3 z"/>
+                <path d="m 156.4,345.2 -1.8,0.7 -6.6,-1.1 -0.9,1.6 -2.7,0.3 -8.7,-3.4 -5.8,-0.1 -0.3,4.7 -1.3,1.4 0.9,4.6 -1.9,1.8 -2.7,0.1 -3.2,2.3 -3.7,-0.3 -5.5,6.8 3.6,2.2 1.7,3.1 1.3,6.1 3,2.7 3.1,1.8 4.7,5.4 5.3,8.2 6.5,-6.1 1.5,-3.8 2.1,-3 3.3,-0.3 2.9,-2.6 9.7,0 3.3,5 2.6,5.8 -0.4,4 1.9,3.6 -0.1,5.1 3.3,-0.8 2.6,-0.3 3.2,-1.6 5.1,8.5 -0.9,5.6 2.4,2.9 3.4,0.1 2.6,-5.6 3.4,0.4 1.9,0 0.8,-6.1 -0.9,-2.7 1.1,-1.9 4.6,-1.6 -3,-11.1 -2.8,-5.7 1,-4.7 2.5,-1.1 -3.7,-4 0.7,-4.1 -1.6,-1.6 -2.6,1.3 0.6,-4.5 2.5,-3.5 -5,-5.8 -1.4,-3.8 -2.7,-3.1 -2.4,-0.3 -2.9,1.9 -4,1.8 -3.3,3 -5.2,-1.1 -3.3,-3.5 -2,-0.4 -3.2,1.8 -2,0 -0.6,-5 z"/>
+                <path d="m 91.9,335.4 11,0.2 3,-1.9 2.2,-0.1 4.5,-3.2 5.2,2.9 5.2,0.3 5.3,-3.1 -2.4,-4 -4,2.3 -3.8,-0.1 -4.7,-3.4 -3.8,0.2 -2.8,3.3 -13.2,0.4 -1.7,6.2 z"/>
+                <path d="m 129.9,343.2 -22.4,-0.6 -3.3,1.6 -4,-0.5 -6.5,2.3 0.7,2.9 3.7,3 -0.1,2.1 2.7,3.9 5.1,0.9 6.4,5.8 5.5,-6.8 3.7,0.3 3.2,-2.3 2.7,-0.1 1.9,-1.8 -0.9,-4.6 1.3,-1.4 0.3,-4.7 z"/>
+                <path d="m 433.9,486 -19.9,-0.3 -4.1,15.5 2.2,2.1 4.2,-0.8 17.7,0.2 -0.1,-16.7 z"/>
+                <path d="m 807.2,463.1 -8.4,0 -4.9,-4.7 -11.1,5.8 -3.5,5.8 -8.2,-1.1 -2.7,-1.6 -2.9,0.4 -3.8,-0.2 -15.7,-11.7 -8.5,0 -4.2,-4.6 -0.1,-7.7 -6.4,-2.4 -8.1,9.1 -7.4,8.3 5.9,9.6 1.5,7 5.5,15.8 -4.4,10.1 -5.9,9.2 -3.5,5.6 0,0.7 2.9,5.2 -0.8,10.3 44.1,28.2 0.7,8 17.3,13.8 5,-4.6 2.5,-9.2 4,-5.5 1.9,-9.8 4.6,-1 3.1,-5.8 8.6,-5.5 -7.2,-11.4 -0.4,-50.4 10.5,-15.7 z"/>
+                <path d="m 193.3,411 -3.4,-0.4 -2.6,5.6 -3.4,-0.1 -2.4,-2.9 0.9,-5.6 -5.1,-8.5 -3.2,1.6 -2.6,0.3 -5.7,6.5 -5.5,7.5 -0.7,4 -2.9,4.4 8.1,8.9 10.4,7.6 11,10.5 12.6,6.6 3.2,-0.1 1,-11.4 1.1,-1.7 -0.3,-5.5 -5.2,-5.8 -3.8,-0.9 -3.6,-3.8 2.7,-6.1 -1.2,-6.7 0.6,-4 z"/>
+                <path d="m 589.8,80.6 -3.1,-4.5 -11.7,-1.6 -3.9,-2.4 -4.4,0 -4.4,-6.2 -15.9,-2.8 -7.9,1.8 -7.9,6.5 -3.3,6.7 3.4,10.6 -5.3,6.3 -5.5,3.6 L 507,91.7 490.3,86 479.7,83.3 473.6,71 l -15.7,-6.1 -9.8,-2.3 -4.8,1.2 -13.8,-4.8 -0.3,10.6 -5.6,4 -3.4,4.4 -7.9,5.3 1.5,5.7 -0.9,5.8 -5.6,3.2 4.1,12.2 0.8,6.4 -1.8,11.3 1,6.3 -1.4,7.6 1.3,8.7 -4.6,5.8 7.2,10.1 0.6,5.9 4.3,7.7 5.5,-2.5 9.6,6.4 5.4,8.7 19,6 6.9,7.5 8.3,-5.1 11.9,-7.6 48.4,26.5 48.7,26.5 -0.1,-5.8 13.8,0 -1,-27.7 -2.2,-50.9 -2.9,-49.2 -4.2,-11.2 2.4,-8.5 -2.2,-5.9 3.7,-6.6 z"/>
+                <path d="m 625.3,939.9 2.5,-4.4 6.7,-2.2 2.4,-4.5 4.1,-6.7 -3.8,-4.2 -4.8,-4.2 -5.7,2.8 -6.8,5.4 -6.9,8.7 8,10.6 4.3,-1.3 z"/>
+                <path d="m 271.2,30.7 -5,-0.1 -11.9,-3.1 -11,0.9 -6.8,-5.9 -8.5,-0.1 -3.8,8.6 -8,14.5 -8.7,5.7 -11.8,6.4 -7.7,9.3 -1.8,7.3 -4.8,11.8 2.5,17.2 -10.1,11.5 -6,3.7 -9.6,9.4 -11,1.6 -6.1,5.3 -0.2,0.2 -7.9,14.1 -8.1,5.1 -4.5,8.5 -0.5,7.4 -3.4,8.1 -4,2.2 -6.9,8.8 -4.4,9.8 0.7,4.6 -4.1,7.3 -4.7,3.7 -0.8,6.4 0.2,0.1 27,-1.1 1.6,-5 5,-6.2 4.4,-19.1 16.9,-15 6,-17.4 3.7,-1.1 4.2,-10.8 10,-1.4 4.2,1.8 5.4,0 3.9,-3.2 7.3,-0.4 -0.1,-7.5 0,0 1.8,0 0.2,-16.3 19.2,-10.2 11.8,-2.1 9.6,-3.7 4.6,-7 13.8,-5.4 0.6,-10.2 6.7,-1.2 5.4,-5.1 15.2,-2.3 2.2,-5.4 -3.1,-2.9 -3.9,-14.7 -0.7,-8.4 -4.2,-9 z"/>
+                <path d="m 902.9,704.8 -2.5,-9.1 -3,-5.9 -3.9,-5.9 -4.3,6.2 -0.7,8.3 -7.1,9.6 -5.1,-1.7 1.3,6 -4,6.9 -10.4,8.5 -7.3,7.9 -5.4,0.2 -4.6,2.5 -6.9,2.8 -6,0.6 -2.2,8.7 -4.7,7.8 0.2,12.7 1.7,8.7 2.4,6.6 -1.7,8.8 -6.4,10.5 -0.3,4.6 -5.7,2.4 -2.8,10 0.4,9.9 3.4,11 -0.1,12.3 2.6,7.3 9.1,5 6.5,3.5 10.9,-5.8 9.9,-3.3 6.8,-16.1 6.1,-19.2 9.3,-26.2 7.3,-19.1 5.9,-16.1 1.6,-11.7 3.5,-3.2 1.5,-5.9 -1.7,-10.2 2.6,-4.1 3.5,8.1 2.4,-4.1 1.7,-6.6 -2.8,-6.5 -1,-16.7 z"/>
+                <path d="m 347.4,252.3 -13.3,1.3 -0.2,-8.8 -5.5,-2.2 -7.5,-4 -2.9,-6.4 -40.4,-30.2 -40,-30.2 -18.2,0.2 5.1,59.7 5.4,59.7 2,1.8 -2.7,9.6 -48.5,0.2 -1.9,3.1 -4.6,-0.9 -6.9,2.7 -8.4,-3.8 -3.8,0.3 -2.2,8.2 -4.1,2.5 0.4,8.6 2.3,7.9 4.5,3.9 1,5.3 -0.6,4.4 0.6,5 2,0 3.2,-1.8 2,0.4 3.3,3.5 5.2,1.1 3.3,-3 4,-1.8 2.9,-1.9 2.4,0.3 2.7,3.1 1.4,3.8 5,5.8 -2.5,3.5 -0.6,4.5 2.6,-1.3 1.6,1.6 -0.7,4.1 3.7,4 1.6,-1.3 3.3,2.1 9.4,0.1 2.3,-4 2.1,0.3 3.5,-1.6 1.8,5.9 2.9,-1.7 5,-2.1 -0.8,-8 3.4,-5.9 -0.3,-4.7 9.7,-11.4 1.8,-9.5 3.4,-3.4 5.8,1.9 5.1,-2.8 1.7,-3.6 9.4,-6.2 2.3,-4.3 11.3,-5.8 6.7,-1.9 3,2.6 7.8,0 7.7,-0.6 4.5,-4.9 16.5,-1.2 10.7,-2.2 1,-8.5 6.6,-9.2 -0.3,-31.9 z"/>
+                <path d="m 788.2,666.2 -1.7,-6.2 0,0 0,0 -10,8.1 -13.4,5.3 -7.3,-0.2 -4.5,4.2 -8.4,0.3 -3.3,1.8 -14.4,-3.9 -4.7,0.5 -3.3,13.1 1.4,15.8 0.7,0 4.2,4.4 4.6,10 0.3,17.8 -5.4,3 -4.1,9.6 -7.5,-8.6 -0.5,-9.7 2.9,-6.5 -0.5,-5.5 -4.7,-3.5 -3.3,1.2 -6.8,-6.6 -37.1,11.4 0.8,9.9 0.6,5.1 10,-0.3 5.5,3 2.5,3.4 5.7,1 6.1,4.4 -0.8,17.5 -2.8,9.6 -1,10.4 1.7,4.1 -1.7,8.1 -1.9,1.3 -3.6,9.9 -13.4,15.7 4.7,19.5 2.5,9.9 -3,15.4 0.7,5 1.3,6.2 0.6,6.1 9,0.1 1.5,-7.3 -2.9,-0.9 -0.6,-5.8 5.5,-5.2 14.8,-7.5 10.1,-4.6 5.3,-5 2.1,-5.7 -2.7,-2.4 2.4,-6.4 1.1,-13.6 -2.2,0.7 0.1,-4.1 -1.9,-8.1 -5.2,-10.5 1.6,-9.9 5.1,-3.2 8.9,-9.8 4.7,-2.5 14.4,-14.9 14,-6.7 11.3,-5.3 8.1,-8.5 5.2,-9.6 4.1,-9.9 -1.8,-6.8 0.4,-21.6 -1,-12.2 0.9,-13.8 z"/>
+                <path d="m 237.6,171.8 -44.1,-33.5 -0.5,20.9 -38.9,-0.7 -0.4,35.4 -11.2,1.3 -3.1,7.1 1.9,20 -46.9,-0.1 -2.7,4.6 6.1,6 3,6.5 -1.4,6.9 1.3,6.9 1,13.7 -1.8,13 -3.5,6.8 0.9,7.5 4.2,-4.5 6,1.2 5.9,-3 6.8,-0.1 5.7,4 7.9,3.7 7.2,10.2 7.8,9.5 4.1,-2.5 2.2,-8.2 3.8,-0.3 8.4,3.8 6.9,-2.7 4.6,0.9 1.9,-3.1 48.5,-0.2 2.7,-9.6 -2,-1.8 -5.4,-59.7 -5.1,-59.7 18.2,-0.2 z"/>
+                <path d="m 714.6,711.7 0.3,-5.2 -2.7,-4.1 0.4,-6 -3.3,-10.2 3.7,-7.7 -0.2,-16.7 -4.1,-8.9 0.4,-1.5 0,0 -2.3,-3.8 -11.9,-2.6 5.6,6.2 2.8,11.7 -2.2,3.8 -2.7,11.2 2,11.5 -4,4.8 -4.1,12.8 6.2,3.6 6.8,6.6 3.3,-1.2 4.7,3.5 0.5,5.5 -2.9,6.5 0.5,9.7 7.5,8.6 4.1,-9.6 5.4,-3 -0.3,-17.8 -4.6,-10 -4.2,-4.4 -0.7,0 0.1,1.9 2.3,0.5 2.2,7.4 -0.4,1.7 -4.1,-5.3 -2.2,3.4 -1.9,-2.9 z"/>
+                <path d="m 576,759.7 -22.4,5.7 -29.1,-2 -8.2,-6.6 -48.8,0.6 -1.9,1 -7.1,-6.3 -7.8,-0.4 -7.2,2.3 -5.9,2.7 0.6,10.6 9.5,13.5 2.5,8.7 6,16.6 5.9,11.4 4.6,5.7 1.3,7.6 -0.1,16.5 3.4,21.3 2.6,10.1 2.2,13.4 4.3,10.1 8.3,10.5 6,-6.8 4.5,3.7 1.7,6 5.2,1 7.3,2.6 6.4,-1 10.8,-7.1 2.2,-51.1 1.4,-40.4 11.8,-0.5 1.9,-49.3 9,-0.4 18.7,-4.9 4.4,5.7 7.9,-5.4 3.6,0 6.9,-3.1 0,-1.2 -4.7,-3.1 -7.8,-0.8 -9.9,3.1 z"/>
+                <path d="m 458.3,198.6 -19,-6 -40.5,26.4 -34.5,27.1 -16.9,6.2 0.3,31.9 -6.6,9.2 -1,8.5 -10.7,2.2 -16.5,1.2 -4.5,4.9 -7.7,0.6 -1,6.7 1.6,6.3 6.9,9 0.4,6.7 14,3.1 -0.3,9.5 4.1,-4 4.3,-0.1 9.3,8 0.8,-12.4 3.5,-5.5 1.6,-8 3.2,-3 13,-1.6 12.2,5.1 4.6,5.3 6.1,0.2 5.8,-3.4 14.7,7.1 6.2,-0.3 7.1,-5.9 7.1,0.4 3.5,-1.9 6.5,0.8 9.4,4 9.4,-7.7 2.9,0.6 8.4,15.1 2.2,-0.3 0.4,-4.4 3.4,-0.8 1.1,-6.5 -7.8,-0.3 -0.1,-8.9 -5.1,-5.2 4.9,-18.2 15.2,-13 0.2,-18 4,-28.1 2.5,-6 -5.1,-4.7 -0.3,-4.4 -4.6,-3.6 -3.4,-21.5 -8.3,5.1 -6.9,-7.5 z"/>
+                <path d="m 468.2,344.6 -2.2,0.3 -8.4,-15.1 -2.9,-0.6 -9.4,7.7 -9.4,-4 -6.5,-0.8 -3.5,1.9 -7.1,-0.4 -7.1,5.9 -6.2,0.3 -14.7,-7.1 -5.8,3.4 -6.1,-0.2 -4.6,-5.3 -12.2,-5.1 -13,1.6 -3.2,3 -1.6,8 -3.5,5.5 -0.8,12.4 -0.5,4.6 2.8,8.2 -2.4,5.6 1.3,3.7 -5.9,8.5 -3.7,4.3 -2.3,8.7 0.3,8.8 -0.6,22.3 10.7,0 9.2,-0.1 8.6,9.1 4.1,10 6.5,8.6 9.8,0.3 4.7,-3.1 4.6,0.8 12.7,-5 3.1,-9.8 5.7,-13.4 3.6,-0.1 7.2,-8.1 4.6,-0.2 6.9,5.7 8.3,-4.7 1.1,-5.7 2.7,-5.6 1.9,-7 6.4,-5.7 2.4,-9.7 2.6,-3.1 1.6,-7.2 3.1,-8.8 10.2,-10.7 0.5,-4.6 1.3,-2.5 -4.9,-5.5 z"/>
+                <path d="m 667.9,533 -7.4,4.3 -2.9,-1.4 -3.5,3.8 -0.5,8.3 -1.7,1 -1.2,7.6 7.4,1.1 3.8,-7.9 6.5,0.9 0,0 3.5,-1.8 0.8,-8.1 -4.8,-7.8 z"/>
+                <path d="m 193.8,134.6 -1.8,0 0,0 0.1,7.5 -7.3,0.4 -3.9,3.2 -5.4,0 -4.2,-1.8 -10,1.4 -4.2,10.8 -3.7,1.1 -6,17.4 -16.9,15 -4.4,19.1 -5,6.2 -1.6,5 -27,1.1 -0.2,-0.1 -0.6,5.9 2.7,-4.6 46.9,0.1 -1.9,-20 3.1,-7.1 11.2,-1.3 0.4,-35.4 38.9,0.7 0.5,-20.9 0.3,-2.7 0,-1 z"/>
+                <path d="m 740,291.9 0.7,-9.2 3.6,-4.2 8.8,-2.3 5.7,-7.9 -6.9,-5.1 -4.8,-3.4 -5.3,-16.5 -2.5,-14.3 2.5,-2.5 -4.7,-13.6 -47.4,0 -46.4,0 -48.1,0 1,27.7 -13.8,0 0.1,5.8 2.4,54.9 -10.5,-0.9 -5.2,10.2 -3,8.5 2.6,3.2 -3.8,4.3 1.5,5.7 -3,5.8 -1.2,5 4.3,-0.8 2.6,5.4 0.3,8 4.6,4.1 -0.1,3.4 1.5,5.9 7.2,8.6 0.1,5.7 -1.9,5.7 0.9,4.3 4.2,4 1,0.7 3.8,-1.6 4.1,-2.6 2.9,-12.3 3.2,-6.4 8.8,-1.9 2.1,3.8 6.5,8 3.3,1.2 4.4,-2.3 8.7,0.4 1.8,2.9 12.1,0 0.3,-2.9 6.3,-2.6 1.1,-4 4.6,-2.9 10.4,8.1 6.2,-1.4 5.8,-10 6.5,-7.6 -1.3,-8.3 -3,-4 7.3,-0.8 0.7,-3 5.7,0.9 -1.2,10.2 1.7,10 6.5,5.5 1.5,4.7 0,6.9 1.7,0.3 -0.1,-1.7 3.3,-14.5 5.6,-3.8 1.1,-5.7 4.8,-10.6 7.1,-6.8 4.5,-13.6 1.4,-11.9 -1.5,-5.6 4.3,-20.3 z"/>
+                <path d="m 707.8,379.2 -1.5,-4.7 -6.5,-5.5 -1.7,-10 1.2,-10.2 -5.7,-0.9 -0.7,3 -7.3,0.8 3,4 1.3,8.3 -6.5,7.6 -5.8,10 -6.2,1.4 -10.4,-8.1 -4.6,2.9 -1.1,4 -6.3,2.6 -0.3,2.9 -12.1,0 -1.8,-2.9 -8.7,-0.4 -4.4,2.3 -3.3,-1.2 -6.5,-8 -2.1,-3.8 -8.8,1.9 -3.2,6.4 -2.9,12.3 -4.1,2.6 -3.8,1.6 8.4,5.4 6.8,5.5 0.1,4.5 8.3,7.2 5.2,6 3.2,8.3 9.2,5.5 2,4.4 7.5,11.4 5.5,1.7 3.2,-2.3 5.7,0.9 6.8,-2.9 2.9,5.9 10.9,9.2 0,0 5,-3.8 7.8,3.1 9.8,-3.3 8.6,0.1 7.4,-6.4 7.4,-8.3 8.1,-9.1 -7.4,-15 -5.7,-3.2 -2.2,-5.6 -6.3,-6.7 -7.5,-1 4,-7.9 6.4,-0.3 1.8,-4.2 -0.4,-10.8 -1.7,-0.3 0,-6.9 z"/>
+                <path d="m 148.8,315.1 -7.8,-9.5 -7.2,-10.2 -7.9,-3.7 -5.7,-4 -6.8,0.1 -5.9,3 -6,-1.2 -4.2,4.5 -3,7.1 -6.1,9.7 -5.4,2.6 6,4.9 4.8,10.8 13.2,-0.4 2.8,-3.3 3.8,-0.2 4.7,3.4 3.8,0.1 4,-2.3 2.4,4 -5.3,3.1 -5.2,-0.3 -5.2,-2.9 -4.5,3.2 -2.2,0.1 -3,1.9 -11,-0.2 1.8,10.6 6.5,-2.3 4,0.5 3.3,-1.6 22.4,0.6 5.8,0.1 8.7,3.4 2.7,-0.3 0.9,-1.6 6.6,1.1 1.8,-0.7 0.6,-4.4 -1,-5.3 -4.5,-3.9 -2.3,-7.9 -0.4,-8.6 z"/>
+                <path d="m 171.5,401 -3.3,0.8 0.1,-5.1 -1.9,-3.6 0.4,-4 -2.6,-5.8 -3.3,-5 -9.7,0 -2.9,2.6 -3.3,0.3 -2.1,3 -1.5,3.8 -6.5,6.1 1.4,10.3 2.1,5 6.3,7.4 8.7,5.6 3.3,1 2.9,-4.4 0.7,-4 5.5,-7.5 5.7,-6.5 z"/>
+                <path d="m 674,874.9 -5.8,-2.6 -3.5,1 -1.4,4 -3.6,5.2 -0.2,4.8 6.6,7.5 7,-1.5 2.8,-6.1 -0.6,-6.1 -1.3,-6.2 z"/>
+                <path d="m 582.5,246.4 -48.7,-26.5 -48.4,-26.5 -11.9,7.6 3.4,21.5 4.6,3.6 0.3,4.4 5.1,4.7 -2.5,6 -4,28.1 -0.2,18 -15.2,13 -4.9,18.2 5.1,5.2 0.1,8.9 7.8,0.3 -1.1,6.5 4.9,8.9 1,9.1 -0.4,9.2 6.8,12.6 -6.8,-0.1 -3.4,0.9 -5.6,-1.3 -2.5,6.5 7.2,8.1 5.3,2.3 1.8,5.7 3.9,9.6 -1.8,3.7 10,-1 2.2,-3.6 2.1,0.3 3,3.1 15.3,-5.3 5.1,-5.4 6.3,-4.8 -1.2,-4.9 3.4,-1.2 11.8,0.8 11.3,-6.4 8.6,-15.1 6,-5.6 7.7,-2.3 0.1,-3.4 -4.6,-4.1 -0.3,-8 -2.6,-5.4 -4.3,0.8 1.2,-5 3,-5.8 -1.5,-5.7 3.8,-4.3 -2.6,-3.2 3,-8.5 5.2,-10.2 10.5,0.9 -2.4,-54.9 z"/>
+                <path d="m 307.1,365.2 -10.7,-0.3 -0.9,4.3 5.1,7.1 0,10.1 1.2,10.9 3,5 -2.7,12.5 1,6.8 3.2,8.8 2.8,4.9 9.8,-3 -3,-9.5 0.5,-31.8 -2.5,-2.8 -0.4,-6.8 -4.3,-4.9 -3.7,-4.1 1.6,-7.2 z"/>
+                <path d="m 429.5,59 -4.5,-2.2 -3.2,-6.6 -6,-0.2 -2.4,-7.6 7.3,-7 1.1,-12.1 -4.1,-3.5 -0.2,-6.5 5.5,-7 -0.9,-2.7 -9.5,5.2 0.1,-7.1 -8.1,-1.7 -12.2,5.7 -2.2,7.2 2.3,13.4 -2.4,11.6 -7,7.8 1.3,10.4 9.7,8.3 0.2,3.3 7.3,5.6 5.7,24.7 5.6,-3.2 0.9,-5.8 -1.5,-5.7 7.9,-5.3 3.4,-4.4 5.6,-4 0.3,-10.6 z"/>
+                <path d="m 672.2,531.3 -4.3,1.7 4.8,7.8 -0.8,8.1 -3.5,1.8 0,0 0.6,5.4 2.6,3.2 0.1,4.5 -3,2.9 -4.9,7.2 -4.5,5 -1.2,0.2 -0.7,5.9 2.3,2 -0.5,5.9 2.3,5.5 -2.9,5.3 9.7,9.4 0.8,8.5 5.9,14.2 0,0 0.6,0.4 4.8,2.3 7.7,2.4 6.8,4.1 11.9,2.6 2.3,3.8 0,0 0.8,-2.7 6.2,7.4 0.6,14.5 3.9,5.3 -0.1,0.2 4.7,-0.5 14.4,3.9 3.3,-1.8 8.4,-0.3 4.5,-4.2 7.3,0.2 13.4,-5.3 10,-8.1 0,0 -4.4,-3 -4.7,-13.6 -4,-8.7 1,-6.6 -0.6,-4.2 3.5,-8.4 -0.3,-3.6 -7.7,-5 -0.6,-7.8 5.9,-17.1 -17.3,-13.8 -0.7,-8 -44.1,-28.2 0,0 -6,6.1 -4.1,6.3 4.8,4.7 -7,3.4 -1.5,-1.6 -7.1,0.9 -5.5,3.1 -3.3,-5.4 2.3,-9.7 0.5,-8.3 0,0 0,0 -13.4,-0.2 z"/>
+                <path d="m 711.3,458.5 -7.4,6.4 -8.6,-0.1 -9.8,3.3 -7.8,-3.1 -5,3.8 0,0 -0.6,16.1 4.9,1.9 -3.9,4.9 -4.7,3.7 -4.6,7.2 -2.6,6.4 -0.6,11.1 -2.9,5.3 -0.1,10.5 2.9,1.4 7.4,-4.3 4.3,-1.7 13.4,0.2 0,0 -0.7,-5.3 5.7,-8.1 7.7,-2 5.2,-3.3 6.3,2.7 0.6,1 0,-0.7 3.5,-5.6 5.9,-9.2 4.4,-10.1 -5.5,-15.8 -1.5,-7 -5.9,-9.6 z"/>
+                <path d="m 522.3,999 5.3,-0.3 7.5,-5.3 10,-2.2 12.3,-5.5 4.7,0.7 7.2,-1.7 12.3,2.7 5.9,-2.6 6.9,2 1.8,-3.8 6,-0.8 12.6,-5.3 9.3,-6.3 8.9,-8.3 14.4,-14.2 7.5,-9.9 3.9,-7.1 5.5,-7 2.5,-2 8.6,-7 3.5,-6.2 2.3,-11.5 3.7,-10.1 -9,-0.1 -2.8,6.1 -7,1.5 -6.6,-7.5 0.2,-4.8 3.6,-5.2 1.4,-4 3.5,-1 5.8,2.6 -0.7,-5 3,-15.4 -2.5,-9.9 -4.7,-19.5 -6.3,-1.3 -4.1,1.6 -5.7,-2.3 -4.9,-0.2 -17.3,10.2 -11.2,10.3 -4.4,9.3 -3.9,5.2 -6.5,1.1 -2.4,6.6 -1.4,4.3 -7.8,3.2 -9.6,-0.6 -5.5,-3.9 -4.9,-1.7 -6,3.2 -3.2,6.6 -5.8,4.2 -6.2,6.2 -8.5,1.4 -2.5,-4.9 1.5,-8.4 -6.5,-13.2 -3.2,-2 -2.2,51.1 -10.8,7.1 -6.4,1 -7.3,-2.6 -5.2,-1 -1.7,-6 -4.5,-3.7 -6,6.8 7.7,17.9 0,0.1 5.4,11.7 6.9,12.8 -0.2,10.6 -3.9,2.5 3.2,9.3 -0.5,8.1 1.3,3.8 0.7,-1.9 4.6,6.2 3.8,0.2 4.6,5 z m 103,-59.1 -4.3,1.3 -8,-10.6 6.9,-8.7 6.8,-5.4 5.7,-2.8 4.8,4.2 3.8,4.2 -4.1,6.7 -2.4,4.5 -6.7,2.2 -2.5,4.4 z"/>
+                <path d="m 671.3,636 -4.1,-1.1 0.7,-3 -2.1,-0.6 -16.4,2.3 -3.3,1.7 -3.6,8.8 2.6,6.1 -2.5,16.4 -1.9,13.9 3.2,2.4 8.4,5.4 3.4,-2.5 0.6,14.9 -9.3,-0.1 -4.8,-7.6 -4.3,-5.9 -9.2,-1.9 -2.6,-7.3 -7.5,4.4 -9.7,-2 -3.9,-6.2 -7.7,-1.3 -5.7,0.3 -0.6,-4.3 -4.2,-0.3 1.2,4.3 -1.5,6.7 2,6.5 -2,5.2 1,4.7 -25.3,-0.1 -1.6,44 7.8,11.3 7.6,8.6 9.9,-3.1 7.8,0.8 4.7,3.1 0,1.2 2.2,1 13.4,1.5 3.8,1.6 4.1,-0.3 7,-9 10.9,-11.4 4.4,-1 1.7,-4.8 7,-5.5 9.3,-1.9 -0.8,-9.9 37.1,-11.4 -6.2,-3.6 4.1,-12.8 4,-4.8 -2,-11.5 2.7,-11.2 2.2,-3.8 -2.8,-11.7 -5.6,-6.2 -6.8,-4.1 -7.7,-2.4 -4.8,-2.3 -0.6,-0.4 0,0 0.9,2.3 -2,0.8 -2.6,-2.9 z"/>
+                <path d="m 669.1,825.1 13.4,-15.7 3.6,-9.9 1.9,-1.3 1.7,-8.1 -1.7,-4.1 1,-10.4 2.8,-9.6 0.8,-17.5 -6.1,-4.4 -5.7,-1 -2.5,-3.4 -5.5,-3 -10,0.3 -0.6,-5.1 -9.3,1.9 -7,5.5 -1.7,4.8 -4.4,1 -10.9,11.4 -7,9 -4.1,0.3 -3.8,-1.6 -13.4,-1.5 4.2,11.1 2.3,2.4 3.5,8 13,15.2 5.1,1.5 -0.2,4.9 3.1,8.8 9.2,2.1 7.3,6.2 4.9,0.2 5.7,2.3 4.1,-1.6 6.3,1.3 z"/>
+                <path d="m 832.6,372.8 -5.7,-5.8 -2.5,-5.7 -4.1,-2.6 -4.2,7.4 -2.5,4.9 4.8,7.7 4.6,6.6 4.8,5 40.3,16.4 10.3,-0.1 -33.5,41.5 -15.9,0.6 -10.7,9.8 -7.8,0.2 -3.3,4.4 -10.5,15.7 0.4,50.4 7.2,11.4 2.7,-3.3 2.9,-7.3 13.4,-16.7 11.4,-10.6 18.1,-13.7 12.1,-11.2 14.1,-18.9 10.1,-15.5 10,-20.2 7,-17.7 5.4,-15.5 2.9,-14.9 2.4,-5 -0.4,-7.3 0.8,-8 -0.5,-3.9 -4.6,0.1 -5.5,4.7 -6.4,1.4 -5.5,2.1 -3.9,0.2 0,0 -6.9,0.5 -4.2,2.6 -6,0.9 -10.5,4.3 -13.2,1.6 -11.3,3.5 -6.1,0 z"/>
+            </g>
+
+            <text id="africa-label" x="960" y="800" text-anchor="middle" fill="#a78bfa" font-family="'JetBrains Mono', monospace"
+                  font-size="13" letter-spacing="4" opacity="0">AFRICA</text>
+            <text id="coverage-label" x="960" y="750" text-anchor="middle" fill="#60a5fa" font-family="'JetBrains Mono', monospace"
+                  font-size="10" letter-spacing="3" opacity="0">8M+ PEOPLE IN COVERAGE AREA</text>
+        </g>
+    </svg>
+</div>
+
+<!-- Vignette -->
+<div class="vignette"></div>
+
+<!-- Text overlays -->
+<div class="text-layer">
+    <div class="beat-text" id="text-0">
+        <div class="label">Beat I / The Origin</div>
+        <h2>7 subsea cables connect Africa to the world.</h2>
+        <p>The bandwidth is here. It just needs a way to reach everyone.</p>
+    </div>
+    <div class="beat-text" id="text-1">
+        <div class="label">Beat II / The Node</div>
+        <h2>10 data centers. Every packet routed intelligently.</h2>
+        <p>Share's coordination layer decides the fastest, cheapest path.</p>
+    </div>
+    <div class="beat-text" id="text-2">
+        <div class="label">Beat III / The Speed</div>
+        <h2>Light. Moving at the speed of light. Through glass.</h2>
+        <p>500+ kilometers of shared backbone.</p>
+    </div>
+    <div class="beat-text" id="text-3">
+        <div class="label">Beat IV / The Last Mile</div>
+        <h2>The last mile is yours.</h2>
+        <p>Share powers everything behind it — so you can reach further, faster, for less.</p>
+    </div>
+    <div class="beat-text" id="text-4">
+        <div class="label">Beat V / The Destination</div>
+        <h2>8 million people in our coverage area.</h2>
+        <p>Share makes it possible. And this is just the beginning.</p>
+    </div>
+</div>
+
+<!-- Location tags -->
+<div class="text-layer">
+    <div class="location-tag" id="location-0">
+        <div class="place">Indian Ocean, off the coast of Mombasa</div>
+    </div>
+    <div class="location-tag" id="location-1">
+        <div class="place">Share Data Center, Nairobi</div>
+    </div>
+    <div class="location-tag" id="location-2">
+        <div class="place">Fiber Backbone, Kenya</div>
+    </div>
+    <div class="location-tag" id="location-3">
+        <div class="place">ISP Tower, Suburban Nairobi</div>
+    </div>
+    <div class="location-tag" id="location-4">
+        <div class="place">Home</div>
+    </div>
+</div>
+
+<!-- Scroll spacer -->
+<div class="scroll-spacer" id="scroll-spacer"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+    <h2>From the ocean floor to your living room.</h2>
+    <p>Share is the infrastructure layer that makes connectivity possible at every step of the journey.</p>
+    <button class="cta-button">Get Started</button>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const beats = 5;
+const spacer = document.getElementById('scroll-spacer');
+const dots = document.querySelectorAll('.progress-dot');
+
+// -- Intro fade out --
+gsap.to('#intro', {
+    opacity: 0,
+    pointerEvents: 'none',
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: '+=300',
+        scrub: 0.5,
+    }
+});
+
+// -- Continuous LED blink animation --
+document.querySelectorAll('.led').forEach((led, i) => {
+    const baseOpacity = parseFloat(led.getAttribute('opacity'));
+    gsap.to(led, {
+        opacity: baseOpacity * 0.3,
+        duration: 0.5 + Math.random() * 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: Math.random() * 2,
+    });
+});
+
+// -- Continuous water particle drift --
+document.querySelectorAll('#water-particles circle').forEach((p, i) => {
+    const baseX = parseFloat(p.getAttribute('cx'));
+    const baseY = parseFloat(p.getAttribute('cy'));
+    gsap.to(p, {
+        attr: { cx: baseX + (Math.random() - 0.5) * 40, cy: baseY + (Math.random() - 0.5) * 30 },
+        duration: 4 + Math.random() * 4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: i * 0.3,
+    });
+});
+
+// -- Continuous net-dot twinkle --
+document.querySelectorAll('.net-dot').forEach((dot, i) => {
+    gsap.to(dot, {
+        opacity: 0.3 + Math.random() * 0.7,
+        duration: 0.8 + Math.random() * 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: Math.random() * 3,
+    });
+});
+
+// ===========================
+// MAIN SCROLL TIMELINE
+// ===========================
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: spacer,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        onUpdate: (self) => {
+            const p = self.progress;
+            const beat = Math.min(4, Math.floor(p * beats));
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === beat);
+            });
+        }
+    }
+});
+
+// ===================================
+// BEAT 1 — THE ORIGIN (Subsea Cable)
+// ===================================
+// Fade in beat 1 scene
+tl.to('#beat1', { opacity: 1, duration: 0.5 }, 0);
+tl.to('#text-0', { opacity: 1, duration: 0.5 }, 0.2);
+tl.to('#location-0', { opacity: 1, duration: 0.5 }, 0.2);
+tl.to('#location-label', { attr: { opacity: 0.4 }, duration: 0.3 }, 0.3);
+
+// Water texture subtle animation (wave)
+tl.to('#water-texture', { y: 5, duration: 2 }, 0);
+
+// Pulse appears and travels along the cable
+tl.to('#pulse-main', { opacity: 1, duration: 0.2 }, 0.3);
+tl.to('#pulse-glow-lg', { opacity: 0.5, duration: 0.3 }, 0.3);
+tl.to('#pulse-glow-md', { opacity: 0.7, duration: 0.3 }, 0.3);
+tl.to('#pulse-core', { opacity: 0.9, duration: 0.2 }, 0.3);
+tl.to('#cable-illumination', { opacity: 0.15, duration: 0.3 }, 0.3);
+
+// Pulse travels the length of the cable — using cx/cy keyframes along the cable path
+// Cable path: M-100,780 Q200,790 480,775 Q760,760 960,770 Q1200,780 1440,765 Q1680,755 2020,770
+tl.to('#pulse-main', { attr: { cx: 480, cy: 775 }, duration: 0.5, ease: 'power1.inOut' }, 0.5);
+tl.to('#pulse-glow-lg', { attr: { cx: 480, cy: 775 }, duration: 0.5, ease: 'power1.inOut' }, 0.5);
+tl.to('#pulse-glow-md', { attr: { cx: 480, cy: 775 }, duration: 0.5, ease: 'power1.inOut' }, 0.5);
+tl.to('#pulse-core', { attr: { cx: 480, cy: 775 }, duration: 0.5, ease: 'power1.inOut' }, 0.5);
+tl.to('#cable-illumination', { attr: { cx: 480, cy: 775 }, duration: 0.5, ease: 'power1.inOut' }, 0.5);
+
+tl.to('#pulse-main', { attr: { cx: 960, cy: 770 }, duration: 0.5, ease: 'power1.inOut' }, 1.0);
+tl.to('#pulse-glow-lg', { attr: { cx: 960, cy: 770 }, duration: 0.5, ease: 'power1.inOut' }, 1.0);
+tl.to('#pulse-glow-md', { attr: { cx: 960, cy: 770 }, duration: 0.5, ease: 'power1.inOut' }, 1.0);
+tl.to('#pulse-core', { attr: { cx: 960, cy: 770 }, duration: 0.5, ease: 'power1.inOut' }, 1.0);
+tl.to('#cable-illumination', { attr: { cx: 960, cy: 770 }, duration: 0.5, ease: 'power1.inOut' }, 1.0);
+
+tl.to('#pulse-main', { attr: { cx: 1920, cy: 768 }, duration: 0.5, ease: 'power2.in' }, 1.5);
+tl.to('#pulse-glow-lg', { attr: { cx: 1920, cy: 768 }, duration: 0.5, ease: 'power2.in' }, 1.5);
+tl.to('#pulse-glow-md', { attr: { cx: 1920, cy: 768 }, duration: 0.5, ease: 'power2.in' }, 1.5);
+tl.to('#pulse-core', { attr: { cx: 1920, cy: 768 }, duration: 0.5, ease: 'power2.in' }, 1.5);
+tl.to('#cable-illumination', { attr: { cx: 1920, cy: 768 }, duration: 0.5, ease: 'power2.in' }, 1.5);
+
+// Fade out beat 1
+tl.to('#text-0', { opacity: 0, duration: 0.3 }, 1.7);
+tl.to('#location-0', { opacity: 0, duration: 0.3 }, 1.7);
+tl.to('#beat1', { opacity: 0, duration: 0.4 }, 1.8);
+
+
+// ===================================
+// BEAT 2 — THE NODE (Data Center)
+// ===================================
+tl.to('#beat2', { opacity: 1, duration: 0.5 }, 2.0);
+tl.to('#text-1', { opacity: 1, duration: 0.5 }, 2.2);
+tl.to('#location-1', { opacity: 1, duration: 0.5 }, 2.2);
+
+// Dashboard fades in more
+tl.to('#dashboard', { opacity: 0.4, duration: 0.8 }, 2.3);
+
+// Pulse enters from left, travels through racks
+tl.to('#pulse-dc', { opacity: 1, duration: 0.2 }, 2.3);
+tl.to('#pulse-dc-glow', { opacity: 0.6, duration: 0.2 }, 2.3);
+tl.to('#pulse-dc-core', { opacity: 0.9, duration: 0.2 }, 2.3);
+
+// Pulse to rack 1
+tl.to('#pulse-dc', { attr: { cx: 310 }, duration: 0.3, ease: 'power1.inOut' }, 2.5);
+tl.to('#pulse-dc-glow', { attr: { cx: 310 }, duration: 0.3, ease: 'power1.inOut' }, 2.5);
+tl.to('#pulse-dc-core', { attr: { cx: 310 }, duration: 0.3, ease: 'power1.inOut' }, 2.5);
+
+// Pulse to rack 2
+tl.to('#pulse-dc', { attr: { cx: 505 }, duration: 0.3, ease: 'power1.inOut' }, 2.8);
+tl.to('#pulse-dc-glow', { attr: { cx: 505 }, duration: 0.3, ease: 'power1.inOut' }, 2.8);
+tl.to('#pulse-dc-core', { attr: { cx: 505 }, duration: 0.3, ease: 'power1.inOut' }, 2.8);
+
+// Pulse to rack 3
+tl.to('#pulse-dc', { attr: { cx: 745 }, duration: 0.3, ease: 'power1.inOut' }, 3.1);
+tl.to('#pulse-dc-glow', { attr: { cx: 745 }, duration: 0.3, ease: 'power1.inOut' }, 3.1);
+tl.to('#pulse-dc-core', { attr: { cx: 745 }, duration: 0.3, ease: 'power1.inOut' }, 3.1);
+
+// Transceivers flash as pulse passes
+tl.to('.transceiver', { opacity: 1, attr: { r: 6 }, duration: 0.15, stagger: 0.15 }, 2.5);
+tl.to('.transceiver', { opacity: 0.4, attr: { r: 4 }, duration: 0.3, stagger: 0.15 }, 2.7);
+
+// Pulse exits to the right
+tl.to('#pulse-dc', { attr: { cx: 1920 }, duration: 0.4, ease: 'power2.in' }, 3.4);
+tl.to('#pulse-dc-glow', { attr: { cx: 1920 }, duration: 0.4, ease: 'power2.in' }, 3.4);
+tl.to('#pulse-dc-core', { attr: { cx: 1920 }, duration: 0.4, ease: 'power2.in' }, 3.4);
+
+// Fade out beat 2
+tl.to('#text-1', { opacity: 0, duration: 0.3 }, 3.6);
+tl.to('#location-1', { opacity: 0, duration: 0.3 }, 3.6);
+tl.to('#beat2', { opacity: 0, duration: 0.4 }, 3.7);
+
+
+// ===================================
+// BEAT 3 — THE SPEED (Fiber Backbone)
+// ===================================
+tl.to('#beat3', { opacity: 1, duration: 0.5 }, 4.0);
+tl.to('#text-2', { opacity: 1, duration: 0.5 }, 4.2);
+tl.to('#location-2', { opacity: 1, duration: 0.5 }, 4.2);
+
+// All pulses appear
+tl.to('#pulse-fiber-main', { opacity: 1, duration: 0.2 }, 4.2);
+tl.to('#pulse-fiber-main-glow', { opacity: 0.6, duration: 0.2 }, 4.2);
+tl.to('#pulse-fiber-main-core', { opacity: 0.9, duration: 0.2 }, 4.2);
+tl.to('#speed-trail-main', { opacity: 0.6, duration: 0.2 }, 4.2);
+tl.to('#fiber-illumination', { opacity: 0.4, duration: 0.3 }, 4.2);
+
+tl.to('.fiber-pulse-secondary', { opacity: 0.7, duration: 0.2, stagger: 0.05 }, 4.3);
+tl.to('.speed-trail-sec', { opacity: 0.4, duration: 0.2, stagger: 0.05 }, 4.3);
+
+// Main pulse races across — FAST
+tl.to('#pulse-fiber-main', { attr: { cx: 2100 }, duration: 1.0, ease: 'power2.in' }, 4.4);
+tl.to('#pulse-fiber-main-glow', { attr: { cx: 2100 }, duration: 1.0, ease: 'power2.in' }, 4.4);
+tl.to('#pulse-fiber-main-core', { attr: { cx: 2100 }, duration: 1.0, ease: 'power2.in' }, 4.4);
+tl.to('#fiber-illumination', { attr: { x: 2100 }, duration: 1.0, ease: 'power2.in' }, 4.4);
+
+// Speed trail follows but stays behind
+tl.to('#speed-trail-main', { attr: { x1: -80, x2: 2100 }, duration: 1.0, ease: 'power2.in' }, 4.4);
+
+// Secondary pulses race at different speeds (offset start times, some faster)
+const secPulses = document.querySelectorAll('.fiber-pulse-secondary');
+const secTrails = document.querySelectorAll('.speed-trail-sec');
+const secSpeeds = [0.9, 0.85, 1.1, 0.95, 1.05, 0.8, 1.0];
+const secDelays = [4.45, 4.5, 4.42, 4.55, 4.48, 4.6, 4.52];
+secPulses.forEach((p, i) => {
+    const speed = secSpeeds[i] || 1.0;
+    const del = secDelays[i] || 4.5;
+    tl.to(p, { attr: { cx: 2100 }, duration: speed, ease: 'power1.in' }, del);
+});
+secTrails.forEach((t, i) => {
+    const startX = parseFloat(t.getAttribute('x1'));
+    const speed = secSpeeds[i] || 1.0;
+    const del = secDelays[i] || 4.5;
+    tl.to(t, { attr: { x1: startX, x2: 2100 }, duration: speed, ease: 'power1.in' }, del);
+});
+
+// Fiber strands glow as pulses pass
+tl.to('#fiber-strands line', { stroke: '#1e2e50', duration: 0.4, stagger: 0.05 }, 4.5);
+tl.to('#fiber-strands line', { stroke: '#2a4060', duration: 0.5, stagger: 0.05 }, 5.0);
+
+// Fade out beat 3
+tl.to('#text-2', { opacity: 0, duration: 0.3 }, 5.5);
+tl.to('#location-2', { opacity: 0, duration: 0.3 }, 5.5);
+tl.to('#beat3', { opacity: 0, duration: 0.4 }, 5.6);
+
+
+// ===================================
+// BEAT 4 — THE LAST MILE (Cell Tower)
+// ===================================
+tl.to('#beat4', { opacity: 1, duration: 0.5 }, 6.0);
+tl.to('#text-3', { opacity: 1, duration: 0.5 }, 6.2);
+tl.to('#location-3', { opacity: 1, duration: 0.5 }, 6.2);
+
+// Pulse enters along the fiber from left
+tl.to('#pulse-tower', { opacity: 1, duration: 0.2 }, 6.2);
+tl.to('#pulse-tower-glow', { opacity: 0.5, duration: 0.2 }, 6.2);
+tl.to('#pulse-tower-core', { opacity: 0.9, duration: 0.2 }, 6.2);
+
+// Travel along fiber to tower base
+tl.to('#pulse-tower', { attr: { cx: 940, cy: 700 }, duration: 0.4, ease: 'power1.inOut' }, 6.3);
+tl.to('#pulse-tower-glow', { attr: { cx: 940, cy: 700 }, duration: 0.4, ease: 'power1.inOut' }, 6.3);
+tl.to('#pulse-tower-core', { attr: { cx: 940, cy: 700 }, duration: 0.4, ease: 'power1.inOut' }, 6.3);
+
+// Travel up to tower base connection point
+tl.to('#pulse-tower', { attr: { cx: 960, cy: 880 }, duration: 0.3, ease: 'power1.inOut' }, 6.7);
+tl.to('#pulse-tower-glow', { attr: { cx: 960, cy: 880 }, duration: 0.3, ease: 'power1.inOut' }, 6.7);
+tl.to('#pulse-tower-core', { attr: { cx: 960, cy: 880 }, duration: 0.3, ease: 'power1.inOut' }, 6.7);
+
+// Travel up the tower
+tl.to('#pulse-tower', { attr: { cx: 960, cy: 300 }, duration: 0.5, ease: 'power2.out' }, 7.0);
+tl.to('#pulse-tower-glow', { attr: { cx: 960, cy: 300 }, duration: 0.5, ease: 'power2.out' }, 7.0);
+tl.to('#pulse-tower-core', { attr: { cx: 960, cy: 300 }, duration: 0.5, ease: 'power2.out' }, 7.0);
+
+// Signal waves burst outward when pulse reaches top
+const signalWaves = document.querySelectorAll('.signal-wave');
+signalWaves.forEach((wave, i) => {
+    tl.to(wave, {
+        attr: { r: 200 + i * 80 },
+        opacity: 0.4 - i * 0.06,
+        duration: 0.6,
+        ease: 'power2.out'
+    }, 7.5 + i * 0.08);
+    tl.to(wave, {
+        opacity: 0,
+        duration: 0.4,
+    }, 7.8 + i * 0.08);
+});
+
+// Pulse fades at the top (signal is wireless now)
+tl.to('#pulse-tower', { opacity: 0, duration: 0.3 }, 7.5);
+tl.to('#pulse-tower-glow', { opacity: 0, duration: 0.3 }, 7.5);
+tl.to('#pulse-tower-core', { opacity: 0, duration: 0.3 }, 7.5);
+
+// Building windows light up warm
+tl.to('.window-glow', { opacity: 0.25, duration: 0.5, stagger: 0.1 }, 7.6);
+
+// Fade out beat 4
+tl.to('#text-3', { opacity: 0, duration: 0.3 }, 8.0);
+tl.to('#location-3', { opacity: 0, duration: 0.3 }, 8.0);
+tl.to('#beat4', { opacity: 0, duration: 0.4 }, 8.1);
+
+
+// =============================================
+// BEAT 5 — THE DESTINATION (Home + Zoom Out)
+// =============================================
+tl.to('#beat5', { opacity: 1, duration: 0.5 }, 8.2);
+tl.to('#text-4', { opacity: 1, duration: 0.5 }, 8.4);
+tl.to('#location-4', { opacity: 1, duration: 0.5 }, 8.4);
+
+// Human scene fades in
+tl.to('#human-scene', { opacity: 1, duration: 0.5 }, 8.3);
+
+// Packet arrives at the screen
+tl.to('#pulse-arrival', { opacity: 1, duration: 0.2 }, 8.5);
+tl.to('#pulse-arrival-glow', { opacity: 0.6, duration: 0.2 }, 8.5);
+
+// Pulse absorbed into screen
+tl.to('#pulse-arrival', { opacity: 0, attr: { r: 0 }, duration: 0.3 }, 8.7);
+tl.to('#pulse-arrival-glow', { opacity: 0, duration: 0.3 }, 8.7);
+
+// Screen lights up
+tl.to('#screen-glow', { opacity: 0.15, duration: 0.3 }, 8.8);
+
+// Warm ambient glow
+tl.to('#ambient-glow', { opacity: 0.15, duration: 0.5 }, 8.9);
+
+// WiFi symbol appears
+tl.to('#wifi-symbol path', { opacity: 0.6, duration: 0.3, stagger: 0.1 }, 8.9);
+tl.to('#wifi-symbol circle', { opacity: 0.8, duration: 0.3 }, 9.0);
+
+// === ZOOM OUT TRANSITION ===
+// Human scene shrinks and fades
+tl.to('#human-scene', { opacity: 0.3, attr: { transform: 'translate(960, 540) scale(0.3)' }, duration: 0.8 }, 9.3);
+tl.to('#pulse-arrival', { opacity: 0, duration: 0.3 }, 9.3);
+
+// Africa map appears
+tl.to('#africa-map', { opacity: 1, duration: 1.2 }, 9.3);
+
+// Millions of dots appear
+tl.to('#network-millions', { opacity: 1, duration: 0.8 }, 9.4);
+
+// Global cables appear
+tl.to('#global-cables', { opacity: 1, duration: 0.8 }, 9.6);
+
+// Labels
+tl.to('#africa-label', { attr: { opacity: 0.4 }, duration: 0.5 }, 9.7);
+tl.to('#coverage-label', { attr: { opacity: 0.3 }, duration: 0.5 }, 9.8);
+
+// Location tag changes
+tl.to('#location-4', { opacity: 0, duration: 0.2 }, 9.3);
+
+// Fade out everything at end
+tl.to('#text-4', { opacity: 0, duration: 0.5 }, 10.5);
+tl.to('#scene', { opacity: 0, duration: 0.8 }, 10.5);
+tl.to('#progress', { opacity: 0, duration: 0.5 }, 10.5);
+</script>
+
+</body>
+</html>
