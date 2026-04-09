@@ -209,3 +209,19 @@ Over 50% of Africa's population still has no internet access. Five of the 10 mos
 
 **Infrastructure Reality:**
 Kenya has 5+ submarine cables landing (SEACOM, EASSy, LION2, DARE 1, and others), government fiber backbone projects (NOFBI), and growing data center investment. The infrastructure exists but is unevenly distributed and often underutilized — which is exactly what Share aggregates.
+
+---
+
+## Call #2 Addendum (2026-04-02)
+
+The April 2 concept call surfaced several business-intelligence beats that didn't come up in the kickoff. Full notes in `research/calls/2026-04-02_concept.md`.
+
+**Hardware as moat (investor framing).** Jose argued that in the current VC environment, hardware is the real differentiator because *"every single company in YC this year got cloned in 24 hours by one agent."* Share wants to be perceived as heavy infrastructure (not SaaS) — 80% of CapEx is in infra. AI can't replicate physical silicon or fiber optic cables. This is the explicit counter to investor concerns about Share being "just telco infrastructure."
+
+**Fiber cable anatomy (technical credibility).** Jose and Omar explained the actual structure of a fiber cable for the design team: an outer cable contains ~96 cores (color-coded tubes), each tube holds 12 fibers, and most companies activate only ~5 of them. Splicing means melting glass ends together. This matters because the storyboard's single-lit-core visual reads as "already solved" to industry viewers — Share's value prop is *unrealized* potential, not connection.
+
+**Live dashboard reality.** Jose live-demoed Share's internal dashboard mid-call: 4,751 towers already accessible in Kenya, real cables mapped across Nairobi/Mombasa, 2 main DCs in Mombasa + micro nodes (converted from previously independent towers). His framing: *"For a seed company like us, this is mind-blowing... I would say, is, I don't know, $2 billion of infrastructure."* Mombasa visualizes Share's coordination effect — competing companies' infrastructure all become "the same color" once they're in the ecosystem.
+
+**Neutrality vs. control (messaging tension resolved).** Two audiences pull in opposite directions: ISPs need to feel Share has infrastructure and control; suppliers need to feel their assets stay theirs. Resolution: both audiences hear *"enablement, accessibility, neutral infrastructure provider."* Avoid "control." Crucially, Luis added that suppliers actually *want* Share to feel like it has hardware — *"it is what builds the trust for them. We're kind of the glue of both."* So the framing is "neutral enabler with real hardware," not "we own nothing."
+
+**A supplier today is an infra provider tomorrow.** Luis flagged this for site copy: a small ISP partner that grows might want to contribute its own underutilized cables back into the ecosystem. The marketplace is bidirectional; the language should welcome that movement.

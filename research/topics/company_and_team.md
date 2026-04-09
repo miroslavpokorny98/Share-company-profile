@@ -27,16 +27,18 @@ _Factual reference card_
 
 ## Infrastructure Numbers
 
-_From brief — confirm before publishing_
+_Confirmed for public use as of 2026-04-01 (per Notion answers + Apr 2 dashboard demo)_
 
 - 7 subsea cable interconnections
-- 400+ km fiber under management
-- 7 micro data centers (suburban areas)
-- 8M+ people covered
+- 500+ km fiber under management
+- 10 data centers
+- 8M+ people in area covered
+- 12 telco infrastructure providers
+- **4,751 telecom towers accessible in Kenya** (dashboard-verified, Apr 2 demo — Jose: *"For a seed company like us, this is mind-blowing... $2 billion of infrastructure"*)
+- 2 primary data centers in Mombasa + micro nodes converted from previously independent towers
 - Colocation across all major Kenya data centers
 - Aggregated IP transit from Tier 1 providers
 - Connected to Meta's network; Google Cloud connection in progress
-- 2 primary data centers: Mombasa and Nairobi
 
 ---
 

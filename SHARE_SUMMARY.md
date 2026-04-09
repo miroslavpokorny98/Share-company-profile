@@ -1,6 +1,6 @@
 # Share x VKZ — Project Summary Brief
 
-_Last updated: March 26, 2026 | PROP-217 | Always update this file when new information arrives_
+_Last updated: April 8, 2026 | PROP-217 | Always update this file when new information arrives_
 
 ---
 
@@ -60,6 +60,8 @@ Share is building Africa's Hyperscale Internet Network — a bandwidth marketpla
 - 10 data centers
 - 8M+ people in area covered
 - 12 telco infrastructure providers
+- **4,751 telecom towers accessible in Kenya** (dashboard-verified, Apr 2 demo)
+- 2 primary data centers in Mombasa + micro nodes converted from previously independent towers
 - Connected to Meta's network; Google Cloud connection in progress
 
 **Vision numbers (2-3 years):** 1M+ users connected, 100K+ km of fiber, 30+ data centers — hyperscale network across Africa, not just Kenya.
@@ -78,6 +80,8 @@ Share is building Africa's Hyperscale Internet Network — a bandwidth marketpla
 
 **Colors:** Can play around within current general spectrum (blue, black, white, etc.).
 
+**Tone (Apr 6 — Jose):** "War room atmosphere" — muted, slightly desaturated blues, darker overall depth, focused/controlled environment. Bright tones discouraged. *"Giving the connections more strength by their light contrast."*
+
 **Motion language + data visualization:** Confirmed aligned.
 
 **Competitive positioning:** Definitely more **tech-forward**. Existing players have outdated, antiquated websites. Share has a position to showcase speed and reliability. More of an **enabler** to all ISPs — "we only make money if they make money."
@@ -95,7 +99,28 @@ Share is building Africa's Hyperscale Internet Network — a bandwidth marketpla
 
 ---
 
-## 3D & Immersive Direction — DETAILED BRIEF FROM SHARE
+## 3D & Immersive Direction
+
+### Apr 2 update — narrative shifted (supersedes parts of original brief below)
+
+After the concept call on April 2, Share reframed the homepage visual direction. Full call notes in `research/calls/2026-04-02_concept.md`.
+
+- **Identity-establishing visual at the top must be a coordination layer**, not a fiber cable. The original storyboard read as "Share is a fiber company." Visual should show Share as the thing that connects all infrastructure types — cables, towers, data centers, satellites. Omar's metaphor (raised on call by Luis): a fungi spreading across hardware, like the Tokyo subway experiment.
+- **Hero must stand alone** with a complete Share definition, before the immersive scroll begins. Mobile / low-data users won't scroll.
+- **Cable narrative kept** for the problem/solution mid-section, but with multiple fibers showing partial connection (matching the actual ~96-core / 12-fiber-per-tube structure of a real fiber cable). The single-lit-core visual reads as "already solved" to industry viewers.
+- **Tone correction** away from framing Africa as "missing" something — Share is an enabler activating what's already there, not an outside fixer. *"It almost comes from within. We're just powering, activating, creating an exponential value of what's already valuable."* — Jose
+- **Real-time WebGL DECIDED** over PNG sequence. Jose: *"if we have a website that doesn't load we're cooked because it's literally what we do, it's internet."*
+- **Hardware as moat:** 80% of Share's CapEx is infra. Site should make investors *feel* this is heavy infrastructure, not SaaS — AI can't replicate physical silicon.
+
+**Canonical hero copy from Jose (Apr 6):**
+
+> *"Share is a carrier-neutral, open-access internet infrastructure network. Our purpose is to coordinate and enhance the overall productivity of the telco industry across the entire African continent."*
+
+Closing tagline: *"The Internet, from Africa to the World."*
+
+**Neutrality framing for both audiences:** ISPs hear "you have access" / "neutral infrastructure provider"; suppliers hear "your assets stay yours" / "we activate underutilized capacity." Avoid "control." A supplier today could become an infra provider tomorrow. (Crucially, suppliers actually *want* Share to feel like it has hardware — that's what builds trust.)
+
+### Original brief (March discovery)
 
 **Overall approach:** More literal and physical. Abstract only to change texture or transition between narrative points, but still with very recognizable elements (e.g., point-cloud solutions).
 
@@ -125,19 +150,25 @@ Share is building Africa's Hyperscale Internet Network — a bandwidth marketpla
 
 ---
 
-## Proposed Site Structure (3-4 pages — LEANER than originally proposed)
+## Site Structure — 4 pages (confirmed Apr 6)
 
-Share believes the site can be leaner than initially proposed. Their internal thinking:
+Share added a Suppliers page after the Apr 2 concept call. Final agreed structure: **4 pages**.
 
-**Page 1 — Home:** The ecosystem vision. Speaks to everyone. Sets scale, mission, "what is Share, why Africa." Most immersive — the data packet journey described above.
+**Page 1 — Home:** The ecosystem vision. Speaks to everyone. Hero stands alone with a complete Share definition. Coordination-layer animation (real-time WebGL). After the animation: credibility section (numbers, partner logos, testimonials), CTAs to ISP and User journeys. See Apr 2 narrative shift above.
 
-**Page 2 — For ISP Partners:** Commercial and operational case for joining. Covers backhaul with no capacity commits, platform tools, payment gateway. Positioning Share as full ecosystem membership: connectivity + financial rails to scale. More focused on platform UI/product. Coverage map (possibly non-3D).
+**Page 2 — Suppliers / Infrastructure** *(NEW — added by Share Apr 6)***:** Supply side of the marketplace. Pitches data centers, tower companies, and subsea cable providers on monetizing underutilized capacity through Share. Less animation-heavy, reuses 3D elements from homepage for visual consistency. Frames competitors as opportunistic participants in a marketplace where they make more money on their balance sheet.
 
-**Page 3 — For End Users:** Demand-side. Helps consumers find Share-connected ISPs in their area. Understand what being on the Share network means — faster, more reliable internet from a local provider backed by real infrastructure.
+**Page 3 — For ISPs:** Demand side. Hero + 3 sections (per Jose's Apr 6 copy): unlimited bandwidth on revenue share / no per-megabit charges; cross-connect anywhere (DC, tower, joint box); integrate with existing OSS/BSS — no migration, no rip-and-replace. Less immersive than homepage.
+
+**Page 4 — For End Users:** Helps consumers find Share-connected ISPs in their area. Understand what being on the Share network means — faster, more reliable internet from a local provider backed by real infrastructure.
+
+**Optional / phaseable additions (proposed by VKZ Apr 2):** contact page with form, about/founders page, case studies, blog/press releases (only if Share commits to ≥1 article/month).
 
 **Platform showcase:** Mix of actual UI screens (they have designs, though not all features) + conceptual elevation. Homepage alludes to it conceptually. ISP page is more focused/detailed.
 
-**Tech stack (confirmed by Share):** React/Next.js + Sanity CMS + Vercel. Share's own webapp is built on React/Next.js and hosted on Vercel. They want to understand Sanity CMS experience better.
+**Tech stack (confirmed):** React/Next.js + Sanity CMS + Three.js/WebGL (real-time, decided Apr 2) + Vercel. Share's own webapp is built on React/Next.js and hosted on Vercel.
+
+**Budget:** **$32–35K total** (real-time WebGL adds ~$5–10K over PNG sequence). ~60–70% of budget is modular section/page work — itemized breakdown spreadsheet sent to Share Apr 8.
 
 ---
 
@@ -213,16 +244,23 @@ Share believes the site can be leaner than initially proposed. Their internal th
 
 ---
 
-## Project Status — March 26, 2026
+## Project Status — April 8, 2026
 
 | Task | Owner | Status |
 |------|-------|--------|
-| Call with Share | Both | Done (March 17) |
+| Discovery call #1 | Both | Done (March 17) — see `research/calls/2026-03-17_kickoff.md` |
 | Questions sent to Share | VKZ | Done (March 18) |
-| Share answers discovery questions | Share | Done (via Notion) |
-| NDAs | Both | Pending |
-| Share sends assets, photos, dashboards | Share | In progress (throughout this week) |
-| VKZ develops full proposal | VKZ | In progress |
-| Infrastructure numbers confirmed | Share | Done — usable publicly April 1 |
+| Share answers discovery questions | Share | Done (March 24, via Notion) — see `research/discovery/questions_answered.md` |
+| NDA signed by Share | Share | Done (March 25) |
+| Share delivers Kenya deployment photos | Share | Done (March 30, via Google Drive — anonymization required) |
+| Concept call #2 | Both | Done (April 2) — see `research/calls/2026-04-02_concept.md` |
+| Real-time WebGL decision | Both | Done (April 2) |
+| Hero copy + ISP page + Supplier page content | Share | Done (April 6 via Slack) |
+| Itemized budget breakdown | VKZ | Done (April 8) |
+| Share reviews budget + story alignment | Share | **In progress** |
+| Story alignment sync call | Both | **Pending** (target: week of Apr 6) |
+| Infrastructure numbers confirmed | Share | Done — publicly usable since April 1 |
 
-**Communication:** Slack. Three Share contacts: Luis Munoz Aycart (CEO), Jose (co-founder), Omar.
+**Communication:** Slack — `#vkz-share` (client-facing), `#internal-share` (VKZ team). See `research/communications/slack_log.md` for chronological signal log.
+
+**Share contacts:** Luis Munoz Aycart (CEO), Jose (co-founder), Omar (co-founder).

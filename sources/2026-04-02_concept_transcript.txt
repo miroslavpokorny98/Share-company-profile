@@ -1,0 +1,343 @@
+Okay. Thank you for watching! ♪ ♪ Really, show me how it was. Thank you.
+
+Sura alaykum. Hello. Hi. How's it going? Good.
+
+How are you?
+
+Good, good, good. And we're in Nairobi this week. The three of us, we sometimes go from Mubasa, Nairobi, and now that we're expanding the network here to the Capitol, We spent the week here. Everything's great. We're excited for the call, actually. I don't think Omar's going to be able to join. So it'll just be the two of us. But... I'll pass it over to you.
+
+Cool.
+
+I think we're still waiting for Lucas, our colleague. I don't know. Let me just text him real quick.
+
+We've been having a great week so far here. Fantastic meetings with partners, clients, to be honest, if every week is like this, You're looking at the next billion dollar company. Now, of course, that's not our goal. But the rhythm in which this is moving is quite absurd. Yes. this may arguably be the most exciting meeting that we were anticipating, like Lisa. Don't want to create more expectations, but we're pretty happy.
+
+No pressure, no pressure. I think We don't need to wait for him. maybe he'll join. Later, I don't know what's going on. But... Um, What we did in the last week or so We went through everything that you wrote us in the notion. Thank you for that. It was very extensive and very detailed and gave us a really good perspective and then we can dive into this concept of face. and what's gonna happen today is that we're not going to pitch you a final concept or final design nothing like that I would like it to be more of a discussion conversation of what do you think is good and we should do this and what do you think should be refined or removed yes so we have this storyboard for you guys And I think we're doing an exception with you because we're letting you into the process sooner than we usually do with our clients.
+
+But I feel like this is the right step to align with you before we spend hours and hours on it. And also we need to fix the budget and the timeline. So what you're going to see is the storyboard and the overall vibe and feel that we may be aiming for, but don't get fixated on the design, the visual aspect of it.
+
+focus on the story itself. So let me share my screen.
+
+I'm gonna walk through the whole thingAnd then? Perfect.
+
+And then? Sounds good. We will inevitably, even just by seeing this, we will inevitably also look into the design and stuff like that. So anytime you think that we're maybe pushing it into something that is still too bare bones or ideas, just be like, dude, stop, let's redirect the conversation. Because I already saw a cable and I'm already getting excited.
+
+Okay, okay. The thing is that we read what you wrote down in the notion regarding the messaging, right? So you were like the data packet will go from data centers through fiber cables and ending in a user's home and then zooming out and seeing all Africa. The thing is that this is... the solution right away and what we did is we put the story on the home page in three let's say phases three sections we start with the problem which is like giving the user the context of what you guys are actually dealing with then we come with the solution which is share and your US piece and then we are doing the vision the the the fact that you want to do it for all Africa. So that's the main difference and now I'm going to show you what we mean by that.
+
+So... What is happening here? Again, just a simple simulation of how we're envisioning it is that we want to tell the user that the infrastructure exists. I really liked the subsea cables have landed to towers up, fiber runs across the continent. This is really important just to get the context of what is it like over there, in this market. So now we're just showing the problem. But it doesn't work together, right? It's not connected.
+
+It runs in parallel and never together. And with this one, we're going a bit more metaphorical because we were asking ourselves questions like, okay, so now we have data centers, cables, We have these towers. How do we visually show the user that it's not talking to each other? So we're doing this in a metaphorical way. We have these cables and you can see that just one cable is connected. Right now it works somehow but there's a lot of missing potential so we're having these unconnected cables and the text is very important so that's why we put in some placeholder text so you guys can actually get the idea and then share it actually comes in N It's actually the coordination layer that Africa was missing and now we're just explaining the solution that you guys have And then we're just trying to show the unlimited character of it, like the unlimited back hole and zero upfront comments.
+
+What we're trying to say is that we would put all the USBs right here. We don't need to over explain it, but it should be here. It should be told rather sooner than later.
+
+And then we'll just-I have a quick question before you continue. For me to get an understanding, this would be almost a storyline that you guys are proposing for the home page alone, correct? This would be almost like as if I'm scrolling having this story. Yes, exactly.
+
+And here we're just trying to show the flow, the speed, the whole ecosystem. And then by the end of it, so this is the problem. So we have the problem, we have a solution. And now we're going to By the end of the animation on the homepage, we're going to scroll down and we're going to see the whole Africa connected everyone in the share ecosystem and showing the vision that you guys are aiming for. So this is the story that we lined up.
+
+And I would love you to jump in and tell me your first thoughts and what's good, what should be refined. So yeah, so I think that's basically it. I don't know if you want to share. add something to it.
+
+Yeah, basically that's it.
+
+And maybe, One more thought. This is the animation part, but the homepage will then keep I can share the five frame right after we discuss this we can share the five frames because then we need to have this credibility boost so we need to have numbers logos testimonials and all this stuff needs to happen on the home page so that you build up the credibility and then you lead the the users to other parts of your website.
+
+So for ISPs there's going to be a page for ISPs that will go more in depth and for users the same thing. So just to give you the whole idea of the homepage.
+
+Okay, personally, I was also very much listening to you and the story. It would help me a lot if you go from top to bottom really quick and we kind of just watch it to have a little refreshment. Yeah.
+
+Okay, here we go.
+
+So this is the This is the beginning. Um, The text will appear here and there, but As this is not a final visual, this is just a placeholder. Okay.
+
+Then Thank you.
+
+I would like to mention that even though some of the screens don't animate into each other, in the end it will be one fluid movement. So in this part we will zoom in on the cable.
+
+Yeah, we can zoom in the cable, we can have the cable horizontal, we can have it like the same as you had in those references that you sent us. So we can play with it a lot. But yeah, as Mira said, we will connect everything in one scroll.
+
+And actually the cable doesn't look very much as the fiber optic cable so we will make it so it will resemble it more than For sure, for sure.
+
+And you can see that there's no texture. There's just a plain 3D object that is just telling the story, but it doesn't look like the photos you sent or we've researched.
+
+I think it is exactly as you're saying. This is almost like, pieces together that you guys have found to show a concept without the need of exactly how it would look and interact. Here we will show the data light up and flowing through cable in the best way that we can figure out later.
+
+And this is just the vision by the end, which is pretty straightforward. I feel like the most tricky part is the middle one. And the start and the end, I feel like it's pretty strong, but the middle part definitely needs your input. Yeah, so that's it. I can go back to the beginning if you want.
+
+I'm recollecting folks right now. Yeah. The one thing that comes to mind as maybe an initial thing as I'm looking into it to maybe get everyone's thoughts is In the way that you guys are showing it is, as soon as I get onto the thing, I'm being told about a... Not even a problem, about just a fact on how the ecosystem kind of works. Then I'm going into the problem, then I'm going into how share fixes it.
+
+which I would then feel like almost like it is that on that third, for the sake of it, third scroll that I'm starting to learn about what share is. I almost wonder if there's a possibility to even in a easy kind of way at the beginning is a very light touch on what share is, then dives again into how Africa kind of works in the internet, what the problem is, how share solves it, and you wrap around.
+
+It's almost like an additional at the beginning that you almost get started with a... Okay, I'm getting onto share and even if I don't understand it fully, I see that share is an infrastructure company, an internet company, the backbone of Africa, whatever it is. I mean, you're diving into the whole story almost. I don't know what you guys think. You or Jose Ramirez? Yeah. I need a little bit of time to put my thoughts together, but I think I have something, and what you just mentioned, Luis, is a big part of it.
+
+Entering into the website, we need to recognize that some people just do not scroll. It's the reality. Somebody will go into it and will just check out the website to understand what it is. Some people might see it on mobile. Some people might not even have a lot of data, so the scrolling experience that we mentioned in Africa for them might be a little like an overkill. I'm 100% in agreement with Luis that when I open the website, what needs to appear there is a complete, and I wouldn't even say light, I would say a complete definition of who we are in its essence, like a very clear, even if it's not With a lot of info that are very clear, share is this, boom, very clear. Now I get into a submersive experience in which I am maybe taking into the value of the why.
+
+Why is this even valuable for me? Why do I even care? When thinking of that journey, so now let's take into consideration that we have something like that and we can maybe talk about what that visual could look like. I do see this opportunity for us to, even from the visual standpoint, go from the complete element of what a network looks like, I was taking it as land, but it's just they're having done the model, not as ocean. I was taking it as going through Africa in a very abstract way.
+
+Yes, yes. It's very abstract.
+
+Okay, okay. So maybe it's just the blue and everything that brought me into the Subsea Cables, reading it in your title. Like, the Subsea Cables exist, and then boom. I'm like, oh, I'm in the ocean with towers. That's kind of what I thought. I saw it as almost the mountains in a very abstract and color way as opposed to the ocean.
+
+Yeah, I think what you do there is we have some houses. to convey to.
+
+Then I think that outside of the visual and the copy, we will need to get back to you guys on that, but I don't want to... whatever we do tell you guys and say. will help you dictate what that narrative is. I do see that from top to bottom. You guys are targeting the narrative that we express to you guys. I do think that we're going to need to try to add a couple of components to it while at the same time reducing the time and distance of the experience.
+
+I'm referring to distance in the sense that I'm not saying much while scrolling a lot right now in what I'm seeing where I would love for us to sort So if I'm imagining what share is in its completion. And I see the whole infrastructure in a design basis, I understand what it is. And now I go into understanding The reason why this is important We do have a very direct conversation that right now with the market makes a lot of sense when people hear about it, which is the fact that there is a lot of infrastructure that exists, that it's not being coordinated. That means that it's not being attached to itself. Now, I'm looking at this because it's not connected right now.
+
+It comes from one single cable. However, cables to cables, it's almost like The easy part that makes it not be either proprietary or I would call it even long-term sustainable as a company. What really is important, the brains of the network sit in between cables. That's why we send you guys kind of a lot of the hardware devices. where if in this experience I'm able to relate and visually understand how things are not getting connected to one another, the reality is that there is many cables. Right now, this visually tells me that, imagine, it's one cable that it doesn't seem to be connected right now, quite honestly, with the light, but it's almost broken down, broken out.
+
+The reality is that there is millions of cables. Like, everybody has cables. It's a dumb medium that everybody puts around. But there isn't the common brain that makes them speak to each other. Thank you. Imagine it would complete with colors as the fact that they're not actually matching or like there is like something that makes it feel that there is a need to input something in it for its existence to work, which would be the hardware that we bring. It's almost like we, from here when I scroll down, I add a component.
+
+That hardware that speaks to all the cables and makes them or communicate, but it, or maybe to put it in very, very, very simple terms. And maybe the idea of what I'm seeing the screen, could it be that it's two cables kind of getting together and each getting connected from a side of the, in this case, the switch, which would be the kind of things that is allowing for the data to go through one another and for it to speak to each other.
+
+Is that what you're referring to, José? It's almost like imagine this visual where you're actually getting connected, but I suppose of cable to cable, you're getting, one side of the cable to the brain and the other side of the cable to the same brain and therefore He becomes one.
+
+When we were brainstorming, We also thought about not having just one light on the cable but having the multiple fiber optic lines light up and kind of like try to connect but only some of them be connected and the share would connect all of them. As like a metaphor for unrealized potential. in a sense that the cables are there but are not fully utilized. And, uh... So the goal of this is to Use this metaphorically that you are enabling the cable to have full-tap potential. So the main question is if that matches your message.
+
+from the point of ISP because for me I am a little bit afraid that if we show another device coming in and fixing it, it would almost from the most like point of view at the first look at the website, I don't know anything, it may look like you are selling devices for optimization. So that depends if you want to present yourself more like the device is the main solution or the abstract way of the contracts and contractual enabling will be the main solution.
+
+Yeah, I can actually, let me, let me, I, to the last point you said, I kind of agree. What I mean by that is there's exactly what we do. And then there's when we talk about how abstract we want to get. If I look at what's on the screen right now, along with the copy, I think that all it is one cable and by the way I'm open to having this playing with colors and multiple cables it does give a sense that share is connecting things along with the copy being a very good complementary thing so I also think that if then we move into the size of pragmatism of the switches and the thing I think risk being more confusing in specificity Because if the goal is in one page to kind of get a sense of as you scroll through the journey and we get more detail what it is, I do see like instead of starting off through the towers and the cables, starting off in something like this is much more valuable.
+
+Because you understand share coordinates and connects. The copy says he poured it and the visual for me is very appealing, has to clearly work. to things that weren't speaking to each other and not speaking to each other. So I do even see the value of not trying to make a visual that exactly speaks or reconnects all types of things. Okay, so that's maybe more of a disagreement that we have, the three of us, because...
+
+Visually for me, the same way that I agree that we need to avoid trying to be seen as a product company, that's as a specific physical product. What we do in an abstract manner is we are interconnecting and coordinating a massive amount of infrastructure, like massive devices, antennas, data centers, cables, like just way too many things. And visually right now, although it is, of course, for the purpose of simplifying the concept, it is abstracting it to one single item. And when I get to experience share, it's quite the opposite.
+
+complex. But the complex, the complex thing is, must be addressed because everybody talks about it. To your point, I also hear what you're saying, yeah? But then coming from where you two guys, from the directions that we gave you of the journey, I do think in order to do what Horser says, which is true that if we can pull that off, it'd be very nice. maybe we have to zoom out a little bit from the fiber person.
+
+Because Renan is a journey very focused on the fiber directly, right?
+
+He's causing the data output.
+
+What about, would that get somewhat solved if, you know how you have that first thing that is just simply about the cables that are going? What if it's... Yes, in this case, it's cables, but it's the cable that lights up the data center, that lights up the antenna. It's almost like it's not necessarily about the cable, but it's about shared coordinating a bunch of different things. I 100% see that what Luis is saying.
+
+becomes shared and it becomes...
+
+I'm gonna say something, I'm gonna say something also gonna love. It's kind of like a fungi. If you guys have ever seen the video of how they designed the subway station in Tokyo, where they deployed a fungi to figure out the most efficient path. They just run this experiment and you could see just the fungi take over the different alleys and connect all of them like an organism, like a living organism.
+
+Yeah, I know exactly what you mean. It's pretty cool.
+
+Because that gives the idea of like, yeah, we're not just cable. We're not data centers. We're not towers. We are the thing that makes everything in unison, regardless of what type of hardware. We could even, I'm going to say it out there, and maybe we didn't even do it, but it could even be that satellite. We actually work with satellite. We could work with satellite, right? So it's almost like through us, any technology around telecom becomes a share, essentially becomes part of the ecosystem.
+
+Yeah. The team always talks about this, which is that telecommunications, whether you're in a meeting with executives, with your own team, or in a sales, it moves through the visual of maps specifically uh cd renderings this notion that it takes you to the topology of where i am right now i'm surrounded by buildings some buildings have towers on top of it these towers communicate with one another there's cables around it which it not only speaks about what it is that it's real it speaks to the problems that they see themselves because there's a couple of statements that we visually also want and need to make sure both for the investors but also for the ecosystem which is that Africa has plenty.
+
+And that abundance of infrastructure that is not connected, like Luis mentions, is really important. And this is also alluding to this of like, I don't necessarily think we need to separate from the cable. I think the cable is a very elegant way to take me through the narrative, but to take me from seeing that whole. So it's almost like adding a visual that I can see the whole, like an abstract 3D rendering of a city.
+
+in which, like Luis mentioned, what is shared, shared is the light. Even if I don't scroll, I just stay with it, a blue light goes through all the things and devices and antennas, and when it goes into a tower, now there's a beam of light that connects to the other tower. It's almost like it is the invisible connection of, in this case, bandwidth, but it could feel like energy that moves and coordinates a whole infrastructure.
+
+Then when I go down, visuals like this that are a lot more simple, they do take me to the copy. which is better. It does focus me on kind of one specific feeling, but it does have to come from the notion that Because at the end of the day, When we tell people that we don't build infra, we build sometimes, but we don't build infra, that there is plenty of it around. And what we do is we're kind of collocating small pieces of brains that make it be active and create trust on the ecosystem.
+
+Especially because when you think of like, How to put this? A stripe. Stripe, in a way, also defines itself as the highway of the digital economy. They consider themselves that kind of infrastructure where money moves, we kind of are wanting to become something very similar that is outside of the internet. And it is more about the light itself that makes that connection happen. So yeah, maybe that's where kind of my My mind is is going forward.
+
+From a copy standpoint, these that I'm seeing here, Generally speaking, to say that Africa is missing something and that we're bringing it hurts us more than in a way, because I feel it is the stereotypical narrative that somebody from not here would come and kind of impose. What really works really well with us and kind of something that we do even at an interpersonal level is that we kind of go all the way into becoming one more.
+
+And really this is a value presentation that comes from the fact that we're joining companies that are global. So that it almost comes from within. We're just powering, activating, creating an exponential value of what's already valuable. But that's just more of like a nuance of maybe Tom in the areas.
+
+I think with this visual we fixated excited a lot about showing that something not connected and then it connecting And I think we need to figure out Instead, how to visualize a coordination layer. Which I think fits about what you are trying to solve.
+
+I agree. Let me say something to try and maybe summarize the thoughts that we're having to see if I'm correct also for Omar Jose and then we would also give you guys a picture. If we go from maybe from the top of what we currently have that it just now feels like we're a fiber company that deploys fiber. Imagine, right? If I don't have any words, it's almost like being able to define share through this, like Let's call it for lack of other word, the fungi, right? That connects into share. I am totally okay.
+
+And I really like the way that later on, we do take people through this connective issue of light through a cable. Why? Because it's simple and it allows, like I mentioned, for people to see the actual copy and read a little bit more about it. So it's almost, I don't know if you guys are taking from this that to move away from the thing that I'm seeing right now on the screen, because maybe there's sort of things that it could be enhanced and how they connect and everything.
+
+from that connective coordination layer, we do go through a storyline similar to this that is of cables or a cable. to take you both on the journey. Am I--I'm agreeing with that. On the cable itself, that visual, This might be like a technicism, but people are very aware of how cables work. And it's actually like a beautiful way of representing the problem in the market. Instead of having one single point of light, usually the thing that sits in the middle of the fiber is like plastic, okay, to just create the shape. The actual light cables go around inside of the middle center. And those are called the cores.
+
+Those are the things that multiple companies like, Those little cables around the middle is what ultimately plug into each other. Like literally become the same. That's what is called splicing of the glass makes it be. Then outside they have multiple layers. Visually what I'm seeing right now, it would be one single core already connected with just the cover outside. So I'm seeing the inside of the cable, but it's not really for somebody that is from the internet space.
+
+and choosing who we're speaking to, it doesn't really give the sense that it's not connected already. because the splice has already happened in what I'm visually seeing right now in that core. So that's something that we can also show you guys by opening up a cable maybe more openly for you guys to see. Yeah, give you an idea.
+
+I think also when you guys connect the cable, what happens is you open the cable You put the fiber, which is a glass in a machine, And on each end you put the two ends you're going to connect. Then the machine what it does is it melts the glass into one and solidifies it back into the fiber. So it's a melting of glass into the same one, to give you an idea. And inside the cables you see in the street, like Koso said, when you see a cable hanging on a pole, from the outside inside of that, there's probably like 90 fiber cables. Like the outside is kind of irrelevant when it comes to the splicing.
+
+And what everybody understands are those goes 90, for example? is that most companies, they have a big cable industry, but out of the 96, they only have activated five of them. That's a big value proposition of what we're doing of coordination, because the rest are waste. So that's a good way of maybe saying, look, without us, you have two. or it feels like it's not really connected, we share almost all 96 or 12 or whatever we want to make, boom, we really get connected.
+
+And the full cable power-There you go. There you go. And also, cool thing, they're always colored. Those tools, it's actually accurate. It's actually for identification. All the tubes inside of that, each tube tends to have 12 fiber cables inside of them. And they're color coded so that you know, OK, we're going on the red cable in the blue tube. Because then you open the blue tube, and each fiber is also colored. It's like an identification mechanism.
+
+Not that we need to maybe do this tacky colors that I see here. I feel like this is also just very tacky, the way that the actual colors go. But if we do have these very bright colors, the brand could get a little bit diluted. I want to make sure that you guys get the gist, one second, just for them to kind of, the recap that I did, does that make sense? Where, what we're saying, there's certain things that we're really liking and then being able to put also at the...
+
+at the top, almost like at the beginning of the who we are with our coordination thing and then continuing the story.
+
+I think that makes sense.
+
+Yeah, it makes sense. For the cable, we looked at what the cable looks like before. And we are kind of counting that there will be multiple lines in the middle and only some of them will be connected. So that was our initial idea, just this visual has only one. So in the end it would have multiple ones. and it would look like the actual cable.
+
+I also wanna add that clearly guys, the instinct and the attempt you have, it's the correct one. We're now giving you so also to keep following that and take these adjustments of the journey and what we need to show like the strategy of the storytelling but I definitely feel like this first version is definitely a step in that direction.
+
+Yeah, I'm really glad to hear that because that was the whole point of this call. I don't think we thought like we're gonna show you guys this and you'll be like, okay, that's it. I don't think that was the point of it, but more like... More like the story is like this and we want to show it like that. So I think this is doing This is exactly what we needed actually.
+
+I have a feeling that these that I'm gonna share now We should have shared before. to be honest with you. So this is on us. But I think the closest visual representation of what's actually happening in the world when we are there and when we're not there. So let's get right into it. Do you guys see my screen? Yes, sir. OK. So this is the warm up. This is an internal private dashboard that we have of all this information.
+
+But I think it's going to be kind of a visual representation that is really going to help you guys understand what we have. As you guys can see here, this is the map of Africa. And there is something different that is happening in Kenya. This is where I'm going to dive into now. The outside of this is subsea cables, OK? That, as you guys can see, are only happening around the continent. But let's zoom in really quickly, and let's go to Nairobi.
+
+which is the capital of the of the country. What you guys see here, and maybe actually let's go here. You guys saw these little clouds, almost like feel like clouds? All of these are towers. If I click on it, you guys are going to see the information of the tower. And as you can see, there are thousands. Actually, to be exact, we have already access to 4,751 towers. And these towers, as you can see, are absolutely everywhere.
+
+For a seed company like us, this is mind-blowing. Because this, I would say, is, I don't know, $2 billion of infrastructure, of having to actually build all of this. We didn't build it, but now we have access to it.
+
+When we zoom in here, let me take the towers out to make it a little bit easier to see. These are not roads. These are actual cables, real cables that exist. Each of these little lines that activate itself, you see how they get lit up? Each of these is one cable that maybe has 26 cores inside from multiple different companies. All of this is Africa today.
+
+It exists. It's real. But it's not coordinated. It doesn't actually coordinate itself with one another. So all of these people, and there's a lot more, they're competing with one another. What SHARE is doing is bringing an ecosystem, like this digital product, this... solution to make these companies and these cables coordinate themselves, work with one another into one single system. And essentially they're all becoming the same color. So they're all going to be disappearing and they all become one single color.
+
+This is something that everybody understands in the industry when we talk to them. Actually, let me see if I can... Make it be, yeah, like this. Like with a 3D representation, let's go to a highly densely populated area here. What do you do with the satellite, Jose? Do you actually see the satellite on 3D? Let's see. I don't know if it will come out. No, the 3D on satellite is not that good. But as you guys can see, the 3D, it's now disappeared from here. But all these buildings that appear, all these cables are running through them, through the whole city.
+
+And look, these are three different companies. I would argue that in this street you have like seven or eight companies that actually don't collaborate with one another. But with us, given that this pink company, green and blue company are working with Cher, they're going to become part of the same. That is the power of what we're doing. And we're doing so by working across these data centers. I don't know what happened by the way here, But, uh...
+
+Nope. Sorry, playing with it, I played too much. What I was going to say is that these are the data centers. This is three white dots that are going to appear here where we do put hardware on it. We do put the brains here. So we're actually interconnecting. And now what I'm going to do I'm going to only show you guys what we do have today. Everything else is getting activated. We have this data center, this data center, and this data center.
+
+And we have cables around that connect the brains. How we expand that, the best way to look at this is going to be Mombasa. So we're going to-whoa, this is not Mombasa. This is the last thing I'll show you guys here. And we'd love to hear your initial thoughts. This is Mombasa right now. It's lit up in green like this because we own it and it's active. Now, how many data centers you guys see here? One?
+
+And two. But as you guys can see, this is also a node. This is also a node. This is another node. And these are micro data centers that we're building. What were those micro centers before we actually came? There were little towers like this. All this cloud that we showed you guys before, that is actually real infrastructure. When share exists, this little cloud that right now is independent, actually becomes part of one whole.
+
+one whole system that speaks with itself. That is the best visual of what we're building that we can show you guys and why it's so impactful for people because for the network, that is the other page that you guys are working on,For network it's impossible, especially small ones and medium ones, to build all this infra across every town, in every city, in every country that they wanna be in. but it's how they actually get to grow. That's why so many little people.
+
+Here in this area, there's 250,000 people. In this area, it's SESC Bissan. quarter of a million people, and they don't have good internet. Now with us, they're getting the fastest speech faster than even in Europe. This is only possible because there's one company called Share that has decided to take the risk of joining multiple pieces of info and allowing any network to come here or here or here or here, connect to it and treat it as if it's its own.
+
+Sorry, because I spoke a lot right now. But hopefully this is a visual... concept of what's actually happening in Iran.
+
+So basically now we have Uh, Let's say two options. For visualizing the coordination, first would be the optical cable like this here, but with a better visual of the glass parts, not all of them being connected, and to visualize the problem that you said that they have 32 lines and only two of them are utilized. and maybe show a little bit more the flow of data that isn't happening on the other ones. So that is the next visual step for this iteration. And the second option is to show the coordination and the slash connection on some kind of top-down map visual with the interconnected nodes. So we would have to...
+
+I think it's a perfect, I think you explained it perfectly because the thing of the coordination explains who we are and what we do. And then the cable explains what's the problem and how we solve it. I think in a very simple way, I think the copy around it, it's very, would be very one, whoa, for anyone who sees it, but also very, Edible, like it's, you know, you can really, it's tangible and you can really go through the storyline while already getting a grasp of like, wow, Sherry's all of this infrastructure across Africa. We've also showed it's Kenya, but our goal is to visualize that we want to do this across Africa.
+
+And then the almost like more abstract way in which we solve it. I think you described it very well. Because the city itself, Africa, Kenya, Europe, It could be anything. It could be an abstract city. But remember the numbers that we gave you guys? That we said how many data centers we have, how many providers and so on. We would love in the main page, most likely, for that to be visible. Because if you enter a website and you're somewhere with an abstract visual, are like, whoa, okay, these people coordinate, but what do they coordinate?
+
+And then I immediately see thousands of kilometers of fiber. I see 100 data centers. It's like, oh, fuck. I can't even comprehend how big this is. And then it goes into the problem. I think it would achieve a really good effect on the...
+
+We had that in mind at the end, because at the end you reveal that the share is a really big network and you can show the data right after.
+
+And we need to be careful with that. Of course, it's a good idea if you think about the hero section, but we need to also be careful about not steering too much towards like we are infrastructure, we have infrastructure. So that is because you don't really want to like communicate for the users to get the idea that you are building infrastructure. So this is the challenge.
+
+Sorry, because I think it was my fault. We would love that. We would love for people to feel that this is actually real infrastructure. Because I mean, you guys saw the pictures. Like, I have my team members. handling actual real infrastructure that has silicon the same way that GPUs move AI. Like, we really do infrastructure. It's just that we...
+
+are not CAPEX intensive, which is a little different. If we achieve the feeling that we're heavy infrastructure, like we manage zillions of kilograms, imagine, of pieces of hardware that communicate with one another, that would be amazing. If we do so by explaining that we only have the brains and that everything else in abundance, we're just coordinating, that's what's even better as an effect. We wouldn't want them to feel that we're building it all.
+
+from an infrastructure standpoint. But we definitely wanted to feel the same from. Because I think about it from a, this is more investor based, Everybody's building SaaS right now. Everybody is building, especially now with AI, if you're just a company that you only have software, you have very little competitive advantage. I don't know if you guys saw this video that happened last week from Y Combinator, where every single company that is in the Y Combinator this year got cloned in 24 hours by one agent.
+
+That's the world in which we live in right now. It's the reality. What is the differentiation in companies right now? It's about people. It's about the relationships you make on the human level outside of the solution. And who are the most valuable companies today that feel that are very competitive in the VC world? those that have hardware. Because AI does not touch that. It can't replicate it. It's actual physical silicon. It's fiber optic cables that connect.
+
+So that's definitely an emphasis that we want to have. We want investors to feel like, well, These people are actually in the real world. AI, as much as you want to create something, you can't. It gives the feeling of, yeah, this may be a city company, but, whoa, this is established infrastructure company. So I guess it gives trust. I do, though, to your point, I do like... For the sake of maybe also getting people into a story that I'm not saying everything I was from the beginning, the fact that you're going through the story, you're having already this massive Yes, sir.
+
+And then you give all of the metrics of where we are, which are ever changing. I don't know if your comment also was to make that be also at the top. I think it could be a lot of information with also the visual and what share is. But the way that I was seeing it here just now that you had it, I do feel like I like that. Ask the story. It's like, oh, on top of that, this is everything that we're doing with the partners that are running on share. The way that it's structured, I think you're thinking of it right.
+
+Yeah, so...
+
+We Basically this part is just what we saw.
+
+So with the stats, with the infrastructures, Maybe we need to Visualize it and tell it like you don't have the instruction but you control the instruction, you have access to it. If that sounds right.
+
+Yeah, it does. I mean, you know what, for me, when I was seeing the visual, I felt the visual being, what I mentioned, that it was almost too long, like the distance was too sparse out. I felt like I needed to kind of scroll a lot, and I've seen the narrative. It's almost as if we shrank that in a way where I accelerate that experience of visualing. I would love for the visual journey of the cable to continue into this section, imagine.
+
+But in this section, the cable connects into a piece. It connects into a hardware and in that hardware it says that to your point it's coordinating seven subsea cables, 500 kilometers of fiber. Then they visually understand that like okay this thing that it's a cable that it coordinates it also plugs into the share brains, the infrastructure of investment. 80% of our CapEx as a company was in infrastructure.
+
+Also, the investors are going to understand that these people do invest in infra. I do want to bring something up just because you mentioned it, or maybe the explicitness of us accessing and us almost taking control even to an extent. There's a big reality that, you know, at the end of the day, this is infrastructure that people have built, that people have invested in, and that people have, Almost like they will own the wing which were coming into the market people are not we're not almost coming to this Hey, I'm gonna control your infrastructure I am an enabler. I am a neutral infrastructure provider, something that we're using lately.
+
+The fact that we're neutral, that we're enablers, that we're an ecosystem creator is very important in maybe the language and the way that we communicate so that the person that is looking at this and is an infra provider says, oh, I want my infra that is actually underutilized and they're right, I want to put it in here. As opposed to maybe who's this company that's going to control infrastructure my hard work right um i think that's a a small nuance to what you mentioned or maybe you're thinking of copy and stuff that i think of us accessing us controlling us owning um maybe not to say it explicitly because in some cases we also don't even do it we put to a point we put our very own brains into their dumb mediums but i just want to get this nuance of like neutrality and enablement is very very key to lower the guards of all these people that have made all these investments so that they're actually open to wanting Participate in the ecosystem.
+
+It sounds to me that there is a little bit conflict between the two audiences because for the ISPs you want to offer them and show them that you have the infrastructure, you have to control it and it goes through you. But for the infrastructure provider you want to show them that it's okay, it will still be your infrastructure and we will just optimize it and utilize it better.
+
+For both. I think more than, and maybe this is the Even for the ISP, because you're right, for the infrastructure, we want to say it is your infrastructure for the provider and we're going to help you maximize it, right? Because you're right now having it underutilized. It is a similar nuance to the ISP that is joining us, where they're giving us a lot of trust into joining this ecosystem, where also to them, I'm not the controller of all this infrastructure.
+
+I am the enabler that allows you to use it. But it's almost like we're giving them, we're opening the access for them to use it as opposed to maybe, hey, I have control of all this, plug into me. Because just to give you an idea, even the small provider has a network of its own with cables. And it is very possible that in the future, if that network is growing, they might also become an infrastructure provider to the ecosystem, right? They might say, hey, I have cables that I'm not actually using as much. I would like for me to put this into the ecosystem.
+
+from the lens of accessibility enablement and making sure that both sides of the marketplace, it's only all boats rise with the tide, right? Yeah. Does that make sense? I don't wanna make you guys confused either.
+
+Yeah, it makes sense.
+
+You guys are gonna have to put the circle back and forth on AI so that it gives you a proper summary. But the best way to put it is even the suppliers that have FinFRA that are gonna give it to us, Um They right now don't trust giving their infrastructure to others because he's super fragmentalized. which means that there is really no company like us right now that actually put our own hardware to make it be homogeneous.
+
+In a way that is also very important for the supplier for you guys to think about that. It is okay if they feel that we have infra that makes this possible because it's always additive for them. If we didn't have our brains and I'm a supplier and I just say, okay, yeah, use it. And you plug into me, who's managing it? who's monitoring, who's actually controlling that both sides are doing their part and actually having the transaction. It's us.
+
+So we very much feel comfortable with them feeling that we have infra because it is what builds the trust for them. We're kind of the glue of both. Small nuance. Okay.
+
+Okay.
+
+So just regarding the wireframe, I'm gonna share everything with you guys after this call so that you can have a proper look. We can definitely adjust the position of the sections if it's like if this should be like higher or it should be maybe like lower on the side but we wanted to have on the website beside the animation we just showed you with the tweaks that we should do, the numbers, then The ISP partners that are already plugged into SHARE, ideally some of their words like testimonials, anything that would just boost the credibility even more.
+
+Then the question is if you want to have the grid of logos of your infrastructure partners as well that's definitely up to you and then before going into the further itself the site should have some kind of cta if you think that this amount of information is enough for for your audience to contact you, then there should be a CTA banner going to contact page. But if you think, and based on your sales, based on your business development part, if you think that at this point, yes, we got the general idea, we like it, we want to know more, then let's just place two journeys here.
+
+And for ISPs, you go I agree.
+
+Awesome.
+
+The footer at all times should have, like, depends on you, the sign up for newsletters, you know, and all this stuff. At the same time, if we do this, we're not losing the contact. The contact is in the footer and the contact will be in the fixed nav bar, the menu bar on top.
+
+So this is... I like that this takes two different journeys. I've gone through the whole thing. This takes two different journeys. I also like at the bottom of seeing something, for example, of the press releases. That's great because we are going to have a bunch of press releases that we would accumulate. On the front, just a quick nuance at the top. And if you guys share this with us, we could actually distill, because I think all of us are going to have opinions, and the three of us are going to want to talk about it. You almost mentioned partners twice, where it's the partners we're running on share and then the physical network behind every connection. In my mind, they're almost the same. In my mind, the way that I'm putting partners, it would be data center, or scene for providers.
+
+How are you guys making this? What was on your mind? Or is it the same? It's just in two different locations. Um...
+
+Right now it is just, hey, we have a section here, but if we would need to, let's say, design differently so that it looks like different components, we would do it. But this is really up to you guys if you think we should separate it or we should put it all in one section.
+
+I see, I see, I see. The way that I'm maybe thinking about it is, as opposed to, because sometimes you don't want to say, hey, that partner, like a small ISP is working on share. We'd rather blend them all between very massive providers that we have contracts with and other... And you kind of have... a view of the ecosystem in general, right? And it's a scrolling thing of partners. But that to be discussed with you later on, I think this is very bearable as well. So far I'm liking it.
+
+I like also the thing of the quotes.
+
+Have you talked about or Briefly mentioned the press releases. We have also Went through the website structure. I know you guys at the end of the notion page you put in home page page for ISPs and page for end users What is the site should also have is all of this Just from our experience what we're doing with all clients or what is very important is the contact page with with the forum there should be very What is important about Page is most of the businesses, well Page is very about the credibility boost you know the people you know behind all this magic and we went through your instagram and on all these uh social media platforms and i feel like you do have like pretty strong personalities and uh it could be really great content on the website you know showing how you talk about it what's your story why are you doing this like what are your values um then talking about each other as well and what you want to accomplish this is always a very to every product, either if it's a physical or a software product, right?
+
+So that's something you can think about if that makes sense for you.
+
+And then there's this-Well, we can do here, if this sounds good to you, taking almost this. We can talk to users and think, what would be-if we have our resources, what would be maybe the one, two that are very important? And some of them might just be, hey, imagine we have API documentation for the platform. This might just be a hyperlink, actually, that takes you to our documentation. But what we can do is take this and propose, these are the things that we would like.
+
+Yeah, for sure.
+
+I guess for the resources, I feel like what we discussed here is we would love to see a case study. like, from the point of view of your partners, like, How is it like? You said onboarding integration is easy. How is it easy actually, you know, so how does it work?
+
+How does it work? So so the case study is always a great way to again boost the credibility Then all the press releases latest used I feel like you should have a place where people should land into and actually Have a traffic on these pages like organic traffic or pay traffic.
+
+It doesn't really matter but it's not just about Showcasing what you do, but actually making this organic traffic is actually important for PR and for everything. So that's why we suggested this structure. We can always make it leaner Streamlining you can always make it like bigger, but this is something we would recommend and now it's up to you to go through if it's if it makes sense if you have a capacity to take care of this structure because if you have a blog and You are not gonna write let's say an article per month at least then it's it's not really a good idea to do it, right?
+
+So I'm just putting it out there and then you can discuss it freely. Love it.
+
+Yeah, absolutely. I think that receiving this is going to be very valuable for us to have this discussion, especially over the weekend, to understand a little bit, maybe we can touch this really quickly in regards to like budget and costs. We know that there is a lot of infrastructure to maintain. Adding, subtracting or changing from here also has a change in the work that you guys need to do. It would be great to understand what that would look like from maybe the current size that you guys are imagining.
+
+see both the scenarios i can see scenarios where some of the pages that you highlighted there we maybe need to prioritize but there's also pages that we know we might need already like for example a supplier page again this is something for us to to think about internally but because we're kind of seeing this market to understand are we extending too much something that we know we're not going to be able to to to pay for are we going lower so uh If you're asking about some disability on that, that would be great.
+
+Yeah, but I still feel like the, The biggest influence on the budget is if you're going to do the PNG sequence or the real-time rendering. And this is the last topic I want to open with you guys. So maybe let me share a different screen. So basically what is happening is that for example this one this is basically just designers sitting behind a 3d tool and building everything and rendering it and then They render it into a video let's say and this video or this PNG sequence is then put on the website by the developer and he's Optimizing it as much as he can so then you have this experience it has its advantages it has its For example, if you stop, this is a PNG, so if you stop, nothing is happening, right?
+
+Nothing is happening on hover, it's very static.
+
+You cannot interact with it.
+
+Yeah, and the optimization is really hard, you know, so like you said, slow mobile phone, slow internet. If you slow this side down, slow your internet down and look at this side, it's going to be black screen, basically.
+
+It's going to be broken because the video doesn't look. The optimal size of the page to be loaded is usually 2 to 3 MB and this page is 30 plus. It needs to be loaded before you can properly interact with it.
+
+So it looks nice but it has its disadvantages but for example this page, This thing that you sent, you can see that I can actually interact with it. It's pretty smooth. It does It does the movement by itself and this is actually How it works is that something is pre-prepared by the designers in the 3D tool And then all the magic happens in the development. So it's the textures, the lightning and everything, the movement is done in the development part and then it's real time 3D rendering.
+
+So right now I feel like it's important to decide which way we should go because this 3d rendering is a bit more expensive. It's not so cost efficient, let's say, but in the long term it always works better. Even the wheel side that we were doing is the real time rendering and that's why it works so well. That's why it works on the phone so well.
+
+So yeah, I think this is--What would it look like as a difference of both? 'Cause I mean, the way that I'm hearing this, there's clearly two ways of going about it and one is better. More expensive but better. What is the difference that we're talking about here and if we were to go in the best way, given the size of the structure, what would be the budget that you guys are approximating right now for the project?
+
+Yeah, so even based on the Budget ranges we shared in the beginning, we're talking about 5 to 10K of difference So I feel like that's the range we're in for.
+
+Yeah, but we are...
+
+our strong opinion is that the real-time render because of the internet speed limitations and the length of the on the story that will be really optimal for it i mean let me give you let me give you guys something we as a company are judged by two things our pretty faces in in-person meetings and the quality of our network so if we have a website that doesn't load we're because it's literally what we do it's internet so we do have a very clear option, which is for it to work well.
+
+So I really appreciate your transparency. In the current model, if we go with that range dimension, it could be like a difference of 5 to 10K. What would be the total size of the project from a budget standpoint? And maybe this needs to be a refreshment in my mind, but I know that we've been speaking about ranges. So to understand what would be the total range right now, if we wanted to do the project as a whole, including the live 3D render?
+
+Yeah, I think The range for the second one in our original email was 35 to 40 uh but the pages are not so lengthy uh i feel like we could go i don't know it would be like 30 to 35 but i'm just ballparking everything right now so it's it's not very it's just giving you the idea uh but uh if we're fine with the overall concept of the idea uh then you get back to me about the structure and we can put it all together and actually tell you the final price and not giving you ranges you Okay, sounds good.
+
+And then for us to understand when we think of Because we also see this as a project and ideally working with you guys as something that we can even if we have to extend it on time for the scale of the project we would also understand how we said that we can compartmentalize like hey this is what we really need for MVP so let's go with this initial big chunk but then we add on additional things to comprehend how budgets would change in the diagram or the onogram let's say that you put up a structure
+
+Hello, hello? Hello, can you... I think we lost. We have lost again for a second. I don't know if Jose, you're still on. Okay, he's able to jump on. We lost the internet.
+
+I'm on hotspot right now. I was saying that the onogram of the pages that you have shown for us to comprehend If we want to add more, subtract, split throughout time, or what's more a priority list now, how much influence does each page have? considering, imagine, like a small page or a normal page. on the budget itself.
+
+So the budgets, we itemize them and usually it breaks down the project setup, the buttons, the text, everything that will be used everywhere. Then there is a big portion for the homepage animation. And then one small part will be the, for example, connections to the email or to the newsletter emailing service and so on.
+
+like 60 70 percent are sections or abstracted sections together are pages so that that part is very mature yeah but i feel like for you guys uh we can break it down for pages and then you know that for blog it's There's budget and if you're going to Yeah, we can move forward with it right now. Sure, let's go with it. And if you're going to move forward with it in six months, then you have the budget that it's an hourly estimate.
+
+So you would know how much it would cost. So how about to make it pragmatic also, the ranges are clear, distribution is clear what about next steps if you guys share with us this for us to give you feedback on look at initial thing that we would be looking for that we need or we want yes or yes it would be this and then you with the idea of doing the the 3d live the one that is good quality um and then you guys can come back to us with look that would look like this and then from there we can say fantastic what would be the team what would be the timeline or maybe we say actually we can go a little bit over because we we decided that we want to actually add these two pages based on the cost or eight we would actually the time to reduce this one and then that way we can work together like that would be great yeah so Oh, it's I think we're just going to take this concept, the real-time rendering and the structure, put together a budget, a sheet for you guys to see where we're at, and then we can iterate on that.
+
+What do you say? Perfect. Well, one last question that I have.
+
+I don't know, I don't know if you lost me. I said perfect. Yeah, yeah. How do you guys usually work on that front?
+
+So apart from the 3D experience on the homepage, every part of text, every text and every image is connected to the content management system, CMS. And we will give you access to that and you can change the text, change the ad sections, remove them, reorder them. Most of the stuff will be editable by you.
+
+Okay, fantastic.
+
+Press releases or the blog post will be like a big wall of text and you will edit that in one small editor like Minutiae's Google Docs.
+
+And then what we do is that we also charge like a yearly fee for maintenance. So if the website needs updating some text We do it on our end. You don't have to worry about it. If it comes down for any reason, we jump right on it and fix it for you guys. So there's this maintenance from our side so that you always know that we got your back if you need anything, basically. Awesome. If you have new things coming up, let's just open a new scope and work on the new budget.
+
+But in the yearly fee, there's this maintenance from our side. and it works very well with our clients as well so I feel like this is something that you guys would like as well. Love it. Okay. We're a little bit past time.
+
+Yes, no worries on our side.
+
+I'm all good on my end. I'm very happy with actually continuing to dive into this with you guys because we get on this call and it feels like from a brain dump that we had, the three of us in that notion, and I know we put a lot of information, you guys have really distilled, even if it's early stage, into something that aligns with what we're looking for. So I'm very happy. Cool. cool yeah next steps uh so we will do the budgeting thing on our side i will share with you this keynote that i just show you the animations then the figma files with by frames and structures and i would love you guys to just go through it once again uh we'll just dig deep into what you just said here and then maybe have a sync next week on how we actually want this story to evolve maybe we can come up with different ideas again So 3D Iron Man made it like we had right now, but I feel like right now we have a good idea and we just need to align on this concept and then we will justDive into the 3D.
+
+Absolutely. That would make sense. We also, as you guys saw, Our mother is an artist, so you can imagine a little bit kind of the amount of times in our life that we've been put in front of somebody like yourself with this creative expression that you guys have that we don't. Unfortunately, our mother gave us nothing on the creative side by using her to interact with one. We really appreciate that you guys were able to, in the first session, already give us this because we're not going to shy away from giving you guys this type of comments, especially early on, that really is going to allow you to capture the vision
